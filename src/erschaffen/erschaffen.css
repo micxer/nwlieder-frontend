@@ -1,0 +1,21 @@
+
+
+.subtitle {
+
+    color: #ed1e24;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.add-audio {
+
+ 
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    background-color: #ed1e24;
+    color: #F1F1F1;
+    border: none;
+    font-weight: bold;
+    font-size: 15px;
+  }

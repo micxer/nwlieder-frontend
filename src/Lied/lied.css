@@ -1,0 +1,74 @@
+html {
+
+    overflow-y: auto;
+}
+
+
+.fuerte {
+    position: fixed;
+    width: 100%;
+    bottom: 0%;
+    background-color: white;
+    justify-content: center;
+    box-shadow: 0px 20px 20px 20px rgba(0, 0, 0, 0.3);
+    
+
+}
+
+.selection {
+
+ 
+    border-radius: 50%;
+    width: 7vh;
+    height: 7vh;
+    background-color: #F1F1F1;
+    color: #ed1e24;
+    border: none;
+    font-weight: bold;
+    font-size: 25px;
+}
+
+
+
+.selection:hover {
+
+ 
+    background-color: #ed1e24;
+    color: #F1F1F1;
+   
+}
+
+.port {
+
+    font-size: 25px;
+    font-weight: bold;
+}
+.portMobile {
+
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.selectionMobile {
+
+ 
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    background-color: #F1F1F1;
+    color: #ed1e24;
+    border: none;
+    font-weight: bold;
+    font-size: 25px;
+}
+
+
+
+.selectionMobile:hover {
+
+ 
+    background-color: #ed1e24;
+    color: #F1F1F1;
+   
+}
+
