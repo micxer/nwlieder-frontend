@@ -33,10 +33,6 @@ const Einloggen: React.FC = () => {
         localStorage.setItem(key, value);
     }
   
-    const getLocalStorageItem = (key: string) => {
-
-        localStorage.getItem(key, );
-    }
 
 
     const verify = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -48,13 +44,13 @@ const Einloggen: React.FC = () => {
         if(nutzer.nutzer === 'pokemon' && nutzer.password === 'pokemon') {
 
 
-          await navigate("/intro", { state: { normal }  });
+          await navigate("/", { state: { normal }  });
         //    await  navigate("/intro/normal");
         }
 
         else if (nutzer.nutzer === 'admin' && nutzer.password === 'admin') {
 
-            await navigate("/intro", {state: { admin }});
+            await navigate("/", {state: { admin }});
         }
     }
 

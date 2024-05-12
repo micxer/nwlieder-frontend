@@ -53,6 +53,8 @@ const Kommentare: React.FC<KommentareInterface> = ({
     body: JSON.stringify(kommentare), // Convierte los datos a una cadena JSON
   };
 
+  console.log(data[aktuelLied]?.id)
+
   const urlGet = `http://localhost:5000/kommentare/${data[aktuelLied]?.id}`;
 
   const updateDataFuntion = async () => {
@@ -97,7 +99,7 @@ const Kommentare: React.FC<KommentareInterface> = ({
 
   useEffect(() => {
     getKommentare();
-  }, [data[aktuelLied]?.id]);
+  }, [data[aktuelLied]?.id !== undefined]);
 
   return (
     <ReactView

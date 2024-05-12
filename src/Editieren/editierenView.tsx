@@ -6,6 +6,7 @@ import { BiSolidCommentDetail } from "react-icons/bi";
 import ModalAlert from "../modal/modal";
 import { MdDelete } from "react-icons/md";
 import Marquee from "react-fast-marquee";
+import Button from 'react-bootstrap/Button';
 
 interface editierenView {
   openModal: boolean;
@@ -14,11 +15,13 @@ interface editierenView {
   aktuelLied: number;
   id?: string;
   modalAlert: boolean;
+  openModalDelete: (e: React.MouseEvent<HTMLButtonElement>) => void;
   deleteKommentar: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
   kommentare: KommentareInfo | undefined;
   getSpecificAudio: (e: React.MouseEvent<HTMLButtonElement>) => void;
   sendInfo: (e: React.FormEvent<HTMLFormElement>) => void;
   setOpenModalKommentare: React.Dispatch<React.SetStateAction<boolean>>;
+  modalDelete: boolean;
   disable: boolean;
   updateData: {
     name: string | undefined;
@@ -56,6 +59,8 @@ const EditierenView: React.FC<editierenView> = ({
   disable,
   kommentare,
   deleteKommentar,
+  openModalDelete,
+  modalDelete
 }) => {
   return (
     <div>
@@ -227,15 +232,14 @@ const EditierenView: React.FC<editierenView> = ({
                                             <div className="d-flex ms-1">
                                               <button
                                                 style={{ all: "unset" }}
-                                                onClick={() =>
-                                                  deleteKommentar(kdata?.id)
-                                                }
+                                                onClick={openModalDelete}
                                               >
                                                 <MdDelete
                                                   size={25}
                                                   color="red"
                                                 />
                                               </button>
+                                         
                                             </div>
                                           </div>
                                         </div>
@@ -278,7 +282,9 @@ const EditierenView: React.FC<editierenView> = ({
             </div>
           </div>
         </Modal.Body>
+ =
       </Modal>
+    
       <ModalAlert
         text={`Das lied ${updateData.name} wurde erfolgreich bearbeitet`}
         show={modalAlert}

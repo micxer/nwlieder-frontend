@@ -160,7 +160,7 @@ const LiedMobileView: React.FC<liedView> = ({
           <div className="container">
             <div className="col-auto">
               {audio === "" ? (
-                <div className="row justify-content-center mt-3">
+                <div className="d-flex justify-content-center mt-3">
                   <div className="col-auto mt-2">
                     <p>Versionen</p>
                   </div>
@@ -182,11 +182,11 @@ const LiedMobileView: React.FC<liedView> = ({
                   </div>{" "}
                 </div>
               ) : (
-                <div className="col ">
-                  <div className="col  d-flex justify-content-center">
-                    <div className="col-12">
+                <div className="col">
+                  <div className="d-flex justify-content-center">
+                    <div className="col-auto">
                       <AudioProgressBar
-                        className="hola"
+                        className="input-range-mobile"
                         duration={duration}
                         currentProgress={currrentProgress}
                         buffered={buffered}
@@ -203,7 +203,7 @@ const LiedMobileView: React.FC<liedView> = ({
                     <div className="col timer">
                       <span>{elapsedDisplay}</span>
                     </div>
-                    <div className="timer col-auto">
+                    <div className="timer col">
                       <span>{durationDisplay}</span>
                     </div>
                   </div>

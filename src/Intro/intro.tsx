@@ -14,7 +14,10 @@ const Intro:React.FC = () => {
      const normal = location.state?.normal;
      const admin = location.state?.admin
 
-     const level = normal !== undefined ? normal : admin;
+    
+
+     const level = admin !== undefined ? admin : "normal";
+
 
 
     const getSearch = (e: React.FormEvent<HTMLFormElement>) => {

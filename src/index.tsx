@@ -25,7 +25,7 @@ root.render(
     <div className='mt-5'>
 
       <Routes>
-        <Route path='/intro' element={<Intro  
+        <Route path='/' element={<Intro  
         // length={function (lenght: any): void {throw new Error('Function not implemented'); }}
         />}/>
          <Route path='/lied/:id' element={<Lied 
@@ -34,10 +34,7 @@ root.render(
         <Route path='/home'  element={<Home lenght={function (lenght: any): void {
             throw new Error('Function not implemented.');
           } }/>}/>
-        <Route path='/admin' element={<Admin lenght={function (lenght: any): void {
-            throw new Error('Function not implemented.');
-          } }/>} />
-          <Route path='/' element={<Einloggen /> } />
+          <Route path='/admin' element={<Einloggen /> } />
       </Routes>
       </div>
       </Router>

@@ -9,6 +9,7 @@ import AudioProgressBar from "./progressBar";
 import { MdEdit } from "react-icons/md";
 import { TbReload } from "react-icons/tb";
 import { BiSolidCommentDetail } from "react-icons/bi";
+import { TbPlayerTrackNextFilled, TbPlayerTrackPrevFilled } from "react-icons/tb";
 
 interface liedView {
   data: Hola[];
@@ -33,6 +34,8 @@ interface liedView {
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
   setOpenModalKommentare: React.Dispatch<React.SetStateAction<boolean>>;
   level: string;
+  onPrev: () => (() => void) | undefined;
+  onNext: () => Promise<(() => void) | undefined>;
 }
 
 const LiedView: React.FC<liedView> = ({
@@ -57,7 +60,9 @@ const LiedView: React.FC<liedView> = ({
   setAudio,
   setOpenModal,
   setOpenModalKommentare,
-  level
+  level,
+  onNext,
+  onPrev
 }) => {
   const datei = data[0];
 
@@ -139,6 +144,9 @@ const LiedView: React.FC<liedView> = ({
             ) : (
               <div className="col ">
                 <div className="text-center mb-1">
+                  <button style={{ all: "unset" }}>
+                    <TbPlayerTrackPrevFilled onClick={onPrev} className="icon me-5"  color="#ed1e24" size={30} />
+                  </button>
                   <button
                     style={{ all: "unset" }}
                     disabled={!isReady}
@@ -152,16 +160,22 @@ const LiedView: React.FC<liedView> = ({
                       <FaCirclePause color="#ed1e24" size={40} />
                     )}
                   </button>
+                  <button
+                    style={{ all: "unset" }}
+                    disabled={songIndex === songCount - 1}
+                  >
+                    <TbPlayerTrackNextFilled onClick={onNext} className="icon ms-5"  color="#ed1e24" size={30} />
+                  </button>
                 </div>
 
-                <div className="col row d-flex justify-content-center">
+                <div className="col-auto row d-flex justify-content-center">
                   <div className="col-auto timer">
                     <span>{elapsedDisplay}</span>
                   </div>
 
-                  <div className="col-5">
+                  <div className="col-auto">
                     <AudioProgressBar
-                      className="hola"
+                      className="input-range"
                       duration={duration}
                       currentProgress={currrentProgress}
                       buffered={buffered}
@@ -182,19 +196,21 @@ const LiedView: React.FC<liedView> = ({
           </div>
 
           <div className="bearbeitung col-auto d-flex justify-content-center align-items-center">
-            { level === "admin" ?
-            <button className=" selection" onClick={() => setOpenModal(true)}>
-            <div className="d-flex justify-content-center align-items-center">
-              <MdEdit />
-              </div>
-            </button> : <div/>
-}
+            {level === "admin" ? (
+              <button className=" selection" onClick={() => setOpenModal(true)}>
+                <div className="d-flex justify-content-center align-items-center">
+                  <MdEdit />
+                </div>
+              </button>
+            ) : (
+              <div />
+            )}
             <button
               className=" selection ms-4"
               onClick={() => setOpenModalKommentare(true)}
             >
               <div className="d-flex justify-content-center align-items-center">
-              <BiSolidCommentDetail />
+                <BiSolidCommentDetail />
               </div>
             </button>
           </div>

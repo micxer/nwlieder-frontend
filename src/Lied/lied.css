@@ -72,3 +72,13 @@ html {
    
 }
 
+.input-range {
+
+    width: 50vw;
+}
+
+.input-range-mobile {
+
+    width: 60vw;
+}
+

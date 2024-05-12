@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import EditierenView from "./editierenView";
 import { Hola, KommentareInfo } from "../interfaces";
 import Kommentare from "../Kommentare/kommentare";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
 
 interface editieren {
   openModal: boolean;
@@ -35,6 +37,7 @@ const Editieren: React.FC<editieren> = ({
   const [sended, setSended] = useState("");
   const [disable, setDisable] = useState(true);
   const [kommentare, setKommentare] = useState<KommentareInfo>();
+  const [modalDelete, setModalDelete] = useState(false);
 
   const getSpecificAudio = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -50,6 +53,12 @@ const Editieren: React.FC<editieren> = ({
       .then((data) => {
         setKommentare(data);
       });
+  };
+
+  const openModalDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
+
+    e.preventDefault();
+    setModalDelete(!modalDelete);
   };
 
   const getLied = async () => {
@@ -87,9 +96,8 @@ const Editieren: React.FC<editieren> = ({
     }
   };
 
- 
-
   const deleteKommentar = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    
     const urlKommentareDelete = `http://localhost:5000/kommentare/${e}`;
     const fetchOptionsKommentare = {
       method: "DELETE",
@@ -140,6 +148,7 @@ const Editieren: React.FC<editieren> = ({
     disableFunction();
   }, [updateData]);
 
+  console.log(sended);
   useEffect(() => {
     if (sended === "erfolgreich") {
       setModalAlert(true);
@@ -183,7 +192,25 @@ const Editieren: React.FC<editieren> = ({
         disable={disable}
         kommentare={kommentare}
         deleteKommentar={deleteKommentar}
+        openModalDelete={openModalDelete}
+        modalDelete={modalDelete}
       />
+      <Modal show={modalDelete} onHide={() => setModalDelete(!modalDelete)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Kommentar löschen</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Bist du sicher, dass du diesen Kommentar löschen möchtest!
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={openModalDelete}>
+            Nein
+          </Button>
+          <Button variant="primary" onClick={openModalDelete}>
+            Ja
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };

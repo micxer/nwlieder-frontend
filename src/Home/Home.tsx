@@ -17,8 +17,6 @@ const Home: React.FC<Hola> = () => {
   const param2 = searchParams.get("param2");
   const level2 = location.state?.level;
 
-
-
   const [data, setData] = useState<Hola[]>([]);
   const [specificLied, setSpecificLied] = useState("");
   const [wechselLied, setWechselLied] = useState(false);
@@ -33,10 +31,11 @@ const Home: React.FC<Hola> = () => {
   );
   const [gespeicherteLevel, setGespeicherteLevel] = useLocalStorage(
     "level",
-   "")
+    ""
+  );
 
-   const level = level2 === undefined ?  `${gespeicherteLevel}` : level2 ;
- 
+  const level = level2 === undefined ? `${gespeicherteLevel}` : level2;
+
   const [gespeicherteFilterLied, setGespeicherteFilterLied] = useLocalStorage(
     "filterLied",
     ""
@@ -52,7 +51,6 @@ const Home: React.FC<Hola> = () => {
       const data = await response.json();
 
       return setData(data);
-      
     } catch (error) {
       console.error(error);
     }
@@ -67,12 +65,11 @@ const Home: React.FC<Hola> = () => {
   );
 
   const startFilter = async (e: MouseEvent<HTMLButtonElement>) => {
-     e.preventDefault();
-     setFilterLied(e?.currentTarget?.value);
-     if (filterLied === "" && sucht !== "") {
+    e.preventDefault();
+    setFilterLied(e?.currentTarget?.value);
+    if (filterLied === "" && sucht !== "") {
       setSucht("");
-    } 
-  
+    }
   };
 
   const filter =
@@ -80,16 +77,22 @@ const Home: React.FC<Hola> = () => {
       ? gefilterteElemente
       : gefilterteElemente.filter((data) => data?.etappe === filterLied);
 
+  const infoToLied = {
+    level: level,
+    ids: filter,
+  };
+
+  console.log(infoToLied);
+
   const bringSpecificLied = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     try {
-   
-      await navigate(`/lied/${e.currentTarget.value}`, { state: { level } })
+      await navigate(`/lied/${e.currentTarget.value}`, {
+        state: { infoToLied },
+      });
       await setSpecificLied(e.currentTarget.value.toString());
       await searchParams.delete("param1");
       await setSearchParams(searchParams);
-  
-     
     } catch (error) {
       console.log(`problem bringSpecificLied ${error}`);
     }
@@ -100,7 +103,6 @@ const Home: React.FC<Hola> = () => {
   };
 
   useEffect(() => {
-    
     setGespeicherteSucht(sucht);
     if (location.search) {
       // Eliminar los parámetros de la URL
@@ -118,12 +120,11 @@ const Home: React.FC<Hola> = () => {
 
   useEffect(() => {
     setGespeicherteLevel(level);
-  }, [level])
+  }, [level]);
 
   useEffect(() => {
     setGespeicherteFilterLied(filterLied);
-    
- 
+
     if (location.search) {
       // Eliminar los parámetros de la URL
       const searchParams = new URLSearchParams(location.search);
@@ -136,8 +137,7 @@ const Home: React.FC<Hola> = () => {
       window.history.replaceState({}, "", newUrl);
     }
     fetchData();
-
-  }, [filterLied])
+  }, [filterLied]);
 
   return (
     <div className="container">

@@ -7,12 +7,19 @@ import Kommentare from "../Kommentare/kommentare";
 import MediaQuery from "react-responsive";
 import LiedMobileView from "./liedMobileView";
 
+
 const Lied: React.FC = ({}, props: audioPlayerProps) => {
   const { id } = useParams();
 
  const location = useLocation();
 
- const status = location.state?.level.toString();
+ const status = location.state?.infoToLied?.level.toString();
+ const ids = location.state?.infoToLied?.ids;
+
+ const hola = ids.map((dateien: Hola) => dateien.id);
+console.log(hola)
+
+ const newId = Number(id);
 
   const [data, setData] = useState<Hola[]>([]);
   const { songIndex, songCount } = props;
@@ -25,13 +32,15 @@ const Lied: React.FC = ({}, props: audioPlayerProps) => {
   const [audio, setAudio] = useState("");
   const [openModalEdit, setOpenModalEdit] = useState(false);
   const [openModalKommentare, setOpenModalKommentare] = useState(false);
-  const [aktuelLied, setAktuelLied] = useState<number>(0);
+  const [aktuelLied, setAktuelLied] = useState<number>(newId);
   const [level, setLevel] = useState<string>(status);
   const [levelKommentare, setLevelKommentare] = useState("normal")
 
+  console.log(`aktuelLied ${aktuelLied}`);
+
   const getLied = async () => {
     try {
-      const url = `http://localhost:5000/lied/${id}`;
+      const url = `http://localhost:5000/lied/${aktuelLied}`;
       const response = await fetch(url);
       const dataResponse = await response.json();
 
@@ -75,44 +84,44 @@ const Lied: React.FC = ({}, props: audioPlayerProps) => {
     }
   };
 
-  //         const onPrev = () => {
-  //           try {
-  //                   setAktuelLied((prev) => (prev -1) % data.length)
-  //             audioRef.current?.pause();
-  //      const timeout = setTimeout(() => {
-  //       if(audioRef) {
-  //        audioRef.current?.play();
+          const onPrev = () => {
+            try {
+                    setAktuelLied((prev) => (prev -1) % hola.length)
+              audioRef.current?.pause();
+       const timeout = setTimeout(() => {
+        if(audioRef) {
+         audioRef.current?.play();
 
-  //       }
-  //      }, 500);
-  //      return () => {
-  //        clearTimeout(timeout);
-  //      };
-  //           }
-  //           catch (error) {
-  //             console.log(`onNext ${error}`)
-  //           }
+        }
+       }, 500);
+       return () => {
+         clearTimeout(timeout);
+       };
+            }
+            catch (error) {
+              console.log(`onNext ${error}`)
+            }
 
-  //         }
-  //         const onNext = async () => {
-  //           try {
-  //           setAktuelLied((prev) => (prev +1) % data.length)
-  //           audioRef.current?.pause();
-  //    const timeout = setTimeout(() => {
-  //     if(audioRef) {
-  //      audioRef.current?.play();
+          }
+          const onNext = async () => {
+            try {
+            setAktuelLied((prev) => (prev +1) % hola.length)
+            audioRef.current?.pause();
+     const timeout = setTimeout(() => {
+      if(audioRef) {
+       audioRef.current?.play();
 
-  //     }
-  //    }, 500);
-  //    return () => {
-  //      clearTimeout(timeout);
-  //    };
-  //         }
-  //         catch (error) {
-  //           console.log(`onNext ${error}`)
-  //         }
+      }
+     }, 500);
+     return () => {
+       clearTimeout(timeout);
+     };
+          }
+          catch (error) {
+            console.log(`onNext ${error}`)
+          }
 
-  //         }
+          }
 
   const audioRef = React.useRef<HTMLAudioElement>(null);
 
@@ -173,6 +182,8 @@ const Lied: React.FC = ({}, props: audioPlayerProps) => {
         setAudio={setAudio}
         setOpenModal={setOpenModalEdit}
         setOpenModalKommentare={setOpenModalKommentare}
+        onPrev={onPrev}
+        onNext={onNext}
       />
 </MediaQuery>
 <MediaQuery maxWidth={1224}>
