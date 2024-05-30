@@ -56,7 +56,6 @@ const Editieren: React.FC<editieren> = ({
   };
 
   const openModalDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
-
     e.preventDefault();
     setModalDelete(!modalDelete);
   };
@@ -97,7 +96,6 @@ const Editieren: React.FC<editieren> = ({
   };
 
   const deleteKommentar = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    
     const urlKommentareDelete = `http://localhost:5000/kommentare/${e}`;
     const fetchOptionsKommentare = {
       method: "DELETE",
@@ -148,7 +146,6 @@ const Editieren: React.FC<editieren> = ({
     disableFunction();
   }, [updateData]);
 
-  console.log(sended);
   useEffect(() => {
     if (sended === "erfolgreich") {
       setModalAlert(true);
@@ -167,13 +164,15 @@ const Editieren: React.FC<editieren> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
+  const amam = id === undefined ? 0 : parseInt(id);
+
   return (
     <div>
       <Kommentare
         openModal={openModalKommentare}
         setOpenModal={setOpenModalKommentare}
         data={data}
-        aktuelLied={aktuelLied}
+        aktuelLied={amam}
         level={level}
         specificAudio={specificAudio}
       />
@@ -195,7 +194,11 @@ const Editieren: React.FC<editieren> = ({
         openModalDelete={openModalDelete}
         modalDelete={modalDelete}
       />
-      <Modal show={modalDelete} onHide={() => setModalDelete(!modalDelete)} centered>
+      <Modal
+        show={modalDelete}
+        onHide={() => setModalDelete(!modalDelete)}
+        centered
+      >
         <Modal.Header closeButton>
           <Modal.Title>Kommentar löschen</Modal.Title>
         </Modal.Header>

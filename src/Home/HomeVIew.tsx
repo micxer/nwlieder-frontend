@@ -3,9 +3,13 @@ import "./Home.css";
 import { Hola } from "../interfaces";
 import { Link } from "react-router-dom";
 import { FaPlus } from "react-icons/fa6";
+import { MdOutlineStarOutline, MdOutlineStar } from "react-icons/md";
+import { FaStar } from "react-icons/fa";
+import { getValue } from "@testing-library/user-event/dist/utils";
 
 interface Info {
   hola: (e: MouseEvent<HTMLButtonElement>) => Promise<void>;
+
   data: Hola[];
   suchen: (e: React.FormEvent<HTMLFormElement>) => void;
   setsucht: React.Dispatch<React.SetStateAction<string>>;
@@ -14,6 +18,9 @@ interface Info {
   filterLied?: string;
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
   level: string | null;
+  getFavorite: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  favoriten: number[];
+  
 }
 
 const HomeView: React.FC<Info> = ({
@@ -25,8 +32,12 @@ const HomeView: React.FC<Info> = ({
   startFilter,
   filterLied,
   setOpenModal,
-  level
+  level,
+  getFavorite,
+  favoriten,
+
 }) => {
+
   return (
     <div className=" containter">
       <div className="text-center">
@@ -101,7 +112,15 @@ const HomeView: React.FC<Info> = ({
           onClick={(e) => startFilter(e)}
           style={{backgroundColor: filterLied === "Wahl" ? "#C2EDAD" : "#E3F4DB", color: "666666"}}
         >
-          Wahl
+          Auserwahlung
+        </button>
+        <button
+          className="btn col-auto ms-3 btn rounded-pill"
+          value={"Favoriten"}
+          onClick={(e) => startFilter(e)}
+          style={{backgroundColor: filterLied === "Wahl" ? "#C2EDAD" : "#E3F4DB", color: "666666"}}
+        >
+          Favoriten
         </button>
       </div>
       <div>
@@ -109,7 +128,7 @@ const HomeView: React.FC<Info> = ({
           {data.map((props, index, array) => (
             <div className="" key={index}>
               <ul className="list-group col ms-5 me-5">
-                <button onClick={hola} value={props.id} style={{all: "unset"}}>
+             
                 <li
                   
                   value={index}
@@ -123,11 +142,28 @@ const HomeView: React.FC<Info> = ({
                   }}
                   className=" list-group-item mt-2 shadow-sm rounded-pill"
                 >
-                
+                <div className="d-flex justify-content-between">
+                <button
+                 onClick={hola}
+                 value={props.id} style={{all: "unset"}}>
                     <div className="text">{props.name}</div>
+                    </button>
+                    <button value={props.id} style={{all: "unset"}} onClick={e => getFavorite(e)} >
+                 
+                 {
+                     
+
                 
+                  props?.id !== undefined && favoriten.includes(props.id) ? 
+                  <MdOutlineStar size={30} color="#D94141"/> :  <MdOutlineStarOutline size={30} color="#D94141"/>
+                 }
+                   
+                    </button>
+                    
+                    </div>
                 </li>
-                </button>
+              
+                
               </ul>
             </div>
           ))}

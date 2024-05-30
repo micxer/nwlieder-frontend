@@ -22,10 +22,21 @@ const Home: React.FC<Hola> = () => {
   const [wechselLied, setWechselLied] = useState(false);
   const [aktuelLied, setAktuelLied] = useState<number>(0);
   const [openModal, setOpenModal] = useState(false);
+  const [ gespeicherteFavoriten, setGespeicherteFavoriten] = useLocalStorage<number[]>(
+    "favoriten",
+    
+  );
+  const [favoriten, setFavoriten] = useState<number[]>(
+      gespeicherteFavoriten === undefined ? [] : gespeicherteFavoriten
+  );
+
+  const [hello, setHello] = useState()
   const [gespeicherteSucht, setGespeicherteSucht] = useLocalStorage(
     "sucht",
     ""
   );
+
+
   const [sucht, setSucht] = useState(
     param1 === null ? `${gespeicherteSucht}` : `${param1}`
   );
@@ -60,8 +71,31 @@ const Home: React.FC<Hola> = () => {
     e.preventDefault();
   };
 
-  const gefilterteElemente = data.filter((data) =>
-    data.name?.toLowerCase().includes(sucht?.toLowerCase())
+  const deleteNumber = (id: number) => {
+    setFavoriten((prevNumbers) => prevNumbers.filter((num) => num !== id));
+  };
+ 
+  const getFavorite = (e: React.MouseEvent<HTMLButtonElement>) => {
+  
+    e.preventDefault();
+    setFavoriten((prevFavoriten) => [...prevFavoriten, anders] )
+
+    const anders = parseInt( e.currentTarget.value);
+
+    for (var i = 0; i < favoriten.length; i++)
+     
+    if(anders === favoriten[i]) {
+      deleteNumber(anders)
+  
+    } 
+
+    
+  }
+
+   
+
+  const gefilterteElemente = data?.filter((data) =>
+    data?.name?.toLowerCase().includes(sucht?.toLowerCase())
   );
 
   const startFilter = async (e: MouseEvent<HTMLButtonElement>) => {
@@ -74,15 +108,16 @@ const Home: React.FC<Hola> = () => {
 
   const filter =
     filterLied === ""
-      ? gefilterteElemente
+      ? gefilterteElemente 
+      : filterLied === "Favoriten" ? gefilterteElemente.filter((data) =>  favoriten.includes(data?.id === undefined ? 0 : data.id))
       : gefilterteElemente.filter((data) => data?.etappe === filterLied);
+
 
   const infoToLied = {
     level: level,
     ids: filter,
   };
-
-  console.log(infoToLied);
+  
 
   const bringSpecificLied = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -139,6 +174,12 @@ const Home: React.FC<Hola> = () => {
     fetchData();
   }, [filterLied]);
 
+  useEffect(() => {
+ 
+      setGespeicherteFavoriten(favoriten);
+ 
+  }, [favoriten]);
+
   return (
     <div className="container">
       <div className="col">
@@ -154,6 +195,11 @@ const Home: React.FC<Hola> = () => {
             startFilter={startFilter}
             setOpenModal={setOpenModal}
             level={level}
+            getFavorite={getFavorite}
+            favoriten={favoriten}
+          
+            
+            
           />{" "}
         </MediaQuery>
         <MediaQuery maxWidth={1224}>
@@ -167,6 +213,7 @@ const Home: React.FC<Hola> = () => {
             startFilter={startFilter}
             setOpenModal={setOpenModal}
             level={level}
+            
           />
         </MediaQuery>
         <Erschaffen openModal={openModal} setOpenModal={setOpenModal} />

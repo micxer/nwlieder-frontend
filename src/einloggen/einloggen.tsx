@@ -45,7 +45,7 @@ const Einloggen: React.FC = () => {
 
 
           await navigate("/", { state: { normal }  });
-        //    await  navigate("/intro/normal");
+           
         }
 
         else if (nutzer.nutzer === 'admin' && nutzer.password === 'admin') {

@@ -40,7 +40,7 @@ html {
 
 .port {
 
-    font-size: 25px;
+    font-size: 20px;
     font-weight: bold;
 }
 .portMobile {
@@ -79,6 +79,6 @@ html {
 
 .input-range-mobile {
 
-    width: 60vw;
+    width: 80vw;
 }
 

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Logo from "./Logo.jpeg";
+import Logo from "./Bild.jpg";
 import { FaSearch } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import './intro.css';
@@ -37,9 +37,9 @@ console.log(level);
     <div className="col container d-flex justify-content-center align-items-center ">
       <div>
       <div className="text-center">
-        <img src={Logo} style={{ width: "80vh" }} />
+        <img src={Logo} style={{ width: "120vh" }} />
       </div>
-      <div className="text-center">
+      <div className="text-center mt-5">
         <form>
           <div className="col row ">
             <div className="col-11">

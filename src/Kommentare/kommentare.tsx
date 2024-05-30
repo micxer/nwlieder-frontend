@@ -19,30 +19,27 @@ const Kommentare: React.FC<KommentareInterface> = ({
   level,
   specificAudio,
 }) => {
-
-
   const [kommentare, setKommentare] = useState({
-    id_lied: data[aktuelLied]?.id,
+    id_lied: aktuelLied || undefined,
     name: "",
     description: "",
     audio_id: specificAudio,
   });
   const [kommentareData, setKommentareData] = useState<KommentareInfo[]>([]);
 
-
-  const sendKommentar = (e: React.ChangeEvent< HTMLTextAreaElement | HTMLInputElement >) => {
+  const sendKommentar = (
+    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => {
     const { name, value } = e.target;
     e.preventDefault();
- 
+
     setKommentare((prevKommentare) => ({
       ...prevKommentare,
       [name]: value,
-      id_lied: data[aktuelLied]?.id,
+      id_lied: aktuelLied,
       audio_id: specificAudio,
-    })); 
+    }));
   };
-
-
 
   const url = `http://localhost:5000/kommentare`;
   const fetchOptions = {
@@ -53,9 +50,7 @@ const Kommentare: React.FC<KommentareInterface> = ({
     body: JSON.stringify(kommentare), // Convierte los datos a una cadena JSON
   };
 
-  console.log(data[aktuelLied]?.id)
-
-  const urlGet = `http://localhost:5000/kommentare/${data[aktuelLied]?.id}`;
+  const urlGet = `http://localhost:5000/kommentare/${aktuelLied}`;
 
   const updateDataFuntion = async () => {
     await fetch(url, fetchOptions)
@@ -66,9 +61,7 @@ const Kommentare: React.FC<KommentareInterface> = ({
           return response.json();
         }
       })
-      .then((data) => {
-        console.log(data.rows);
-      })
+      .then((data) => {})
       .catch((error) => {
         console.error("ha habido un gran problema");
       });
@@ -76,21 +69,18 @@ const Kommentare: React.FC<KommentareInterface> = ({
 
   const getKommentare = async () => {
     try {
-    await fetch(urlGet)
-      .then((response) => response.json())
-      .then((information) => {
-      if(level ===  "normal" ) {
-          return setKommentareData(information);
+      await fetch(urlGet)
+        .then((response) => response.json())
+        .then((information) => {
+          if (level === "normal") {
+            return setKommentareData(information);
+          }
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-      }
-
-      });
-  } catch (error) {
-    console.log(error)
-  } };
-
-
- 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     await event.preventDefault();
     await updateDataFuntion();
@@ -99,7 +89,7 @@ const Kommentare: React.FC<KommentareInterface> = ({
 
   useEffect(() => {
     getKommentare();
-  }, [data[aktuelLied]?.id !== undefined]);
+  }, [aktuelLied]);
 
   return (
     <ReactView

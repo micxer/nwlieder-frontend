@@ -15,6 +15,8 @@ import { MdEdit } from "react-icons/md";
 import { TbReload } from "react-icons/tb";
 import { BiSolidCommentDetail } from "react-icons/bi";
 import Marquee from "react-fast-marquee";
+import { MdForward10, MdReplay10  } from "react-icons/md";
+import { TbPlayerTrackNextFilled, TbPlayerTrackPrevFilled } from "react-icons/tb";
 
 interface liedView {
   data: Hola[];
@@ -34,6 +36,11 @@ interface liedView {
   songCount: number;
   durationDisplay: string;
   elapsedDisplay: string;
+  vorgehen: number;
+  functionTenMinus: () => void;
+  functionTenMore: () => void;
+  onPrev: () => (() => void) | undefined;
+  onNext: () => Promise<(() => void) | undefined>;
   audio: string;
   setAudio: React.Dispatch<React.SetStateAction<string>>;
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -62,6 +69,11 @@ const LiedMobileView: React.FC<liedView> = ({
   setAudio,
   setOpenModal,
   setOpenModalKommentare,
+  functionTenMinus,
+  functionTenMore,
+  onPrev,
+  onNext,
+  vorgehen
 }) => {
   const datei = data[0];
 
@@ -70,11 +82,21 @@ const LiedMobileView: React.FC<liedView> = ({
     setIsPlaying(false);
   };
 
+  const hola = datei?.audios?.length === undefined ? 0 : datei.audios.length;
+
+
+
   useEffect(() => {
     if (datei?.audios?.length === 1) {
       setAudio(datei?.audios[0]);
+
     }
-  });
+    else if (hola > 1 ) {
+      audioRef?.current?.pause()
+      setAudio("");
+      
+    }
+  }, [datei?.id]);
 
   return (
     <div>
@@ -111,7 +133,7 @@ const LiedMobileView: React.FC<liedView> = ({
                           className="portMobile  "
                           style={{ alignItems: "center" }}
                         >
-                          {datei?.name?.length && datei?.name?.length > 15 ? (
+                          {datei?.name?.length && datei?.name?.length > 30 ? (
                             <Marquee speed={30}>
                               {datei?.name}&nbsp;&nbsp;&nbsp;
                             </Marquee>
@@ -184,6 +206,7 @@ const LiedMobileView: React.FC<liedView> = ({
               ) : (
                 <div className="col">
                   <div className="d-flex justify-content-center">
+              
                     <div className="col-auto">
                       <AudioProgressBar
                         className="input-range-mobile"
@@ -200,14 +223,21 @@ const LiedMobileView: React.FC<liedView> = ({
                     </div>
                   </div>
                   <div className="d-flex justify-content-around text-center">
-                    <div className="col timer">
+                    <div className="col timer me-5">
                       <span>{elapsedDisplay}</span>
                     </div>
-                    <div className="timer col">
+                    <div className="timer col ms-5">
                       <span>{durationDisplay}</span>
                     </div>
                   </div>
                   <div className="text-center ">
+                  <button style={{ all: "unset" }}>
+                    <TbPlayerTrackPrevFilled onClick={onPrev} className="icon me-3"  color="#ed1e24" size={30} />
+                  </button>
+                  <button style={{all: "unset"}}>
+                    <MdReplay10 onClick={functionTenMinus} className="icon me-3"  color="#ed1e24" size={30}/>
+                  </button>
+                 
                     <button
                       style={{ all: "unset" }}
                       disabled={!isReady}
@@ -221,6 +251,15 @@ const LiedMobileView: React.FC<liedView> = ({
                         <FaCirclePause color="#ed1e24" size={50} />
                       )}
                     </button>
+                    <button style={{all: "unset"}}>
+                    <MdForward10 onClick={functionTenMore} className="icon ms-3"  color="#ed1e24" size={30}/>
+                  </button>
+                  <button
+                    style={{ all: "unset" }}
+                    disabled={songIndex === songCount - 1}
+                  >
+                    <TbPlayerTrackNextFilled onClick={onNext} className="icon ms-3"  color="#ed1e24" size={30} />
+                  </button>
                   </div>
                 </div>
               )}
@@ -239,6 +278,7 @@ const LiedMobileView: React.FC<liedView> = ({
             onPlaying={() => setIsPlaying(true)}
             onPause={() => setIsPlaying(false)}
             src={audio}
+
           ></audio>
         </div>
       </div>

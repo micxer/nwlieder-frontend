@@ -7,19 +7,19 @@ import Kommentare from "../Kommentare/kommentare";
 import MediaQuery from "react-responsive";
 import LiedMobileView from "./liedMobileView";
 
-
 const Lied: React.FC = ({}, props: audioPlayerProps) => {
   const { id } = useParams();
 
- const location = useLocation();
+  const location = useLocation();
 
- const status = location.state?.infoToLied?.level.toString();
- const ids = location.state?.infoToLied?.ids;
+  const status = location.state?.infoToLied?.level.toString();
+  const ids = location.state?.infoToLied?.ids;
 
- const hola = ids.map((dateien: Hola) => dateien.id);
-console.log(hola)
+  const hola = ids.map((dateien: Hola) => dateien.id);
 
- const newId = Number(id);
+  const newId = Number(id);
+
+  const take = hola.indexOf(newId);
 
   const [data, setData] = useState<Hola[]>([]);
   const { songIndex, songCount } = props;
@@ -32,15 +32,25 @@ console.log(hola)
   const [audio, setAudio] = useState("");
   const [openModalEdit, setOpenModalEdit] = useState(false);
   const [openModalKommentare, setOpenModalKommentare] = useState(false);
-  const [aktuelLied, setAktuelLied] = useState<number>(newId);
+  const [aktuelLied, setAktuelLied] = useState<number>(take);
   const [level, setLevel] = useState<string>(status);
-  const [levelKommentare, setLevelKommentare] = useState("normal")
+  const [levelKommentare, setLevelKommentare] = useState("normal");
 
-  console.log(`aktuelLied ${aktuelLied}`);
+  const [vorgehen, setVorgehen] = useState(0);
+
+  const UsehandleButtonClick = () => {
+    setVorgehen(1);
+  };
+
+  const functionTenMinus = async () => {
+    await setVorgehen(-1);
+  };
+
+  const tosearch = hola[aktuelLied];
 
   const getLied = async () => {
     try {
-      const url = `http://localhost:5000/lied/${aktuelLied}`;
+      const url = `http://localhost:5000/lied/${tosearch}`;
       const response = await fetch(url);
       const dataResponse = await response.json();
 
@@ -84,44 +94,40 @@ console.log(hola)
     }
   };
 
-          const onPrev = () => {
-            try {
-                    setAktuelLied((prev) => (prev -1) % hola.length)
-              audioRef.current?.pause();
-       const timeout = setTimeout(() => {
-        if(audioRef) {
-         audioRef.current?.play();
+  const onPrev = () => {
+    try {
+      setAktuelLied((prev) => (prev - 1) % hola.length);
 
+      audioRef.current?.pause();
+      const timeout = setTimeout(() => {
+        if (audioRef) {
+          audioRef.current?.play();
         }
-       }, 500);
-       return () => {
-         clearTimeout(timeout);
-       };
-            }
-            catch (error) {
-              console.log(`onNext ${error}`)
-            }
+      }, 500);
+      return () => {
+        clearTimeout(timeout);
+      };
+    } catch (error) {
+      console.log(`onPrev ${error}`);
+    }
+  };
+  const onNext = async () => {
+    try {
+      setAktuelLied((prev) => (prev + 1) % hola.length);
 
-          }
-          const onNext = async () => {
-            try {
-            setAktuelLied((prev) => (prev +1) % hola.length)
-            audioRef.current?.pause();
-     const timeout = setTimeout(() => {
-      if(audioRef) {
-       audioRef.current?.play();
-
-      }
-     }, 500);
-     return () => {
-       clearTimeout(timeout);
-     };
-          }
-          catch (error) {
-            console.log(`onNext ${error}`)
-          }
-
-          }
+      audioRef.current?.pause();
+      const timeout = setTimeout(() => {
+        if (audioRef) {
+          //  audioRef.current?.play();
+        }
+      }, 500);
+      return () => {
+        clearTimeout(timeout);
+      };
+    } catch (error) {
+      console.log(`onNext ${error}`);
+    }
+  };
 
   const audioRef = React.useRef<HTMLAudioElement>(null);
 
@@ -137,8 +143,13 @@ console.log(hola)
 
   useEffect(() => {
     getLied();
+  }, [tosearch]);
+
+  useEffect(() => {
+    getLied();
 
     audioRef.current?.pause();
+
     const timeout = setTimeout(() => {
       if (audioRef && isPlaying) {
         audioRef.current?.play();
@@ -156,60 +167,83 @@ console.log(hola)
   //   } else audioRef.current?.play();
   // }, [audio]);
 
+  useEffect(() => {
+    if (vorgehen === 1) {
+      if (audioRef.current) {
+        audioRef.current.currentTime = audioRef.current.currentTime + 10;
+      }
+
+      setTimeout(() => setVorgehen(0), 500);
+    } else if (vorgehen === -1) {
+      if (audioRef.current) {
+        audioRef.current.currentTime = audioRef.current.currentTime - 10;
+      }
+      setTimeout(() => setVorgehen(0), 500);
+    }
+  }, [vorgehen]);
+
   return (
     <div>
       <MediaQuery minWidth={1224}>
-      <LiedView
-        level={level}
-        data={data}
-        setDuration={setDuration}
-        audioRef={audioRef}
-        setIsReady={setIsReady}
-        setIsPlaying={setIsPlaying}
-        isReady={isReady}
-        togglePlayPause={togglePlayPause}
-        isPlaying={isPlaying}
-        setCurrrentProgress={setCurrrentProgress}
-        handleBufferProgress={handleBufferProgress}
-        duration={duration}
-        currrentProgress={currrentProgress}
-        buffered={buffered}
-        songIndex={songIndex}
-        songCount={songCount}
-        durationDisplay={durationDisplay}
-        elapsedDisplay={elapsedDisplay}
-        audio={audio}
-        setAudio={setAudio}
-        setOpenModal={setOpenModalEdit}
-        setOpenModalKommentare={setOpenModalKommentare}
-        onPrev={onPrev}
-        onNext={onNext}
-      />
-</MediaQuery>
-<MediaQuery maxWidth={1224}>
-<LiedMobileView
-        data={data}
-        setDuration={setDuration}
-        audioRef={audioRef}
-        setIsReady={setIsReady}
-        setIsPlaying={setIsPlaying}
-        isReady={isReady}
-        togglePlayPause={togglePlayPause}
-        isPlaying={isPlaying}
-        setCurrrentProgress={setCurrrentProgress}
-        handleBufferProgress={handleBufferProgress}
-        duration={duration}
-        currrentProgress={currrentProgress}
-        buffered={buffered}
-        songIndex={songIndex}
-        songCount={songCount}
-        durationDisplay={durationDisplay}
-        elapsedDisplay={elapsedDisplay}
-        audio={audio}
-        setAudio={setAudio}
-        setOpenModal={setOpenModalEdit}
-        setOpenModalKommentare={setOpenModalKommentare}
-      />
+        <LiedView
+          level={level}
+          data={data}
+          setDuration={setDuration}
+          audioRef={audioRef}
+          setIsReady={setIsReady}
+          setIsPlaying={setIsPlaying}
+          isReady={isReady}
+          togglePlayPause={togglePlayPause}
+          isPlaying={isPlaying}
+          setCurrrentProgress={setCurrrentProgress}
+          handleBufferProgress={handleBufferProgress}
+          duration={duration}
+          currrentProgress={currrentProgress}
+          buffered={buffered}
+          songIndex={songIndex}
+          songCount={songCount}
+          durationDisplay={durationDisplay}
+          elapsedDisplay={elapsedDisplay}
+          audio={audio}
+          setAudio={setAudio}
+          setOpenModal={setOpenModalEdit}
+          setOpenModalKommentare={setOpenModalKommentare}
+          onPrev={onPrev}
+          functionTenMinus={functionTenMinus}
+          functionTenMore={UsehandleButtonClick}
+          onNext={onNext}
+          vorgehen={vorgehen}
+        />
+      </MediaQuery>
+      <MediaQuery maxWidth={1224}>
+        <LiedMobileView
+          data={data}
+          setDuration={setDuration}
+          audioRef={audioRef}
+          setIsReady={setIsReady}
+          setIsPlaying={setIsPlaying}
+          isReady={isReady}
+          togglePlayPause={togglePlayPause}
+          isPlaying={isPlaying}
+          setCurrrentProgress={setCurrrentProgress}
+          handleBufferProgress={handleBufferProgress}
+          duration={duration}
+          currrentProgress={currrentProgress}
+          buffered={buffered}
+          songIndex={songIndex}
+          songCount={songCount}
+          durationDisplay={durationDisplay}
+          elapsedDisplay={elapsedDisplay}
+          audio={audio}
+          setAudio={setAudio}
+          setOpenModal={setOpenModalEdit}
+          setOpenModalKommentare={setOpenModalKommentare}
+          onPrev={onPrev}
+          functionTenMinus={functionTenMinus}
+          functionTenMore={UsehandleButtonClick}
+          onNext={onNext}
+          vorgehen={vorgehen}
+        />
       </MediaQuery>
 
       <Editieren
@@ -217,14 +251,14 @@ console.log(hola)
         setOpenModal={setOpenModalEdit}
         aktuelLied={aktuelLied}
         data={data}
-        id={id?.toString()}
+        id={tosearch?.toString()}
         setAktuelLied={setAktuelLied}
       />
 
       <Kommentare
         openModal={openModalKommentare}
         setOpenModal={setOpenModalKommentare}
-        aktuelLied={aktuelLied}
+        aktuelLied={parseInt(tosearch)}
         data={data}
         level={levelKommentare}
         specificAudio={audio}
