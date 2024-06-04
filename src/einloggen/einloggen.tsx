@@ -44,13 +44,13 @@ const Einloggen: React.FC = () => {
         if(nutzer.nutzer === 'pokemon' && nutzer.password === 'pokemon') {
 
 
-          await navigate("/", { state: { normal }  });
+          await navigate("/start", { state: { normal }  });
            
         }
 
         else if (nutzer.nutzer === 'admin' && nutzer.password === 'admin') {
 
-            await navigate("/", {state: { admin }});
+            await navigate("/start", {state: { admin }});
         }
     }
 

@@ -96,7 +96,11 @@ const Lied: React.FC = ({}, props: audioPlayerProps) => {
 
   const onPrev = () => {
     try {
-      setAktuelLied((prev) => (prev - 1) % hola.length);
+      if (aktuelLied === 0) {
+        setAktuelLied(aktuelLied);
+      } else {
+        setAktuelLied((prev) => (prev - 1) % hola.length);
+      }
 
       audioRef.current?.pause();
       const timeout = setTimeout(() => {
@@ -111,6 +115,8 @@ const Lied: React.FC = ({}, props: audioPlayerProps) => {
       console.log(`onPrev ${error}`);
     }
   };
+
+
   const onNext = async () => {
     try {
       setAktuelLied((prev) => (prev + 1) % hola.length);

@@ -20,7 +20,6 @@ interface Info {
   level: string | null;
   getFavorite: (e: React.MouseEvent<HTMLButtonElement>) => void;
   favoriten: number[];
-  
 }
 
 const HomeView: React.FC<Info> = ({
@@ -35,9 +34,7 @@ const HomeView: React.FC<Info> = ({
   level,
   getFavorite,
   favoriten,
-
 }) => {
-
   return (
     <div className=" containter">
       <div className="text-center">
@@ -110,7 +107,10 @@ const HomeView: React.FC<Info> = ({
           className="btn col-auto ms-3 btn rounded-pill"
           value={"Wahl"}
           onClick={(e) => startFilter(e)}
-          style={{backgroundColor: filterLied === "Wahl" ? "#C2EDAD" : "#E3F4DB", color: "666666"}}
+          style={{
+            backgroundColor: filterLied === "Wahl" ? "#C2EDAD" : "#E3F4DB",
+            color: "666666",
+          }}
         >
           Auserwahlung
         </button>
@@ -118,7 +118,10 @@ const HomeView: React.FC<Info> = ({
           className="btn col-auto ms-3 btn rounded-pill"
           value={"Favoriten"}
           onClick={(e) => startFilter(e)}
-          style={{backgroundColor: filterLied === "Wahl" ? "#C2EDAD" : "#E3F4DB", color: "666666"}}
+          style={{
+            backgroundColor: filterLied === "Wahl" ? "#C2EDAD" : "#E3F4DB",
+            color: "666666",
+          }}
         >
           Favoriten
         </button>
@@ -128,9 +131,7 @@ const HomeView: React.FC<Info> = ({
           {data.map((props, index, array) => (
             <div className="" key={index}>
               <ul className="list-group col ms-5 me-5">
-             
                 <li
-                  
                   value={index}
                   style={{
                     backgroundColor:
@@ -142,44 +143,44 @@ const HomeView: React.FC<Info> = ({
                   }}
                   className=" list-group-item mt-2 shadow-sm rounded-pill"
                 >
-                <div className="d-flex justify-content-between">
-                <button
-                 onClick={hola}
-                 value={props.id} style={{all: "unset"}}>
-                    <div className="text">{props.name}</div>
+                  <div className="d-flex justify-content-between">
+                    <button
+                      onClick={hola}
+                      value={props.id}
+                      style={{ all: "unset" }}
+                    >
+                      <div className="text">{props.name}</div>
                     </button>
-                    <button value={props.id} style={{all: "unset"}} onClick={e => getFavorite(e)} >
-                 
-                 {
-                     
-
-                
-                  props?.id !== undefined && favoriten.includes(props.id) ? 
-                  <MdOutlineStar size={30} color="#D94141"/> :  <MdOutlineStarOutline size={30} color="#D94141"/>
-                 }
-                   
+                    <button
+                      value={props.id}
+                      style={{ all: "unset" }}
+                      onClick={(e) => getFavorite(e)}
+                    >
+                      {props?.id !== undefined &&
+                      favoriten.includes(props.id) ? (
+                        <MdOutlineStar size={30} color="#D94141" />
+                      ) : (
+                        <MdOutlineStarOutline size={30} color="#D94141" />
+                      )}
                     </button>
-                    
-                    </div>
+                  </div>
                 </li>
-              
-                
               </ul>
             </div>
           ))}
         </div>
       </div>
-      {
-        level === "admin" ?  <div className="position">
-        <button className="create" onClick={() => setOpenModal(true)}>
-          <div className="d-flex align-items-center justify-content-center">
-          <FaPlus />
-          </div>
-        </button>
-      </div>  : <div/>
-    
-     
-        }
+      {level === "admin" ? (
+        <div className="position">
+          <button className="create" onClick={() => setOpenModal(true)}>
+            <div className="d-flex align-items-center justify-content-center">
+              <FaPlus />
+            </div>
+          </button>
+        </div>
+      ) : (
+        <div />
+      )}
     </div>
   );
 };
