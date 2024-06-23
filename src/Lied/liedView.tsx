@@ -1,51 +1,18 @@
 import React, { useEffect } from "react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
-import { Hola } from "../interfaces";
+import { LiedViewInterface } from "../interfaces";
 import "./lied.css";
-import ReactPlayer from "react-player";
 import { FaSpinner } from "react-icons/fa";
 import { FaCirclePause, FaCirclePlay } from "react-icons/fa6";
 import AudioProgressBar from "./progressBar";
 import { MdEdit } from "react-icons/md";
-import { TbReload } from "react-icons/tb";
 import { BiSolidCommentDetail } from "react-icons/bi";
 import { TbPlayerTrackNextFilled, TbPlayerTrackPrevFilled } from "react-icons/tb";
 import Marquee from "react-fast-marquee";
 import { MdForward10, MdReplay10  } from "react-icons/md";
 
 
-
-interface liedView {
-  data: Hola[];
-  setDuration: React.Dispatch<React.SetStateAction<number>>;
-  audioRef: React.RefObject<HTMLAudioElement>;
-  setIsReady: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
-  isReady: boolean;
-  togglePlayPause: () => void;
-  isPlaying: boolean;
-  setCurrrentProgress: React.Dispatch<React.SetStateAction<number>>;
-  handleBufferProgress: React.ReactEventHandler<HTMLAudioElement>;
-  duration: number;
-  vorgehen: number;
-  currrentProgress: number;
-  buffered: number;
-  songIndex: number;
-  songCount: number;
-  durationDisplay: string;
-  elapsedDisplay: string;
-  audio: string;
-  functionTenMinus: () => void;
-  functionTenMore: () => void;
-  setAudio: React.Dispatch<React.SetStateAction<string>>;
-  setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
-  setOpenModalKommentare: React.Dispatch<React.SetStateAction<boolean>>;
-  level: string;
-  onPrev: () => (() => void) | undefined;
-  onNext: () => Promise<(() => void) | undefined>;
-}
-
-const LiedView: React.FC<liedView> = ({
+const LiedView: React.FC<LiedViewInterface> = ({
   data,
   setDuration,
   audioRef,
@@ -99,7 +66,7 @@ const LiedView: React.FC<liedView> = ({
     setIsPlaying(false);
   };
 
-  console.log(`audios ${datei?.audios?.length}`)
+
 
   return (
     <div>
@@ -128,7 +95,7 @@ const LiedView: React.FC<liedView> = ({
            
               
                 <div className=" d-flex align-items-center ">
-                  <p >
+                  <p>
                     <p className="port mb-0">
                     {datei?.name?.length && datei?.name?.length > 30 ? (
                             <Marquee speed={30}>

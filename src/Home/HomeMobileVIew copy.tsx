@@ -6,6 +6,8 @@ import { Hola } from "../interfaces";
 import { setSelectionRange } from "@testing-library/user-event/dist/utils";
 import { Link } from "react-router-dom";
 import { FaPlus } from "react-icons/fa6";
+import { MdOutlineStarOutline, MdOutlineStar } from "react-icons/md";
+import { start } from "repl";
 
 interface Info {
   hola: (e: MouseEvent<HTMLButtonElement>) => Promise<void>;
@@ -17,6 +19,8 @@ interface Info {
   filterLied?: string;
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
   level: string | null;
+  getFavorite: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  favoriten: number[];
 }
 
 const HomeMobileView: React.FC<Info> = ({
@@ -29,6 +33,8 @@ const HomeMobileView: React.FC<Info> = ({
   filterLied,
   setOpenModal,
   level,
+  getFavorite,
+  favoriten
 }) => {
   return (
     <div className=" containter">
@@ -50,7 +56,7 @@ const HomeMobileView: React.FC<Info> = ({
         </div>
         <div className="scrollable-buttons">
           <button
-            className="btn  col-auto ms-2  rounded-pill"
+            className="btn col-auto ms-2  rounded-pill"
             value={""}
             onClick={(e) => startFilter(e)}
             style={{
@@ -109,6 +115,17 @@ const HomeMobileView: React.FC<Info> = ({
           >
             Wahl
           </button>
+          <button
+            className="btn col-auto ms-2  rounded-pill"
+            value={"Favoriten"}
+            onClick={(e) => startFilter(e)}
+            style={{
+              backgroundColor: filterLied === "Favoriten" ? "#E8C917" : "#EEDB73",
+              color: "#535353",
+            }}
+          >
+            Favoriten
+          </button>
         </div>
       </div>
       <div>
@@ -116,11 +133,6 @@ const HomeMobileView: React.FC<Info> = ({
           {data.map((props, index, array) => (
             <div className="" key={index}>
               <ul className="list-group col ms-2 me-2">
-                <button
-                  onClick={hola}
-                  style={{ all: "unset" }}
-                  value={props.id}
-                >
                   <li
                     value={index}
                     style={{
@@ -133,9 +145,27 @@ const HomeMobileView: React.FC<Info> = ({
                     }}
                     className=" list-group-item mt-2 shadow-sm rounded-pill"
                   >
-                    <div className="text">{props.name}</div>
+                    <div className="d-flex justify-content-between">
+                      <div>
+                      <button value={props.id} onClick={hola} style={{all: "unset"}}>
+                      <div className="text">{props.name}</div>
+                      </button>
+                      </div>
+                   
+                    <div>
+                      <button value={props.id} style={{all: "unset"}} onClick={getFavorite}>
+                        {
+                          props.id !== undefined &&
+                          favoriten.includes(props.id) ?  <MdOutlineStar size={23} color="#D94141"/> : <MdOutlineStarOutline size={23} color="#D94141"/>
+                        }
+                       
+                      </button>
+                      </div>
+
+                    </div>
+                   
                   </li>
-                </button>
+               
               </ul>
             </div>
           ))}

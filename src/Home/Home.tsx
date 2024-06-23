@@ -172,6 +172,9 @@ const Home: React.FC<Hola> = () => {
 
   return (
     <div className="container">
+      {
+        level === "" ? <div/> :
+     
       <div className="col">
         {" "}
         <MediaQuery minWidth={1224}>
@@ -200,10 +203,14 @@ const Home: React.FC<Hola> = () => {
             startFilter={startFilter}
             setOpenModal={setOpenModal}
             level={level}
+            getFavorite={getFavorite}
+            favoriten={favoriten}
           />
         </MediaQuery>
         <Erschaffen openModal={openModal} setOpenModal={setOpenModal} />
       </div>
+
+    }
     </div>
   );
 };

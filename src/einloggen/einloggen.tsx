@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import EinloggenView from './einloggenView';
-import { Link, To, useNavigate,  } from "react-router-dom";
+import {useNavigate,  } from "react-router-dom";
 
 
 
@@ -15,10 +15,6 @@ const Einloggen: React.FC = () => {
         password: ''
     })
 
-    const [level, setLevel] = useState('')
-
- 
-    const param = level;
     const einmelden = (e: React.ChangeEvent<HTMLInputElement>) => {
 
         const {name, value} = e.target;
@@ -41,7 +37,7 @@ const Einloggen: React.FC = () => {
         const normal = "normal";
         const admin = "admin";
         setLocalStorageItem(nutzer.nutzer, nutzer.password);
-        if(nutzer.nutzer === 'pokemon' && nutzer.password === 'pokemon') {
+        if(nutzer.nutzer === 'usuario' && nutzer.password === 'Maranatha') {
 
 
           await navigate("/start", { state: { normal }  });

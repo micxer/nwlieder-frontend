@@ -6,7 +6,7 @@ import { BiSolidCommentDetail } from "react-icons/bi";
 import ModalAlert from "../modal/modal";
 import { MdDelete } from "react-icons/md";
 import Marquee from "react-fast-marquee";
-import Button from 'react-bootstrap/Button';
+import Button from "react-bootstrap/Button";
 
 interface editierenView {
   openModal: boolean;
@@ -16,13 +16,13 @@ interface editierenView {
   id?: string;
   modalAlert: boolean;
   openModalDelete: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  deleteKommentar: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
   kommentare: KommentareInfo | undefined;
   getSpecificAudio: (e: React.MouseEvent<HTMLButtonElement>) => void;
   sendInfo: (e: React.FormEvent<HTMLFormElement>) => void;
   setOpenModalKommentare: React.Dispatch<React.SetStateAction<boolean>>;
   modalDelete: boolean;
   disable: boolean;
+  onClickFunction: (e: React.MouseEvent<HTMLButtonElement>) => void;
   updateData: {
     name: string | undefined;
     description: string;
@@ -58,9 +58,9 @@ const EditierenView: React.FC<editierenView> = ({
   modalAlert,
   disable,
   kommentare,
-  deleteKommentar,
   openModalDelete,
-  modalDelete
+  modalDelete,
+  onClickFunction,
 }) => {
   return (
     <div>
@@ -202,7 +202,6 @@ const EditierenView: React.FC<editierenView> = ({
                             </div>
                           </li>
                           {kommentare?.map((kdata) => {
-                            
                             return (
                               <div>
                                 {kdata.audio_id === data ? (
@@ -231,15 +230,17 @@ const EditierenView: React.FC<editierenView> = ({
                                             </p>
                                             <div className="d-flex ms-1">
                                               <button
+                                                value={kdata.id}
                                                 style={{ all: "unset" }}
-                                                onClick={openModalDelete}
+                                                onClick={(e) => {
+                                                  onClickFunction(e);
+                                                }}
                                               >
                                                 <MdDelete
                                                   size={25}
                                                   color="red"
                                                 />
                                               </button>
-                                         
                                             </div>
                                           </div>
                                         </div>
@@ -282,9 +283,9 @@ const EditierenView: React.FC<editierenView> = ({
             </div>
           </div>
         </Modal.Body>
- =
+        =
       </Modal>
-    
+
       <ModalAlert
         text={`Das lied ${updateData.name} wurde erfolgreich bearbeitet`}
         show={modalAlert}

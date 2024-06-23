@@ -18,6 +18,7 @@ const Intro:React.FC = () => {
 
      const level = admin !== undefined ? admin : "normal";
 
+   
 
 
     const getSearch = (e: React.FormEvent<HTMLFormElement>) => {
@@ -29,15 +30,22 @@ const Intro:React.FC = () => {
 
 
     return (
+  
         <div className='container'>
+            {
+                    level === ""  ? <div/> : 
             <div className='col'>
+                
+             
             <MediaQuery minWidth={1224}>
             <IntroView getSearch={getSearch} firstSearch={firstSearch} setFirstSearch={setFirstSearch} level={level} />
             </MediaQuery>
             <MediaQuery maxWidth={1224}>
             <IntroMobileView getSearch={getSearch} firstSearch={firstSearch} setFirstSearch={setFirstSearch} level={level} />
             </MediaQuery>
+              
             </div>
+             }
         </div>
         
     )

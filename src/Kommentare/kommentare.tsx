@@ -9,6 +9,7 @@ interface KommentareInterface {
   aktuelLied: number;
   level: string;
   specificAudio: string;
+  setReload?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const Kommentare: React.FC<KommentareInterface> = ({
@@ -18,6 +19,7 @@ const Kommentare: React.FC<KommentareInterface> = ({
   aktuelLied,
   level,
   specificAudio,
+  setReload,
 }) => {
   const [kommentare, setKommentare] = useState({
     id_lied: aktuelLied || undefined,
@@ -65,6 +67,13 @@ const Kommentare: React.FC<KommentareInterface> = ({
       .catch((error) => {
         console.error("ha habido un gran problema");
       });
+
+    if (setReload) {
+      setTimeout(() => {
+        setReload(true);
+      }, 1000);
+      setReload(false);
+    }
   };
 
   const getKommentare = async () => {

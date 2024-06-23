@@ -124,7 +124,7 @@ const kommentareView: React.FC<kommentareViewInterface> = ({
                   description: e.target.value,
                 }))
               }
-              className="form-control form-control-lg  mb-3 mt-2"
+              className="form-control form-control  mb-3 mt-2"
             ></textarea>
             <div className="d-flex align-items-end justify-content-center">
               <button

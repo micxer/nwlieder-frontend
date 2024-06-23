@@ -60,6 +60,8 @@ export interface Playerinterface {
 }
 
 export interface Modalinterface {
+  lenght(lenght: any): void;
+
   data: Hola[];
   modalFunction: () => Promise<void>;
   setDuration: React.Dispatch<React.SetStateAction<number>>;
@@ -86,4 +88,35 @@ export interface Modalinterface {
   hideFunction: () => Promise<void>;
   isZoomed: boolean;
   setIsZoomed: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+
+export interface LiedViewInterface {
+  data: Hola[];
+  setDuration: React.Dispatch<React.SetStateAction<number>>;
+  audioRef: React.RefObject<HTMLAudioElement>;
+  setIsReady: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
+  isReady: boolean;
+  togglePlayPause: () => void;
+  isPlaying: boolean;
+  setCurrrentProgress: React.Dispatch<React.SetStateAction<number>>;
+  handleBufferProgress: React.ReactEventHandler<HTMLAudioElement>;
+  duration: number;
+  vorgehen: number;
+  currrentProgress: number;
+  buffered: number;
+  songIndex: number;
+  songCount: number;
+  durationDisplay: string;
+  elapsedDisplay: string;
+  audio: string;
+  functionTenMinus: () => void;
+  functionTenMore: () => void;
+  setAudio: React.Dispatch<React.SetStateAction<string>>;
+  setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setOpenModalKommentare: React.Dispatch<React.SetStateAction<boolean>>;
+  level: string;
+  onPrev: () => (() => void) | undefined;
+  onNext: () => Promise<(() => void) | undefined>;
 }

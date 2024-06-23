@@ -119,7 +119,7 @@ const HomeView: React.FC<Info> = ({
           value={"Favoriten"}
           onClick={(e) => startFilter(e)}
           style={{
-            backgroundColor: filterLied === "Wahl" ? "#C2EDAD" : "#E3F4DB",
+            backgroundColor: filterLied === "Favoriten" ? "#E8C917" : "#EEDB73",
             color: "666666",
           }}
         >

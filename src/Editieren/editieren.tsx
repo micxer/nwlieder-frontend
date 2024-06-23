@@ -38,6 +38,7 @@ const Editieren: React.FC<editieren> = ({
   const [disable, setDisable] = useState(true);
   const [kommentare, setKommentare] = useState<KommentareInfo>();
   const [modalDelete, setModalDelete] = useState(false);
+  const [reload, setReload] = useState(false);
 
   const getSpecificAudio = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -95,8 +96,18 @@ const Editieren: React.FC<editieren> = ({
     }
   };
 
+  const [extractIdDeleteKommentar, setExtractIdDeleteKommentar] = useState<
+    string
+  >();
+
+  const onClickFunction = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setExtractIdDeleteKommentar(e.currentTarget.value);
+    openModalDelete(e);
+  };
+
   const deleteKommentar = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    const urlKommentareDelete = `http://localhost:5000/kommentare/${e}`;
+    const urlKommentareDelete = `http://localhost:5000/kommentare/${extractIdDeleteKommentar}`;
     const fetchOptionsKommentare = {
       method: "DELETE",
       headers: {
@@ -106,6 +117,13 @@ const Editieren: React.FC<editieren> = ({
     await fetch(urlKommentareDelete, fetchOptionsKommentare)
       .then((response) => response.json())
       .then((data) => console.log(data));
+
+    setModalAlert(true);
+    openModalDelete(e);
+    setTimeout(() => {
+      setReload(true);
+    }, 1000);
+    setReload(false);
   };
 
   const url = `http://localhost:5000/lied/${id}`;
@@ -132,6 +150,11 @@ const Editieren: React.FC<editieren> = ({
       .catch(() => {
         console.error("update dont had worked");
       });
+
+    setTimeout(() => {
+      setReload(true);
+    }, 1000);
+    setReload(false);
   };
 
   const sendInfo = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -164,6 +187,11 @@ const Editieren: React.FC<editieren> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
+  useEffect(() => {
+    getKommentar();
+    getLied();
+  }, [reload]);
+
   const amam = id === undefined ? 0 : parseInt(id);
 
   return (
@@ -175,6 +203,7 @@ const Editieren: React.FC<editieren> = ({
         aktuelLied={amam}
         level={level}
         specificAudio={specificAudio}
+        setReload={setReload}
       />
       <EditierenView
         openModal={openModal}
@@ -190,9 +219,9 @@ const Editieren: React.FC<editieren> = ({
         modalAlert={ModalAlert}
         disable={disable}
         kommentare={kommentare}
-        deleteKommentar={deleteKommentar}
         openModalDelete={openModalDelete}
         modalDelete={modalDelete}
+        onClickFunction={onClickFunction}
       />
       <Modal
         show={modalDelete}
@@ -209,7 +238,7 @@ const Editieren: React.FC<editieren> = ({
           <Button variant="secondary" onClick={openModalDelete}>
             Nein
           </Button>
-          <Button variant="primary" onClick={openModalDelete}>
+          <Button variant="primary" onClick={deleteKommentar}>
             Ja
           </Button>
         </Modal.Footer>

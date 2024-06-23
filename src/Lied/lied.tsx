@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import LiedView from "./liedView";
-import { useParams, useSearchParams, useLocation } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { Hola, audioPlayerProps } from "../interfaces";
 import Editieren from "../Editieren/editieren";
 import Kommentare from "../Kommentare/kommentare";
@@ -23,6 +23,7 @@ const Lied: React.FC = ({}, props: audioPlayerProps) => {
 
   const [data, setData] = useState<Hola[]>([]);
   const { songIndex, songCount } = props;
+
 
   const [duration, setDuration] = useState(0);
   const [isReady, setIsReady] = useState(false);
@@ -190,6 +191,9 @@ const Lied: React.FC = ({}, props: audioPlayerProps) => {
 
   return (
     <div>
+      {
+        level === "" ? <div/> :
+      <div>
       <MediaQuery minWidth={1224}>
         <LiedView
           level={level}
@@ -269,6 +273,8 @@ const Lied: React.FC = ({}, props: audioPlayerProps) => {
         level={levelKommentare}
         specificAudio={audio}
       />
+      </div>
+      }
     </div>
   );
 };

@@ -158,34 +158,7 @@ const Player: React.FC<Playerinfo> = (
         openModal2={kommentareModal}
         setOpenModal2={setKommentareModal}
       />
-      <Modal
-        boolean={openModal}
-        hideFunction={modalFunction}
-        data={data}
-        modalFunction={modalFunction}
-        setDuration={setDuration}
-        audioRef={audioRef}
-        setIsReady={setIsReady}
-        setIsPlaying={setIsPlaying}
-        isReady={isReady}
-        togglePlayPause={togglePlayPause}
-        isPlaying={isPlaying}
-        setCurrrentProgress={setCurrrentProgress}
-        handleBufferProgress={handleBufferProgress}
-        duration={duration}
-        currrentProgress={currrentProgress}
-        buffered={buffered}
-        wechselLied={wechselLied}
-        onPrev={onPrev}
-        onNext={onNext}
-        songIndex={songIndex}
-        songCount={songCount}
-        aktuelLied={aktuelLied}
-        durationDisplay={durationDisplay}
-        elapsedDisplay={elapsedDisplay}
-        isZoomed={isZoomed}
-        setIsZoomed={setIsZoomed}
-      />
+  
       <Kommentare
         openModal={kommentareModal}
         setOpenModal={setKommentareModal}
