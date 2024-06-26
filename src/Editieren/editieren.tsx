@@ -39,11 +39,101 @@ const Editieren: React.FC<editieren> = ({
   const [kommentare, setKommentare] = useState<KommentareInfo>();
   const [modalDelete, setModalDelete] = useState(false);
   const [reload, setReload] = useState(false);
+  const [image, setImage] = useState<File | null>();
+  const [audio, setAudio] = useState<File | null>();
 
   const getSpecificAudio = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setOpenModalKommentare(true);
     setEspecificAudio(e.currentTarget.value);
+  };
+
+  const getAudio = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+
+    e.preventDefault();
+    if (e.target.files && e.target.files.length > 0) {
+      await setAudio(e.target.files[0]);
+    }
+
+  }
+
+  const createSpecificAudio = async (
+    e: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    e.preventDefault();
+
+    const createNewAudio = new FormData();
+
+    if (!audio) {
+      alert("Please upload an audio");
+      return;
+    }
+
+    await createNewAudio.append("audio", audio);
+
+    const fetchOptions = {
+      method: "PUT",
+      body: createNewAudio,
+    };
+
+    try {
+      await fetch(`http://localhost:5000/audioCreate/${id}`, fetchOptions)
+        .then((response) => response.json())
+        .then((data) => {
+          {
+          }
+        });
+    } catch (error) {
+      console.log("cual es el error", error);
+    }
+
+    setTimeout(() => {
+      setReload(true);
+    }, 1000);
+    setReload(false);
+  };
+
+  const deleteSpecificAudio = async (
+    e: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    e.preventDefault();
+    await setEspecificAudio(e.currentTarget.value);
+
+    const updateLied = {
+      audio: specificAudio, // Hier sicherstellen, dass der spezifische Audio-Wert gesendet wird
+    };
+
+    const fetchOptions = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json", // Especifica el tipo de contenido esperado
+      },
+      body: JSON.stringify(updateLied),
+    };
+
+    try {
+      await fetch(`http://localhost:5000/audio/${id}`, fetchOptions)
+        .then((response) => response.json())
+        .then((data) => {
+          {
+          }
+        });
+    } catch (error) {
+      console.log("cual es el error", error);
+    }
+
+    setTimeout(() => {
+      setReload(true);
+    }, 1000);
+    setReload(false);
+  };
+
+  const updateImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setImage(e.target.files[0]);
+    }
   };
 
   const urlKommentare = `http://localhost:5000/kommentare/${id}`;
@@ -127,15 +217,27 @@ const Editieren: React.FC<editieren> = ({
   };
 
   const url = `http://localhost:5000/lied/${id}`;
-  const fetchOptions = {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(updateData),
-  };
 
   const updateLied = async () => {
+    if (!image) {
+      alert("Please upload an image");
+      return;
+    }
+
+    const updateLied = new FormData();
+    if (image) {
+      updateLied.append("image", image);
+    }
+
+    Object.entries(updateData).forEach(([key, value]) => {
+      updateLied.append(key, value.toString());
+    });
+
+    const fetchOptions = {
+      method: "PUT",
+      body: updateLied,
+    };
+
     await fetch(url, fetchOptions)
       .then((response) => {
         if (!response.ok) {
@@ -222,6 +324,10 @@ const Editieren: React.FC<editieren> = ({
         openModalDelete={openModalDelete}
         modalDelete={modalDelete}
         onClickFunction={onClickFunction}
+        updateImage={updateImage}
+        deleteSpecificAudio={deleteSpecificAudio}
+        createSpecificAudio={createSpecificAudio}
+        getAudio={getAudio}
       />
       <Modal
         show={modalDelete}

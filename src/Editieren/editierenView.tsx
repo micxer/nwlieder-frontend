@@ -2,11 +2,10 @@ import React from "react";
 import Modal from "react-bootstrap/Modal";
 import { Hola, KommentareInfo } from "../interfaces";
 import "./editieren.css";
-import { BiSolidCommentDetail } from "react-icons/bi";
 import ModalAlert from "../modal/modal";
 import { MdDelete } from "react-icons/md";
 import Marquee from "react-fast-marquee";
-import Button from "react-bootstrap/Button";
+import { BiSolidCommentDetail } from "react-icons/bi";
 
 interface editierenView {
   openModal: boolean;
@@ -22,7 +21,11 @@ interface editierenView {
   setOpenModalKommentare: React.Dispatch<React.SetStateAction<boolean>>;
   modalDelete: boolean;
   disable: boolean;
+  updateImage: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onClickFunction: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  deleteSpecificAudio: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
+  createSpecificAudio: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void>
+  getAudio: (e: React.ChangeEvent<HTMLInputElement>) => Promise<void>
   updateData: {
     name: string | undefined;
     description: string;
@@ -61,6 +64,10 @@ const EditierenView: React.FC<editierenView> = ({
   openModalDelete,
   modalDelete,
   onClickFunction,
+  updateImage,
+  deleteSpecificAudio,
+  createSpecificAudio,
+  getAudio
 }) => {
   return (
     <div>
@@ -75,7 +82,7 @@ const EditierenView: React.FC<editierenView> = ({
                 <div className="text-center">
                   <img
                     className="rounded ms-2 col "
-                    src={data[aktuelLied]?.img}
+                    src={updateData?.img}
                     style={{
                       width: "40vw",
                       maxWidth: "40vh",
@@ -83,9 +90,12 @@ const EditierenView: React.FC<editierenView> = ({
                     }}
                   />
                   <input
+                   onChange={updateImage}
+                   name="image"
                     type="file"
                     accept="image/*"
-                    className="form-control"
+                    className="form-control mt-2"
+                    
                   />
                 </div>
                 <div>
@@ -175,6 +185,18 @@ const EditierenView: React.FC<editierenView> = ({
                   </div>
                   <div className="mb-5 ">
                     <label className="form-label mt-3 subtitle">mp3 file</label>
+                    <div className="text-center">
+                     
+                  <input
+                    type="file"
+                    accept="audio/*"
+                    name="audio"
+                    className="form-control"
+                    onChange={getAudio}
+                      />
+                      <button onClick={createSpecificAudio} className="btn mt-2 mb-3"> Agregar </button>
+                      
+                </div>
                     {updateData.audios?.map((data) => (
                       <div>
                         <ul className="list-group">
@@ -197,6 +219,14 @@ const EditierenView: React.FC<editierenView> = ({
                                     size={25}
                                     color="#ed1e24"
                                   />
+                                </button>
+                                <button
+                                  className="ms-4"
+                                  style={{ all: "unset" }}
+                                  value={data}
+                                  onClick={deleteSpecificAudio}
+                                >
+                                 X
                                 </button>
                               </div>
                             </div>

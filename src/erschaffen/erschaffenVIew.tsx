@@ -159,11 +159,12 @@ const EditierenView: React.FC<editierenView> = ({
                     <form className="mt-2" encType="multipart/form-data">
                       <input
                         className="form-control"
+                        multiple
                         name="audio"
                         type="file"
                         accept="audio/*"
                         onChange={handleImageChange}
-                        multiple
+                        
                       />
                     </form>
                     {/* {createData?.audios?.map((data) => (
