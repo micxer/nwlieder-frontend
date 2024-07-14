@@ -55,7 +55,8 @@ const Home: React.FC<Hola> = () => {
 
   const fetchData = async () => {
     try {
-      const url = "http://localhost:5000/lied/";
+      console.log(process.env);
+      const url = `${process.env.REACT_APP_API_URL}/lied/`;
       const response = await fetch(url);
       const data = await response.json();
 
@@ -64,6 +65,7 @@ const Home: React.FC<Hola> = () => {
       console.error(error);
     }
   };
+
 
   const suchen = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -86,7 +88,7 @@ const Home: React.FC<Hola> = () => {
   };
 
   const gefilterteElemente = data?.filter((data) =>
-    data?.name?.toLowerCase().includes(sucht?.toLowerCase())
+    data?.liedtext?.toLowerCase().includes(sucht?.toLowerCase())
   );
 
   const startFilter = async (e: MouseEvent<HTMLButtonElement>) => {

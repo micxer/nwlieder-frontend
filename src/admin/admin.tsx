@@ -26,7 +26,7 @@ const  Admin:React.FC<Hola> = () => {
 
 const fetchData = async () => {
  try {
-    const url = 'http://localhost:5000/lied/'
+    const url = process.env.REACT_APP_API_URL + "/lied"
     const response = await fetch(url);
     const data = await response.json();
     

@@ -43,7 +43,7 @@ const Kommentare: React.FC<KommentareInterface> = ({
     }));
   };
 
-  const url = `http://localhost:5000/kommentare`;
+  const url = `${process.env.REACT_APP_API_URL}/kommentare`;
   const fetchOptions = {
     method: "POST", // Método HTTP
     headers: {
@@ -52,9 +52,14 @@ const Kommentare: React.FC<KommentareInterface> = ({
     body: JSON.stringify(kommentare), // Convierte los datos a una cadena JSON
   };
 
-  const urlGet = `http://localhost:5000/kommentare/${aktuelLied}`;
+  const urlGet = `${process.env.REACT_APP_API_URL}/kommentare/${aktuelLied}`;
 
   const updateDataFuntion = async () => {
+
+    if (setReload) {
+    setReload(true)
+    }
+    try {
     await fetch(url, fetchOptions)
       .then((response) => {
         if (!response.ok) {
@@ -64,19 +69,22 @@ const Kommentare: React.FC<KommentareInterface> = ({
         }
       })
       .then((data) => {})
-      .catch((error) => {
-        console.error("ha habido un gran problema");
-      });
-
-    if (setReload) {
-      setTimeout(() => {
-        setReload(true);
-      }, 1000);
-      setReload(false);
+    } catch(error) {
+      console.log({message: "error al crear un comentario"})
     }
+    if(setReload) {
+
+    setReload(false)
+    }
+
+   
   };
 
   const getKommentare = async () => {
+    if(setReload) {
+
+    
+      }
     try {
       await fetch(urlGet)
         .then((response) => response.json())
@@ -88,6 +96,11 @@ const Kommentare: React.FC<KommentareInterface> = ({
     } catch (error) {
       console.log(error);
     }
+
+    if(setReload) {
+
+      
+      }
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {

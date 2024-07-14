@@ -51,7 +51,7 @@ const Lied: React.FC = ({}, props: audioPlayerProps) => {
 
   const getLied = async () => {
     try {
-      const url = `http://localhost:5000/lied/${tosearch}`;
+      const url = `${process.env.REACT_APP_API_URL}/lied/${tosearch}`;
       const response = await fetch(url);
       const dataResponse = await response.json();
 

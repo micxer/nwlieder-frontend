@@ -115,6 +115,7 @@ const EditierenView: React.FC<editierenView> = ({
                     <label className="form-label mt-3 subtitle">Etappe</label>
                     <select
                       className="form-select"
+                      
                       onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
                         setCreateData((hola) => ({
                           ...hola,
@@ -122,6 +123,7 @@ const EditierenView: React.FC<editierenView> = ({
                         }))
                       }
                     >
+                      <option value="" >Wählen Sie eine Option aus</option>
                       <option
                         selected={createData.etappe === "vorkathechumenal"}
                         value="vorkathechumenal"
@@ -144,18 +146,14 @@ const EditierenView: React.FC<editierenView> = ({
                         selected={createData.etappe === "Katechumenat"}
                         value="Wahl"
                       >
-                        Wahl
+                        Auserwählung
                       </option>
                     </select>
                   </div>
                   <div className="mb-5">
                     <label className="form-label mt-3 subtitle">mp3 file</label>
                     &nbsp;&nbsp;
-                    <button className="add-audio">
-                      <div className="d-flex align-items-center justify-content-center">
-                        <FaPlus />
-                      </div>
-                    </button>
+                  
                     <form className="mt-2" encType="multipart/form-data">
                       <input
                         className="form-control"

@@ -43,7 +43,7 @@ const Erschaffen: React.FC<erschaffen> = ({ openModal, setOpenModal }) => {
     setEspecificAudio(e.currentTarget.value);
   };
 
-  const url = `http://localhost:5000/lied/`;
+  const url = `${process.env.REACT_APP_API_URL}/lied/`;
 
   const disableFunction = async () => {
     if (
@@ -59,6 +59,8 @@ const Erschaffen: React.FC<erschaffen> = ({ openModal, setOpenModal }) => {
       await setDisable(false);
     }
   };
+
+  console.log(createData.etappe)
 
   const updateLied = async () => {
     if (!image) {

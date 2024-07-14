@@ -4,6 +4,7 @@ import { Hola, KommentareInfo } from "../interfaces";
 import Kommentare from "../Kommentare/kommentare";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
+import Spinner from "../spinner/reload";
 
 interface editieren {
   openModal: boolean;
@@ -77,9 +78,9 @@ const Editieren: React.FC<editieren> = ({
       method: "PUT",
       body: createNewAudio,
     };
-
+    setReload(true);
     try {
-      await fetch(`http://localhost:5000/audioCreate/${id}`, fetchOptions)
+      await fetch(`${process.env.REACT_APP_API_URL}/audioCreate/${id}`, fetchOptions)
         .then((response) => response.json())
         .then((data) => {
           {
@@ -89,9 +90,7 @@ const Editieren: React.FC<editieren> = ({
       console.log("cual es el error", error);
     }
 
-    setTimeout(() => {
-      setReload(true);
-    }, 1000);
+    
     setReload(false);
   };
 
@@ -112,9 +111,10 @@ const Editieren: React.FC<editieren> = ({
       },
       body: JSON.stringify(updateLied),
     };
+    setReload(true);
 
     try {
-      await fetch(`http://localhost:5000/audio/${id}`, fetchOptions)
+      await fetch(`${process.env.REACT_APP_API_URL}/audio/${id}`, fetchOptions)
         .then((response) => response.json())
         .then((data) => {
           {
@@ -124,9 +124,6 @@ const Editieren: React.FC<editieren> = ({
       console.log("cual es el error", error);
     }
 
-    setTimeout(() => {
-      setReload(true);
-    }, 1000);
     setReload(false);
   };
 
@@ -136,7 +133,7 @@ const Editieren: React.FC<editieren> = ({
     }
   };
 
-  const urlKommentare = `http://localhost:5000/kommentare/${id}`;
+  const urlKommentare = `${process.env.REACT_APP_API_URL}/kommentare/${id}`;
 
   const getKommentar = async () => {
     await fetch(urlKommentare)
@@ -153,7 +150,7 @@ const Editieren: React.FC<editieren> = ({
 
   const getLied = async () => {
     try {
-      const url = `http://localhost:5000/lied/${id}`;
+      const url = `${process.env.REACT_APP_API_URL}/lied/${id}`;
       const response = await fetch(url);
       const dataResponse = await response.json();
 
@@ -197,32 +194,33 @@ const Editieren: React.FC<editieren> = ({
   };
 
   const deleteKommentar = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    const urlKommentareDelete = `http://localhost:5000/kommentare/${extractIdDeleteKommentar}`;
+    const urlKommentareDelete = `${process.env.API_URL}/kommentare/${extractIdDeleteKommentar}`;
     const fetchOptionsKommentare = {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
     };
+    setReload(true)
+    try {
     await fetch(urlKommentareDelete, fetchOptionsKommentare)
       .then((response) => response.json())
       .then((data) => console.log(data));
 
     setModalAlert(true);
     openModalDelete(e);
-    setTimeout(() => {
-      setReload(true);
-    }, 1000);
-    setReload(false);
+    }
+    catch(error) {
+      console.log({message: "the Commentar was not deleted"})
+    }
+
+    setReload(false)
+    
   };
 
-  const url = `http://localhost:5000/lied/${id}`;
+  const url = `${process.env.REACT_APP_API_URL}/lied/${id}`;
 
   const updateLied = async () => {
-    if (!image) {
-      alert("Please upload an image");
-      return;
-    }
 
     const updateLied = new FormData();
     if (image) {
@@ -237,6 +235,8 @@ const Editieren: React.FC<editieren> = ({
       method: "PUT",
       body: updateLied,
     };
+    setReload(true);
+    try {
 
     await fetch(url, fetchOptions)
       .then((response) => {
@@ -251,11 +251,12 @@ const Editieren: React.FC<editieren> = ({
       })
       .catch(() => {
         console.error("update dont had worked");
-      });
+      }); 
+    } catch(error) {
+      console.log({message: "etwas ist schiff gelaufen", error});
+    }
 
-    setTimeout(() => {
-      setReload(true);
-    }, 1000);
+   
     setReload(false);
   };
 
@@ -298,6 +299,9 @@ const Editieren: React.FC<editieren> = ({
 
   return (
     <div>
+      {
+        reload === true ? <Spinner/> :
+      <div>
       <Kommentare
         openModal={openModalKommentare}
         setOpenModal={setOpenModalKommentare}
@@ -349,6 +353,8 @@ const Editieren: React.FC<editieren> = ({
           </Button>
         </Modal.Footer>
       </Modal>
+      </div>
+      }
     </div>
   );
 };
