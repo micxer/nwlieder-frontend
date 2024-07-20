@@ -109,13 +109,7 @@ return (<div className="col row all">
      <div className="col-4 info"><Player id={specificLied} wechselLied={wechselLied} data={busqueda}
      aktuelLied={aktuelLied} setAktuelLied={setAktuelLied} /></div> 
 
-<Kommentare 
-openModal={openModal} 
-setOpenModal={setOpenModal}
-aktuelLied={aktuelLied} data={busqueda}
-level={level}
-specificAudio={"adios"}
-/>
+
 
 <Editieren
 openModal={openModalEdit} 

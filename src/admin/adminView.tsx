@@ -39,9 +39,9 @@ const AdminView:React.FC<Info> = ({hola, data, suchen, setsucht, sucht, startFil
             <div className="row justify-content-center">
             <button className="btn  col-auto ms-2" value={''} onClick={(e) => startFilter(e)} 
             style={{backgroundColor: filterLied === '' ? "#ed1e24" : "#ffffff", color: filterLied === '' ? "white" : "#ed1e24" }} > Alle</button>
-                <button className="btn  col-auto ms-2" value={'vorkathechumenal'} onClick={(e) => startFilter(e)} 
-                style={{backgroundColor: filterLied === 'vorkathechumenal' ? "#ed1e24" : "#ffffff", color: filterLied === 'vorkathechumenal' ? "white" : "#ed1e24" }} >
-                    Vorkathechumenal</button>
+                <button className="btn  col-auto ms-2" value={'Vorkatechumenat'} onClick={(e) => startFilter(e)} 
+                style={{backgroundColor: filterLied === 'Vorkatechumenat' ? "#ed1e24" : "#ffffff", color: filterLied === 'Vorkatechumenat' ? "white" : "#ed1e24" }} >
+                    Vorkatechumenat</button>
                 <button className="btn  col-auto ms-2" value={'liturgisch'} onClick={(e) => startFilter(e)} 
                 style={{backgroundColor: filterLied === 'liturgisch' ? "#ed1e24" : "#ffffff", color: filterLied === 'liturgisch' ? "white" : "#ed1e24" }}>Liturgisch</button>
               

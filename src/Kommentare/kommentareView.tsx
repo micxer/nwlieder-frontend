@@ -8,6 +8,8 @@ interface kommentareViewInterface {
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
   sendKommentar: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+  kommentareById: KommentareInfo[];
+  kommentarrolle: string;
   specificAudio: string;
   kommentare: {
     name: string;
@@ -36,6 +38,7 @@ const kommentareView: React.FC<kommentareViewInterface> = ({
   kommentareData,
   specificAudio,
   setKommentare,
+  kommentareById,
 }) => {
   if (level === "normal")
     return (

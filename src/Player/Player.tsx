@@ -158,15 +158,7 @@ const Player: React.FC<Playerinfo> = (
         openModal2={kommentareModal}
         setOpenModal2={setKommentareModal}
       />
-  
-      <Kommentare
-        openModal={kommentareModal}
-        setOpenModal={setKommentareModal}
-        aktuelLied={aktuelLied}
-        data={data}
-        level={level}
-        specificAudio={"hola"}
-      />
+
     </div>
   );
 };

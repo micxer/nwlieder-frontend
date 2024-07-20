@@ -7,10 +7,13 @@ import { FaCirclePause, FaCirclePlay } from "react-icons/fa6";
 import AudioProgressBar from "./progressBar";
 import { MdEdit } from "react-icons/md";
 import { BiSolidCommentDetail } from "react-icons/bi";
-import { TbPlayerTrackNextFilled, TbPlayerTrackPrevFilled } from "react-icons/tb";
+import {
+  TbPlayerTrackNextFilled,
+  TbPlayerTrackPrevFilled,
+} from "react-icons/tb";
 import Marquee from "react-fast-marquee";
-import { MdForward10, MdReplay10  } from "react-icons/md";
-
+import { MdForward10, MdReplay10 } from "react-icons/md";
+import { TbReload } from "react-icons/tb";
 
 const LiedView: React.FC<LiedViewInterface> = ({
   data,
@@ -41,32 +44,22 @@ const LiedView: React.FC<LiedViewInterface> = ({
   functionTenMore,
   vorgehen,
 }) => {
-
   const datei = data[0];
   const hola = datei?.audios?.length === undefined ? 0 : datei.audios.length;
-
- 
 
   useEffect(() => {
     if (datei?.audios?.length === 1) {
       setAudio(datei?.audios[0]);
-
-    }
-    else if (hola > 1 ) {
-      audioRef?.current?.pause()
+    } else if (hola > 1) {
+      audioRef?.current?.pause();
       setAudio("");
-      
     }
   }, [datei?.id]);
-
-
 
   const reload = (e: React.MouseEvent<HTMLButtonElement>) => {
     setAudio("");
     setIsPlaying(false);
   };
-
-
 
   return (
     <div>
@@ -92,38 +85,32 @@ const LiedView: React.FC<LiedViewInterface> = ({
       <div className="border rounded fuerte p-2 pt-3 pb-3">
         <div className="col row d-flex justify-content-between">
           <div className="row titles col-3 ms-1">
-           
-              
-                <div className=" d-flex align-items-center ">
-                  <p>
-                    <p className="port mb-0">
-                    {datei?.name?.length && datei?.name?.length > 30 ? (
-                            <Marquee speed={30}>
-                              {datei?.name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            </Marquee>
-                          ) : (
-                            datei?.name
-                          )}
-                    </p>
-                    
-                    <p className="mb-0" style={{color: "gray"}}>
-                    {datei?.description}
-                    </p>
-                  
-                  </p>
-                 
-                </div>
-                {/* <div className="col-auto">
+            <div className=" d-flex align-items-center ">
+              <p>
+                <p className="port mb-0">
+                  {datei?.name?.length && datei?.name?.length > 30 ? (
+                    <Marquee speed={30}>
+                      {datei?.name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    </Marquee>
+                  ) : (
+                    datei?.name
+                  )}
+                </p>
+
+                <p className="mb-0" style={{ color: "gray" }}>
+                  {datei?.description}
+                </p>
+              </p>
+            </div>
+            {/* <div className="col-auto">
                   <button onClick={reload} style={{ all: "unset" }}>
                     {" "}
                     <TbReload size={25} color="#ed1e24" />{" "}
                   </button>
                 </div> */}
-              </div>
-            
-          
+          </div>
 
-           <div className="player col-auto">
+          <div className="player col-auto">
             {audio === "" ? (
               <div className="row justify-content-center mt-3">
                 <div className="col-auto mt-2">
@@ -143,18 +130,29 @@ const LiedView: React.FC<LiedViewInterface> = ({
                         v{index + 1}
                       </button>
                     ))
-                  ) : <div/> }{" "}
+                  ) : (
+                    <div />
+                  )}{" "}
                 </div>{" "}
               </div>
             ) : (
               <div className="col ">
                 <div className="text-center mb-1">
-                  
                   <button style={{ all: "unset" }}>
-                    <TbPlayerTrackPrevFilled onClick={onPrev} className="icon me-3"  color="#ed1e24" size={30} />
+                    <TbPlayerTrackPrevFilled
+                      onClick={onPrev}
+                      className="icon me-3"
+                      color="#ed1e24"
+                      size={30}
+                    />
                   </button>
-                  <button style={{all: "unset"}}>
-                    <MdReplay10 onClick={functionTenMinus} className="icon me-3"  color="#ed1e24" size={30}/>
+                  <button style={{ all: "unset" }}>
+                    <MdReplay10
+                      onClick={functionTenMinus}
+                      className="icon me-3"
+                      color="#ed1e24"
+                      size={30}
+                    />
                   </button>
                   <button
                     style={{ all: "unset" }}
@@ -169,17 +167,37 @@ const LiedView: React.FC<LiedViewInterface> = ({
                       <FaCirclePause color="#ed1e24" size={40} />
                     )}
                   </button>
-                  <button style={{all: "unset"}}>
-                    <MdForward10 onClick={functionTenMore} className="icon ms-3"  color="#ed1e24" size={30}/>
+                  <button style={{ all: "unset" }}>
+                    <MdForward10
+                      onClick={functionTenMore}
+                      className="icon ms-3"
+                      color="#ed1e24"
+                      size={30}
+                    />
                   </button>
                   <button
                     style={{ all: "unset" }}
                     disabled={songIndex === songCount - 1}
                   >
-                    <TbPlayerTrackNextFilled onClick={onNext} className="icon ms-3"  color="#ed1e24" size={30} />
+                    <TbPlayerTrackNextFilled
+                      onClick={onNext}
+                      className="icon ms-3"
+                      color="#ed1e24"
+                      size={30}
+                    />
                   </button>
                  
-                </div>
+                    {datei?.audios?.length === 1 ||
+                    datei?.audios?.length === undefined ? (
+                      <div />
+                    ) : (
+                      <button className="ms-3" onClick={reload} style={{ all: "unset" }}>
+                        {" "}
+                        <TbReload size={25} color="#ed1e24" />{" "}
+                      </button>
+                    )}
+                  </div>
+              
 
                 <div className="col-auto row d-flex justify-content-center">
                   <div className="col-auto timer d-flex ">
@@ -193,12 +211,10 @@ const LiedView: React.FC<LiedViewInterface> = ({
                       currentProgress={currrentProgress}
                       buffered={buffered}
                       onChange={(e) => {
-                      
                         if (!audioRef.current) return;
                         audioRef.current.currentTime =
                           e.currentTarget.valueAsNumber;
                         setCurrrentProgress(e.currentTarget.valueAsNumber);
-                        
                       }}
                     />
                   </div>
@@ -231,12 +247,10 @@ const LiedView: React.FC<LiedViewInterface> = ({
           </div>
 
           <audio
-       
             onTimeUpdate={(e) => {
               setCurrrentProgress(e.currentTarget.currentTime);
 
               handleBufferProgress(e);
-              
             }}
             onProgress={handleBufferProgress}
             ref={audioRef}
@@ -245,11 +259,7 @@ const LiedView: React.FC<LiedViewInterface> = ({
             onPlaying={() => setIsPlaying(true)}
             onPause={() => setIsPlaying(false)}
             src={audio}
-          
           ></audio>
-
-     
-       
         </div>
       </div>
     </div>

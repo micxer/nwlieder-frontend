@@ -18,6 +18,7 @@ const Lied: React.FC = ({}, props: audioPlayerProps) => {
   const hola = ids.map((dateien: Hola) => dateien.id);
 
   const newId = Number(id);
+  const kommentarrolle: string = "schauen";
 
   const take = hola.indexOf(newId);
 
@@ -272,6 +273,7 @@ const Lied: React.FC = ({}, props: audioPlayerProps) => {
         data={data}
         level={levelKommentare}
         specificAudio={audio}
+        kommentarrolle={kommentarrolle}
       />
       </div>
       }

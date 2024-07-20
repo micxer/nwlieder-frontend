@@ -1,13 +1,9 @@
 import React, { MouseEvent } from "react";
 import "./Home.css";
-import Modal from "react-bootstrap/Modal";
-import { ModalHeader } from "react-bootstrap";
 import { Hola } from "../interfaces";
-import { setSelectionRange } from "@testing-library/user-event/dist/utils";
-import { Link } from "react-router-dom";
 import { FaPlus } from "react-icons/fa6";
 import { MdOutlineStarOutline, MdOutlineStar } from "react-icons/md";
-import { start } from "repl";
+
 
 interface Info {
   hola: (e: MouseEvent<HTMLButtonElement>) => Promise<void>;
@@ -69,15 +65,15 @@ const HomeMobileView: React.FC<Info> = ({
           </button>
           <button
             className="btn  col-auto ms-2  rounded-pill"
-            value={"vorkathechumenal"}
+            value={"Vorkatechumenat"}
             onClick={(e) => startFilter(e)}
             style={{
               backgroundColor:
-                filterLied === "vorkathechumenal" ? "#D9D7D7" : "#F2F2F2",
+                filterLied === "Vorkatechumenat" ? "#D9D7D7" : "#F2F2F2",
               color: "#535353",
             }}
           >
-            Vorkathechumenal
+            Vorkatechumenat
           </button>
           <button
             className="btn  col-auto ms-2  rounded-pill"

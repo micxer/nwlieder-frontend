@@ -6,6 +6,8 @@ import ModalAlert from "../modal/modal";
 import { MdDelete } from "react-icons/md";
 import Marquee from "react-fast-marquee";
 import { BiSolidCommentDetail } from "react-icons/bi";
+import { MdEdit } from "react-icons/md";
+
 
 interface editierenView {
   openModal: boolean;
@@ -34,6 +36,7 @@ interface editierenView {
     etappe: string;
     liedtext: string;
   };
+  getIdKommentar: (e: React.MouseEvent<HTMLButtonElement>) => void
 
   setUpdateData: React.Dispatch<
     React.SetStateAction<{
@@ -67,7 +70,8 @@ const EditierenView: React.FC<editierenView> = ({
   updateImage,
   deleteSpecificAudio,
   createSpecificAudio,
-  getAudio
+  getAudio,
+  getIdKommentar
 }) => {
   return (
     <div>
@@ -158,10 +162,10 @@ const EditierenView: React.FC<editierenView> = ({
                       }
                     >
                       <option
-                        selected={updateData.etappe === "vorkathechumenal"}
-                        value="vorkathechumenal"
+                        selected={updateData.etappe === "Vorkatechumenat"}
+                        value="Vorkatechumenat"
                       >
-                        Vorkathechumenal
+                        Vorkatechumenat
                       </option>
                       <option
                         selected={updateData.etappe === "liturgisch"}
@@ -176,10 +180,10 @@ const EditierenView: React.FC<editierenView> = ({
                         Katechumenat
                       </option>
                       <option
-                        selected={updateData.etappe === "Wahl"}
-                        value="Wahl"
+                        selected={updateData.etappe === "Auserwählung"}
+                        value="Auserwählung"
                       >
-                        Wahl
+                        Auserwählung
                       </option>
                     </select>
                   </div>
@@ -213,6 +217,7 @@ const EditierenView: React.FC<editierenView> = ({
                                   className="ms-4"
                                   style={{ all: "unset" }}
                                   value={data}
+                                  name="erschaffen"
                                   onClick={getSpecificAudio}
                                 >
                                   <BiSolidCommentDetail
@@ -252,13 +257,23 @@ const EditierenView: React.FC<editierenView> = ({
                                             {kdata.name}
                                           </p>
                                           <div className="d-flex justify-content-around ">
-                                            <p style={{ color: "black" }}>
+                                            {/* <p style={{ color: "black" }}>
                                               {" "}
                                               {new Date(
                                                 kdata.created_at
                                               ).toLocaleDateString()}
-                                            </p>
+                                            </p> */}
                                             <div className="d-flex ms-1">
+                                            <button
+                                            value={kdata.id}
+                                            name="bearbeiten"
+                                            onClick={getIdKommentar}
+                                            className="me-2" style={{all: "unset"}}>
+                                                <MdEdit
+                                                size={25}
+                                                color="red"
+                                                />
+                                              </button>
                                               <button
                                                 value={kdata.id}
                                                 style={{ all: "unset" }}
@@ -271,6 +286,7 @@ const EditierenView: React.FC<editierenView> = ({
                                                   color="red"
                                                 />
                                               </button>
+                                            
                                             </div>
                                           </div>
                                         </div>

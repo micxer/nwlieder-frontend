@@ -68,15 +68,15 @@ const HomeView: React.FC<Info> = ({
         </button>
         <button
           className="btn  col-auto ms-2  rounded-pill"
-          value={"vorkathechumenal"}
+          value={"Vorkatechumenat"}
           onClick={(e) => startFilter(e)}
           style={{
             backgroundColor:
-              filterLied === "vorkathechumenal" ? "#D9D7D7" : "#F2F2F2",
+              filterLied === "Vorkatechumenat" ? "#D9D7D7" : "#F2F2F2",
             color: "#535353",
           }}
         >
-          Vorkathechumenal
+          Vorkatechumenat
         </button>
         <button
           className="btn  col-auto ms-2  rounded-pill"

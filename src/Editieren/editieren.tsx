@@ -6,6 +6,7 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Spinner from "../spinner/reload";
 
+
 interface editieren {
   openModal: boolean;
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -42,23 +43,31 @@ const Editieren: React.FC<editieren> = ({
   const [reload, setReload] = useState(false);
   const [image, setImage] = useState<File | null>();
   const [audio, setAudio] = useState<File | null>();
+  const [kommentarrolle, setKommentarrolle] = useState("");
+  const [kommentarId, setKommentarId] = useState("")
+
 
   const getSpecificAudio = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setOpenModalKommentare(true);
+    setKommentarrolle(e.currentTarget.name);
     setEspecificAudio(e.currentTarget.value);
   };
 
-  const getAudio = async (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const getIdKommentar = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setOpenModalKommentare(true);
+    setKommentarrolle(e.currentTarget.name);
+    setKommentarId(e.currentTarget.value)
 
+  }
+
+  const getAudio = async (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     if (e.target.files && e.target.files.length > 0) {
       await setAudio(e.target.files[0]);
     }
-
-  }
+  };
 
   const createSpecificAudio = async (
     e: React.MouseEvent<HTMLButtonElement>
@@ -80,7 +89,10 @@ const Editieren: React.FC<editieren> = ({
     };
     setReload(true);
     try {
-      await fetch(`${process.env.REACT_APP_API_URL}/audioCreate/${id}`, fetchOptions)
+      await fetch(
+        `${process.env.REACT_APP_API_URL}/audioCreate/${id}`,
+        fetchOptions
+      )
         .then((response) => response.json())
         .then((data) => {
           {
@@ -90,7 +102,6 @@ const Editieren: React.FC<editieren> = ({
       console.log("cual es el error", error);
     }
 
-    
     setReload(false);
   };
 
@@ -183,9 +194,7 @@ const Editieren: React.FC<editieren> = ({
     }
   };
 
-  const [extractIdDeleteKommentar, setExtractIdDeleteKommentar] = useState<
-    string
-  >();
+  const [extractIdDeleteKommentar, setExtractIdDeleteKommentar] = useState<string>();
 
   const onClickFunction = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -194,34 +203,31 @@ const Editieren: React.FC<editieren> = ({
   };
 
   const deleteKommentar = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    const urlKommentareDelete = `${process.env.API_URL}/kommentare/${extractIdDeleteKommentar}`;
+    const urlKommentareDelete = `${process.env.REACT_APP_API_URL}/kommentare/${extractIdDeleteKommentar}`;
     const fetchOptionsKommentare = {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
     };
-    setReload(true)
+    setReload(true);
     try {
-    await fetch(urlKommentareDelete, fetchOptionsKommentare)
-      .then((response) => response.json())
-      .then((data) => console.log(data));
+      await fetch(urlKommentareDelete, fetchOptionsKommentare)
+        .then((response) => response.json())
+        .then((data) => console.log(data));
 
-    setModalAlert(true);
-    openModalDelete(e);
-    }
-    catch(error) {
-      console.log({message: "the Commentar was not deleted"})
+      setModalAlert(true);
+      openModalDelete(e);
+    } catch (error) {
+      console.log({ message: "the Commentar was not deleted" });
     }
 
-    setReload(false)
-    
+    setReload(false);
   };
 
   const url = `${process.env.REACT_APP_API_URL}/lied/${id}`;
 
   const updateLied = async () => {
-
     const updateLied = new FormData();
     if (image) {
       updateLied.append("image", image);
@@ -237,26 +243,24 @@ const Editieren: React.FC<editieren> = ({
     };
     setReload(true);
     try {
-
-    await fetch(url, fetchOptions)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("doenst work");
-        } else {
-          return response.json();
-        }
-      })
-      .then(async (data) => {
-        setSended(data);
-      })
-      .catch(() => {
-        console.error("update dont had worked");
-      }); 
-    } catch(error) {
-      console.log({message: "etwas ist schiff gelaufen", error});
+      await fetch(url, fetchOptions)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("doenst work");
+          } else {
+            return response.json();
+          }
+        })
+        .then(async (data) => {
+          setSended(data);
+        })
+        .catch(() => {
+          console.error("update dont had worked");
+        });
+    } catch (error) {
+      console.log({ message: "etwas ist schiff gelaufen", error });
     }
 
-   
     setReload(false);
   };
 
@@ -299,62 +303,68 @@ const Editieren: React.FC<editieren> = ({
 
   return (
     <div>
-      {
-        reload === true ? <Spinner/> :
-      <div>
-      <Kommentare
-        openModal={openModalKommentare}
-        setOpenModal={setOpenModalKommentare}
-        data={data}
-        aktuelLied={amam}
-        level={level}
-        specificAudio={specificAudio}
-        setReload={setReload}
-      />
-      <EditierenView
-        openModal={openModal}
-        setOpenModal={setOpenModal}
-        data={data}
-        aktuelLied={aktuelLied}
-        id={id}
-        setOpenModalKommentare={setOpenModalKommentare}
-        updateData={updateData}
-        setUpdateData={setUpdateData}
-        sendInfo={sendInfo}
-        getSpecificAudio={getSpecificAudio}
-        modalAlert={ModalAlert}
-        disable={disable}
-        kommentare={kommentare}
-        openModalDelete={openModalDelete}
-        modalDelete={modalDelete}
-        onClickFunction={onClickFunction}
-        updateImage={updateImage}
-        deleteSpecificAudio={deleteSpecificAudio}
-        createSpecificAudio={createSpecificAudio}
-        getAudio={getAudio}
-      />
-      <Modal
-        show={modalDelete}
-        onHide={() => setModalDelete(!modalDelete)}
-        centered
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Kommentar löschen</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          Bist du sicher, dass du diesen Kommentar löschen möchtest!
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={openModalDelete}>
-            Nein
-          </Button>
-          <Button variant="primary" onClick={deleteKommentar}>
-            Ja
-          </Button>
-        </Modal.Footer>
-      </Modal>
-      </div>
-      }
+      {reload === true ? (
+        <Spinner />
+      ) : (
+        <div>
+          <Kommentare
+            openModal={openModalKommentare}
+            setOpenModal={setOpenModalKommentare}
+            data={data}
+            aktuelLied={amam}
+            level={level}
+            specificAudio={specificAudio}
+            setReload={setReload}
+            kommentarrolle={kommentarrolle}
+            kommentarId={kommentarId}
+            
+
+          />
+          <EditierenView
+            openModal={openModal}
+            setOpenModal={setOpenModal}
+            data={data}
+            aktuelLied={aktuelLied}
+            id={id}
+            setOpenModalKommentare={setOpenModalKommentare}
+            updateData={updateData}
+            setUpdateData={setUpdateData}
+            sendInfo={sendInfo}
+            getSpecificAudio={getSpecificAudio}
+            modalAlert={ModalAlert}
+            disable={disable}
+            kommentare={kommentare}
+            openModalDelete={openModalDelete}
+            modalDelete={modalDelete}
+            onClickFunction={onClickFunction}
+            updateImage={updateImage}
+            deleteSpecificAudio={deleteSpecificAudio}
+            createSpecificAudio={createSpecificAudio}
+            getAudio={getAudio}
+            getIdKommentar={getIdKommentar}
+          />
+          <Modal
+            show={modalDelete}
+            onHide={() => setModalDelete(!modalDelete)}
+            centered
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>Kommentar löschen</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              Bist du sicher, dass du diesen Kommentar löschen möchtest!
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={openModalDelete}>
+                Nein
+              </Button>
+              <Button variant="primary" onClick={deleteKommentar}>
+                Ja
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        </div>
+      )}
     </div>
   );
 };

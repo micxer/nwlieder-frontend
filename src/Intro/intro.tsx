@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import  IntroView from "./introView";
-import {useParams, useLocation } from "react-router-dom";
+import {useLocation } from "react-router-dom";
 import IntroMobileView from './introMobileView';
 import MediaQuery from 'react-responsive';
 

@@ -125,10 +125,10 @@ const EditierenView: React.FC<editierenView> = ({
                     >
                       <option value="" >Wählen Sie eine Option aus</option>
                       <option
-                        selected={createData.etappe === "vorkathechumenal"}
-                        value="vorkathechumenal"
+                        selected={createData.etappe === "Vorkatechumenat"}
+                        value="Vorkatechumenat"
                       >
-                        Vorkathechumenal
+                        Vorkatechumenat
                       </option>
                       <option
                         selected={createData.etappe === "liturgisch"}
@@ -143,8 +143,8 @@ const EditierenView: React.FC<editierenView> = ({
                         Katechumenat
                       </option>
                       <option
-                        selected={createData.etappe === "Katechumenat"}
-                        value="Wahl"
+                        selected={createData.etappe === "Auserwählung"}
+                        value="Auserwählung"
                       >
                         Auserwählung
                       </option>
