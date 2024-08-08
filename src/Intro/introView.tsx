@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import Logo from "./Bild.jpg";
 import { FaSearch } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import './intro.css';
 
 interface introView {
@@ -12,7 +12,6 @@ interface introView {
 }
 
 const IntroView: React.FC<introView> = ({
-  getSearch,
   firstSearch,
   setFirstSearch,
   level,
@@ -26,8 +25,6 @@ console.log(level);
     await navigate("/home?param1=" + param1, {state: { level }} );
   //  await navigate("/home", { state: { level }});
   };
-
-  const [param2, setParam2] = useState("");
 
   const auswahl = async (e: React.MouseEvent<HTMLButtonElement>) => {
     await navigate("/home?param2=" + e.currentTarget.value, {state: { level }});
@@ -75,11 +72,11 @@ console.log(level);
         </button>
         <button
           className="btn  col-auto ms-3 btn rounded-pill"
-          value={"vorkathechumenal"}
+          value={"Vorkatechumenat"}
           onClick={(e) => auswahl(e)}
           style={{ backgroundColor: "D94141", color: "666666" }}
         >
-          Vorkathechumenal
+          Vorkatechumenat
         </button>
         <button
           className="btn  col-auto ms-3 btn rounded-pill"
@@ -92,11 +89,11 @@ console.log(level);
 
         <button
           className="btn col-auto ms-3 btn rounded-pill"
-          value={"Wahl"}
+          value={"Auserwählung"}
           onClick={(e) => auswahl(e)}
           style={{ backgroundColor: "#C2EDAD", color: "666666" }}
         >
-          Wahl
+          Auserwählung
         </button>
 
         <button

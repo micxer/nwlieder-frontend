@@ -74,11 +74,11 @@ const IntroMobileView: React.FC<introView> = ({
         </button>
         <button
           className="btn  col-auto ms-3 btn rounded-pill"
-          value={"vorkathechumenal"}
+          value={"Vorkatechumenat"}
           onClick={(e) => auswahl(e)}
           style={{ backgroundColor: "D94141", color: "666666" }}
         >
-          Vorkathechumenal
+          Vorkatechumenat
         </button>
         <button
           className="btn col-auto ms-3 btn rounded-pill"
@@ -99,11 +99,11 @@ const IntroMobileView: React.FC<introView> = ({
 
         <button
           className="btn col-auto ms-3 btn rounded-pill"
-          value={"Wahl"}
+          value={"Auserwählung"}
           onClick={(e) => auswahl(e)}
           style={{ backgroundColor: "#C2EDAD", color: "666666" }}
         >
-          Wahl
+          Auserwählung
         </button>
 
        

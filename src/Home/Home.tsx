@@ -2,11 +2,12 @@ import React, { useEffect, useState, MouseEvent } from "react";
 import { useLocation, useSearchParams, useNavigate } from "react-router-dom";
 import HomeView from "./HomeVIew";
 import Erschaffen from "../erschaffen/erschaffen";
-import HomeMobileView from "./HomeMobileVIew copy";
+import HomeMobileView from "./HomeMobileVIew";
 import "./Home.css";
 import { Hola } from "../interfaces";
-import { useLocalStorage } from "react-use";
+import { useLocalStorage, useScratch } from "react-use";
 import MediaQuery from "react-responsive";
+import Spinner from "../spinner/reload";
 
 const Home: React.FC<Hola> = () => {
   const location = useLocation();
@@ -19,17 +20,53 @@ const Home: React.FC<Hola> = () => {
 
   const [data, setData] = useState<Hola[]>([]);
   const [specificLied, setSpecificLied] = useState("");
-  const [wechselLied, setWechselLied] = useState(false);
-  const [aktuelLied, setAktuelLied] = useState<number>(0);
   const [openModal, setOpenModal] = useState(false);
+  const [reload, setReload] = useState(false);
   const [gespeicherteFavoriten, setGespeicherteFavoriten] = useLocalStorage<
     number[]
   >("favoriten");
   const [favoriten, setFavoriten] = useState<number[]>(
     gespeicherteFavoriten === undefined ? [] : gespeicherteFavoriten
   );
+  const [verzeichnise, setVerzeichnise] = useState<string[]>([
+    "Etappen",
+    "Thematisch",
+    "Liturgisch",
+  ]);
+  const liturgisch: string[] = [
+    "Advent-Weinachten",
+    "Fastenzeit",
+    "Ostern-Pfingsten",
+    "Jahrenkreis",
+  ];
 
-  const [hello, setHello] = useState();
+  const thematisch: string[] = [
+    "Marienlieder",
+    "Lieder für die Kinder",
+    "Einzugslieder",
+    "Frieden-Gabenbereitung",
+    "Brotbrechen",
+    "Kelchkommunion",
+    "Auszugslieder",
+  ];
+
+  const [gespeicherteLevel, setGespeicherteLevel] = useLocalStorage(
+    "level",
+    ""
+  );
+
+  const [gespeicherteFilterLied, setGespeicherteFilterLied] = useLocalStorage(
+    "zweiteKategorie",
+    ""
+  );
+
+  const [ersteKategorie, setErsteKategorie] = useState<string>(
+    param2 === "" ? "Alle" : param2 === null ? "Alle" : "Etappen"
+  );
+  const [zweiteKategorie, setZweiteKategorie] = useState(
+    param2 === null ? gespeicherteFilterLied : param2
+  );
+
   const [gespeicherteSucht, setGespeicherteSucht] = useLocalStorage(
     "sucht",
     ""
@@ -38,24 +75,11 @@ const Home: React.FC<Hola> = () => {
   const [sucht, setSucht] = useState(
     param1 === null ? `${gespeicherteSucht}` : `${param1}`
   );
-  const [gespeicherteLevel, setGespeicherteLevel] = useLocalStorage(
-    "level",
-    ""
-  );
 
   const level = level2 === undefined ? `${gespeicherteLevel}` : level2;
 
-  const [gespeicherteFilterLied, setGespeicherteFilterLied] = useLocalStorage(
-    "filterLied",
-    ""
-  );
-  const [filterLied, setFilterLied] = useState(
-    param2 === null ? gespeicherteFilterLied : param2
-  );
-
   const fetchData = async () => {
     try {
-      console.log(process.env);
       const url = `${process.env.REACT_APP_API_URL}/lied/`;
       const response = await fetch(url);
       const data = await response.json();
@@ -66,6 +90,42 @@ const Home: React.FC<Hola> = () => {
     }
   };
 
+  const deleteLiedFunction = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    const fetchOptions = {
+      method: "DELETE",
+    };
+    const fetchOptionsKommentare = {
+      method: "DELETE",
+    };
+    const urlDeleteKommentareByLied = `${process.env.REACT_APP_API_URL}/kommentarebylied/${e.currentTarget.value}`
+    const urlDelete = `${process.env.REACT_APP_API_URL}/lied/${e.currentTarget.value}`;
+    setReload(true);
+
+    try {
+      await fetch(urlDeleteKommentareByLied, fetchOptionsKommentare).then((response) => response.json()).then((data) => {
+        return (console.log("die kommentaren sing geloescht worden"))
+      })
+    } 
+    catch(error) {
+      console.log({Message: "die Kommentare koeonnen nicht geloescht werden"})
+    }
+    try {
+      await fetch(urlDelete, fetchOptions)
+        .then((response) => response.json())
+        .then((data) => {
+          return alert("dieses Lied wurde erfolgreich entfernt");
+        });
+    } catch (error) {
+      console.log({ message: "delete Lied error", error });
+    }
+    setReload(false);
+  };
+
+  const getVerzeichnis = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setErsteKategorie(e.currentTarget.value);
+  };
 
   const suchen = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -91,24 +151,27 @@ const Home: React.FC<Hola> = () => {
     data?.liedtext?.toLowerCase().includes(sucht?.toLowerCase())
   );
 
-  
-
   const startFilter = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    setFilterLied(e?.currentTarget?.value);
-    if (filterLied === "" && sucht !== "") {
+    setZweiteKategorie(e?.currentTarget?.value);
+    if (zweiteKategorie === "" && sucht !== "") {
       setSucht("");
     }
   };
 
   const filter =
-    filterLied === ""
+    ersteKategorie === "Alle"
       ? gefilterteElemente
-      : filterLied === "Favoriten"
+      : ersteKategorie === "Favoriten"
       ? gefilterteElemente.filter((data) =>
           favoriten.includes(data?.id === undefined ? 0 : data.id)
         )
-      : gefilterteElemente.filter((data) => data?.etappe === filterLied);
+      : gefilterteElemente.filter(
+          (data) =>
+            data?.etappe === zweiteKategorie ||
+            data?.thematisch === zweiteKategorie ||
+            data?.liturgisch === zweiteKategorie
+        );
 
   const infoToLied = {
     level: level,
@@ -127,10 +190,6 @@ const Home: React.FC<Hola> = () => {
     } catch (error) {
       console.log(`problem bringSpecificLied ${error}`);
     }
-
-    //  setTimeout(() => {
-    //   setWechselLied(false);
-    //  }, 2000)
   };
 
   useEffect(() => {
@@ -154,7 +213,7 @@ const Home: React.FC<Hola> = () => {
   }, [level]);
 
   useEffect(() => {
-    setGespeicherteFilterLied(filterLied);
+    setGespeicherteFilterLied(zweiteKategorie);
 
     if (location.search) {
       // Eliminar los parámetros de la URL
@@ -168,7 +227,7 @@ const Home: React.FC<Hola> = () => {
       window.history.replaceState({}, "", newUrl);
     }
     fetchData();
-  }, [filterLied]);
+  }, [zweiteKategorie]);
 
   useEffect(() => {
     setGespeicherteFavoriten(favoriten);
@@ -176,45 +235,63 @@ const Home: React.FC<Hola> = () => {
 
   return (
     <div className="container">
-      {
-        level === "" ? <div/> :
-     
-      <div className="col">
-        {" "}
-        <MediaQuery minWidth={1224}>
-          <HomeView
-            data={filter}
-            hola={bringSpecificLied}
-            suchen={suchen}
-            filterLied={filterLied}
-            setsucht={setSucht}
-            sucht={sucht}
-            startFilter={startFilter}
-            setOpenModal={setOpenModal}
-            level={level}
-            getFavorite={getFavorite}
-            favoriten={favoriten}
-          />{" "}
-        </MediaQuery>
-        <MediaQuery maxWidth={1224}>
-          <HomeMobileView
-            data={filter}
-            hola={bringSpecificLied}
-            suchen={suchen}
-            filterLied={filterLied}
-            setsucht={setSucht}
-            sucht={sucht}
-            startFilter={startFilter}
-            setOpenModal={setOpenModal}
-            level={level}
-            getFavorite={getFavorite}
-            favoriten={favoriten}
-          />
-        </MediaQuery>
-        <Erschaffen openModal={openModal} setOpenModal={setOpenModal} />
-      </div>
+      {level === "" ? (
+        <div />
+      ) : (
+        <div >
+          {" "}
+          {
+            reload === true ? <Spinner/> :
+         
+          <div className="col">
+          <MediaQuery minWidth={1224}>
+            <HomeView
+              data={filter}
+              hola={bringSpecificLied}
+              suchen={suchen}
+              zweiteKategorie={zweiteKategorie}
+              setsucht={setSucht}
+              sucht={sucht}
+              startFilter={startFilter}
+              setOpenModal={setOpenModal}
+              level={level}
+              getFavorite={getFavorite}
+              favoriten={favoriten}
+              verzeichnise={verzeichnise}
+              getVerzeichnis={getVerzeichnis}
+              ersteKategorie={ersteKategorie}
+              liturgisch={liturgisch}
+              thematisch={thematisch}
+              deleteLiedFunction={deleteLiedFunction}
+            />{" "}
+          </MediaQuery>
+          <MediaQuery maxWidth={1224}>
+            <HomeMobileView
+              data={filter}
+              hola={bringSpecificLied}
+              suchen={suchen}
+              zweiteKategorie={zweiteKategorie}
+              setsucht={setSucht}
+              sucht={sucht}
+              startFilter={startFilter}
+              setOpenModal={setOpenModal}
+              level={level}
+              getFavorite={getFavorite}
+              favoriten={favoriten}
+              verzeichnise={verzeichnise}
+              getVerzeichnis={getVerzeichnis}
+              ersteKategorie={ersteKategorie}
+              liturgisch={liturgisch}
+              thematisch={thematisch}
+            />
+          </MediaQuery>
+          </div> }
+          <Erschaffen openModal={openModal} setOpenModal={setOpenModal} />
+        </div>
 
-    }
+   
+          
+      )}
     </div>
   );
 };

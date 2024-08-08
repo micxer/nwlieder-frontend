@@ -1,15 +1,13 @@
 import React from "react";
 import Modal from "react-bootstrap/Modal";
-import { Hola } from "../interfaces";
 import "./erschaffen.css";
 import ModalAlert from "../modal/modal";
-import { BiSolidCommentDetail } from "react-icons/bi";
-import { create } from "domain";
-import { FaPlus } from "react-icons/fa6";
 
 interface editierenView {
   openModal: boolean;
   modalAlert: boolean;
+  liturgischverzeichnis: string[];
+  thematischverzeichnis: string[];
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
   getSpecificAudio: (e: React.MouseEvent<HTMLButtonElement>) => void;
   sendInfo: (e: React.FormEvent<HTMLFormElement>) => void;
@@ -31,6 +29,8 @@ interface editierenView {
       audios: string[];
       etappe: string;
       liedtext: string;
+      liturgisch: string;
+      thematisch: string;
     }>
   >;
 }
@@ -46,8 +46,9 @@ const EditierenView: React.FC<editierenView> = ({
   disable,
   handleImageChange,
   modalAlert,
+  liturgischverzeichnis,
+  thematischverzeichnis,
 }) => {
-
   return (
     <div>
       <Modal show={openModal} onHide={() => setOpenModal(!openModal)} size="lg">
@@ -112,10 +113,55 @@ const EditierenView: React.FC<editierenView> = ({
                   </div>
 
                   <div>
+                    <label className="form-label mt-3 subtitle">
+                      Liturgisches Verzeichnis
+                    </label>
+                    <select
+                      className="form-select"
+                      onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                        setCreateData((data) => ({
+                          ...data,
+                          liturgisch: e.target.value ? e.target.value : ""
+                        }));
+                      }}
+                    >
+                      <option className="form-option" value="">
+                        {" "}
+                        Wählen Sie eine Option{" "}
+                      </option>
+
+                      {liturgischverzeichnis.map((data) => (
+                        <option value={data}>{data}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="form-label subtitle mt-3">
+                      Thematisches Verzeichnis
+                    </label>
+                    <select
+                      className="form-select"
+                      onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                        setCreateData((data) => ({
+                          ...data,
+                          thematisch: e.target.value ? e.target.value : ""
+                        }));
+                      }}
+                    >
+                      <option className="form-option" value="">
+                        {" "}
+                        Wählen Sie eine Option{" "}
+                      </option>
+                      {thematischverzeichnis.map((data) => (
+                        <option className="form-option"> {data} </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
                     <label className="form-label mt-3 subtitle">Etappe</label>
                     <select
                       className="form-select"
-                      
                       onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
                         setCreateData((hola) => ({
                           ...hola,
@@ -123,7 +169,7 @@ const EditierenView: React.FC<editierenView> = ({
                         }))
                       }
                     >
-                      <option value="" >Wählen Sie eine Option aus</option>
+                      <option value="">Wählen Sie eine Option aus</option>
                       <option
                         selected={createData.etappe === "Vorkatechumenat"}
                         value="Vorkatechumenat"
@@ -153,7 +199,6 @@ const EditierenView: React.FC<editierenView> = ({
                   <div className="mb-5">
                     <label className="form-label mt-3 subtitle">mp3 file</label>
                     &nbsp;&nbsp;
-                  
                     <form className="mt-2" encType="multipart/form-data">
                       <input
                         className="form-control"
@@ -162,7 +207,6 @@ const EditierenView: React.FC<editierenView> = ({
                         type="file"
                         accept="audio/*"
                         onChange={handleImageChange}
-                        
                       />
                     </form>
                     {/* {createData?.audios?.map((data) => (

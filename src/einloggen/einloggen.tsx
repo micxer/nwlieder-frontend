@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import EinloggenView from './einloggenView';
-import {useNavigate,  } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 
 

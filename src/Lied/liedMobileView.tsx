@@ -183,11 +183,9 @@ const LiedMobileView: React.FC<liedView> = ({
             <div className="col-auto">
               {audio === "" ? (
                 <div className="d-flex justify-content-center mt-3">
-                  <div className="col-auto mt-2">
-                    <p>Versionen</p>
-                  </div>
+                 
                   <div className="col-auto text-center">
-                    {datei?.audios === undefined || null ? (
+                    {datei?.audios === null ? (
                       <div>no hay cantos </div>
                     ) : (
                       datei?.audios?.map((data, index) => (
@@ -197,7 +195,7 @@ const LiedMobileView: React.FC<liedView> = ({
                             setAudio(data)
                           }
                         >
-                          v{index + 1}
+                          V{index + 1}
                         </button>
                       ))
                     )}{" "}

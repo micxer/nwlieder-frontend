@@ -2,19 +2,17 @@ import React, { MouseEvent } from "react";
 import "./Home.css";
 import { Hola } from "../interfaces";
 import { FaPlus } from "react-icons/fa6";
-import { FaTrash } from "react-icons/fa";
 import { MdOutlineStarOutline, MdOutlineStar } from "react-icons/md";
+import { getByDisplayValue } from "@testing-library/react";
+
 
 interface Info {
   hola: (e: MouseEvent<HTMLButtonElement>) => Promise<void>;
-
   data: Hola[];
-  verzeichnise: string[];
   suchen: (e: React.FormEvent<HTMLFormElement>) => void;
   setsucht: React.Dispatch<React.SetStateAction<string>>;
   sucht: string;
   startFilter: (e: MouseEvent<HTMLButtonElement>) => void;
-  ersteKategorie: string | undefined;
   zweiteKategorie?: string;
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
   level: string | null;
@@ -23,10 +21,11 @@ interface Info {
   getVerzeichnis: (e: React.MouseEvent<HTMLButtonElement>) => void;
   thematisch: string[];
   liturgisch: string[];
-  deleteLiedFunction: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
+  ersteKategorie: string | undefined;
+  verzeichnise: string[];
 }
 
-const HomeView: React.FC<Info> = ({
+const HomeMobileView: React.FC<Info> = ({
   data,
   hola,
   suchen,
@@ -38,19 +37,18 @@ const HomeView: React.FC<Info> = ({
   level,
   getFavorite,
   favoriten,
-  verzeichnise,
-  getVerzeichnis,
-  ersteKategorie,
-  liturgisch,
   thematisch,
-  deleteLiedFunction
+  liturgisch,
+  ersteKategorie,
+  verzeichnise,
+  getVerzeichnis
 }) => {
   return (
     <div className=" containter">
       <div className="text-center">
         <div className="row">
-          <div className=" d-flex justify-content-center align-items-center">
-            <div className="col-5">
+          <div className="col d-flex justify-content-center align-items-center">
+            <div className="col-9">
               <input
                 type="text"
                 value={sucht}
@@ -58,29 +56,27 @@ const HomeView: React.FC<Info> = ({
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setsucht(e.target.value)
                 }
-                className="form-control form-control-lg mb   rounded-pill"
+                className="form-control form-control-lg mb-5 mt-3 rounded-pill"
               />
             </div>
           </div>
-          <div
-            className="your-required-wrapper"
-            style={{ width: 100, height: 30 }}
-          ></div>
         </div>
+        <div className="scrollable-buttons">
         <div className="d-flex justify-content-center mb-3">
-          <button
-            className="btn  col-auto me-2  rounded-pill"
-            value={"Alle"}
-            onClick={(e) => getVerzeichnis(e)}
-            style={{
-              backgroundColor: ersteKategorie === "Alle" ? "#F16262" : "white",
-              border: ersteKategorie === "Alle" ? "white" : "#F16262",
-              color: ersteKategorie === "Alle" ? "white" : "#F16262",
-            }}
-          >
-            {" "}
-            Alle
-          </button>
+        <button
+              className="btn  col-auto me-2 ms-5 rounded-pill"
+              value={"Alle"}
+              onClick={(e) => getVerzeichnis(e)}
+              style={{
+                backgroundColor: ersteKategorie === "Alle" ? "#F16262" : "white",
+                border: ersteKategorie === "Alle" ? "white" : "#F16262",
+                color: ersteKategorie === "Alle" ? "white" : "#F16262",
+               
+              }}
+            >
+              {" "}
+              Alle
+            </button>
           {verzeichnise.map((data) => (
             <button
               onClick={getVerzeichnis}
@@ -97,22 +93,25 @@ const HomeView: React.FC<Info> = ({
               {data}{" "}
             </button>
           ))}
-          <button
-            className="btn col-auto  btn rounded-pill"
-            value={"Favoriten"}
-            onClick={(e) => getVerzeichnis(e)}
-            style={{
-              backgroundColor:
-                zweiteKategorie === "Favoriten" ? "#E8C917" : "#EEDB73",
-              color: "white",
-            }}
-          >
-            Favoriten
-          </button>{" "}
+           <button
+              className="btn col-auto  btn rounded-pill"
+              value={"Favoriten"}
+              onClick={(e) => getVerzeichnis(e)}
+              style={{
+                backgroundColor:
+                  zweiteKategorie === "Favoriten" ? "#E8C917" : "#EEDB73",
+                color: "white",
+              }}
+            >
+              Favoriten
+            </button>{" "}
         </div>
+        </div>
+        <div className="scrollable-buttons">
         {ersteKategorie === "Etappen" ? (
           <div>
             {" "}
+          
             <button
               className="btn  col-auto ms-2  rounded-pill"
               value={"Vorkatechumenat"}
@@ -161,13 +160,14 @@ const HomeView: React.FC<Info> = ({
             >
               Auserwählung
             </button>
+           
           </div>
         ) : ersteKategorie === "Liturgisch" ? (
           <div className="d-flex justify-content-center">
             {liturgisch.map((data) => (
               <button
-                value={data}
-                onClick={(e) => startFilter(e)}
+              value={data}
+              onClick={(e) => startFilter(e)}
                 style={{
                   backgroundColor: "#F16262",
                   color: "white",
@@ -182,8 +182,8 @@ const HomeView: React.FC<Info> = ({
           <div className="d-flex justify-content-center">
             {thematisch.map((data) => (
               <button
-                value={data}
-                onClick={(e) => startFilter(e)}
+              value={data}
+              onClick={(e) => startFilter(e)}
                 style={{
                   backgroundColor: "#F16262",
                   color: "white",
@@ -194,64 +194,47 @@ const HomeView: React.FC<Info> = ({
               </button>
             ))}
           </div>
-        ) : zweiteKategorie === "" || zweiteKategorie === "Favoriten" ? (
-          <div />
-        ) : (
-          <div />
-        )}
+        ) : zweiteKategorie === "" || zweiteKategorie === "Favoriten"  ? <div/>  : <div/>  }
+      </div>
       </div>
       <div>
         <div className="mt-5">
           {data.map((props, index, array) => (
             <div className="" key={index}>
-              <ul className="list-group col ms-5 me-5">
-                <li
-                  value={index}
-                  style={{
-                    backgroundColor:
-                      props.etappe === "liturgisch"
-                        ? "#fefff2"
-                        : props.etappe === "Katechumenat"
-                        ? "#f8f7ff"
-                        : props.etappe === "Auserwählung"
-                        ? "#E3F4DB"
-                        : "white",
-                  }}
-                  className=" list-group-item mt-2 shadow-sm rounded-pill"
-                >
-                  <div className="d-flex justify-content-between">
-                    <button
-                      onClick={hola}
-                      value={props.id}
-                      style={{ all: "unset" }}
-                    >
+              <ul className="list-group col ms-2 me-2">
+                  <li
+                    value={index}
+                    style={{
+                      backgroundColor:
+                        props.etappe === "liturgisch"
+                          ? "#fefff2"
+                          : props.etappe === "Katechumenat"
+                          ? "#f8f7ff"
+                          : "white",
+                    }}
+                    className=" list-group-item mt-2 shadow-sm rounded-pill"
+                  >
+                    <div className="d-flex justify-content-between">
+                      <div>
+                      <button value={props.id} onClick={hola} style={{all: "unset"}}>
                       <div className="text">{props.name}</div>
-                    </button>
-                    <div>
-                      <button
-                        value={props.id}
-                        style={{ all: "unset" }}
-                        onClick={(e) => getFavorite(e)}
-                      >
-                        {props?.id !== undefined &&
-                        favoriten.includes(props.id) ? (
-                          <MdOutlineStar size={30} color="#D94141" />
-                        ) : (
-                          <MdOutlineStarOutline size={30} color="#D94141" />
-                        )}
                       </button>
-                      {level === "admin" ? (
-                        <button className="ms-2" style={{ all: "unset" }} value={props?.id}
-                        onClick={(e) => deleteLiedFunction(e)}
-                        >
-                          <FaTrash color="#D94141" />
-                        </button>
-                      ) : (
-                        <div />
-                      )}
+                      </div>
+                   
+                    <div>
+                      <button value={props.id} style={{all: "unset"}} onClick={getFavorite}>
+                        {
+                          props.id !== undefined &&
+                          favoriten.includes(props.id) ?  <MdOutlineStar size={23} color="#D94141"/> : <MdOutlineStarOutline size={23} color="#D94141"/>
+                        }
+                       
+                      </button>
+                      </div>
+
                     </div>
-                  </div>
-                </li>
+                   
+                  </li>
+               
               </ul>
             </div>
           ))}
@@ -273,4 +256,4 @@ const HomeView: React.FC<Info> = ({
   );
 };
 
-export default HomeView;
+export default HomeMobileView;

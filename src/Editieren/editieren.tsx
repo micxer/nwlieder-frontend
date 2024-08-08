@@ -6,7 +6,6 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Spinner from "../spinner/reload";
 
-
 interface editieren {
   openModal: boolean;
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -16,7 +15,7 @@ interface editieren {
   setAktuelLied: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const Editieren: React.FC<editieren> = ({
+ const Editieren: React.FC<editieren> = ({
   openModal,
   setOpenModal,
   data,
@@ -31,6 +30,8 @@ const Editieren: React.FC<editieren> = ({
     audios: [""],
     etappe: "",
     liedtext: "",
+    liturgisch: "",
+    thematisch: "",
   });
 
   const [specificAudio, setEspecificAudio] = useState("");
@@ -44,8 +45,24 @@ const Editieren: React.FC<editieren> = ({
   const [image, setImage] = useState<File | null>();
   const [audio, setAudio] = useState<File | null>();
   const [kommentarrolle, setKommentarrolle] = useState("");
-  const [kommentarId, setKommentarId] = useState("")
+  const [kommentarId, setKommentarId] = useState("");
 
+  const liturgisch: string[] = [
+    "Advent-Weinachten",
+    "Fastenzeit",
+    "Ostern-Pfingsten",
+    "Jahrenkreis",
+  ];
+
+  const thematisch: string[] = [
+    "Marienlieder",
+    "Lieder für die Kinder",
+    "Einzugslieder",
+    "Frieden-Gabenbereitung",
+    "Brotbrechen",
+    "Kelchkommunion",
+    "Auszugslieder",
+  ];
 
   const getSpecificAudio = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -58,9 +75,8 @@ const Editieren: React.FC<editieren> = ({
     e.preventDefault();
     setOpenModalKommentare(true);
     setKommentarrolle(e.currentTarget.name);
-    setKommentarId(e.currentTarget.value)
-
-  }
+    setKommentarId(e.currentTarget.value);
+  };
 
   const getAudio = async (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -173,6 +189,8 @@ const Editieren: React.FC<editieren> = ({
         audios: dataResponse[0].audios,
         etappe: dataResponse[0].etappe,
         liedtext: dataResponse[0].liedtext,
+        liturgisch: dataResponse[0].liturgisch || "",
+        thematisch: dataResponse[0].thematisch || ""
       }));
       return dataResponse;
     } catch (error) {
@@ -194,7 +212,9 @@ const Editieren: React.FC<editieren> = ({
     }
   };
 
-  const [extractIdDeleteKommentar, setExtractIdDeleteKommentar] = useState<string>();
+  const [extractIdDeleteKommentar, setExtractIdDeleteKommentar] = useState<
+    string
+  >();
 
   const onClickFunction = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -233,6 +253,7 @@ const Editieren: React.FC<editieren> = ({
       updateLied.append("image", image);
     }
 
+    console.log(updateData)
     Object.entries(updateData).forEach(([key, value]) => {
       updateLied.append(key, value.toString());
     });
@@ -317,8 +338,6 @@ const Editieren: React.FC<editieren> = ({
             setReload={setReload}
             kommentarrolle={kommentarrolle}
             kommentarId={kommentarId}
-            
-
           />
           <EditierenView
             openModal={openModal}
@@ -342,6 +361,8 @@ const Editieren: React.FC<editieren> = ({
             createSpecificAudio={createSpecificAudio}
             getAudio={getAudio}
             getIdKommentar={getIdKommentar}
+            liturgischverzeichnis={liturgisch}
+            thematischverzeichnis={thematisch}
           />
           <Modal
             show={modalDelete}

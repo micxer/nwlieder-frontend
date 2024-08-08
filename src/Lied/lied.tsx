@@ -26,6 +26,7 @@ const Lied: React.FC = ({}, props: audioPlayerProps) => {
   const { songIndex, songCount } = props;
 
 
+
   const [duration, setDuration] = useState(0);
   const [isReady, setIsReady] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -50,6 +51,7 @@ const Lied: React.FC = ({}, props: audioPlayerProps) => {
 
   const tosearch = hola[aktuelLied];
 
+
   const getLied = async () => {
     try {
       const url = `${process.env.REACT_APP_API_URL}/lied/${tosearch}`;
@@ -62,6 +64,7 @@ const Lied: React.FC = ({}, props: audioPlayerProps) => {
       console.log(error);
     }
   };
+ 
 
   const formatDurationDisplay = (duration: number) => {
     const min = Math.floor(duration / 60);

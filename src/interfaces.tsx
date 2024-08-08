@@ -10,6 +10,8 @@ export interface Hola {
   audios?: string[];
   etappe?: string;
   liedtext?: string;
+  liturgisch?: string;
+  thematisch?: string;
 }
 
 export interface KommentareInfo {

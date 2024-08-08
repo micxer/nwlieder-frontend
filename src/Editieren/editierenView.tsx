@@ -16,6 +16,8 @@ interface editierenView {
   aktuelLied: number;
   id?: string;
   modalAlert: boolean;
+  liturgischverzeichnis: string[];
+  thematischverzeichnis: string[];
   openModalDelete: (e: React.MouseEvent<HTMLButtonElement>) => void;
   kommentare: KommentareInfo | undefined;
   getSpecificAudio: (e: React.MouseEvent<HTMLButtonElement>) => void;
@@ -35,6 +37,8 @@ interface editierenView {
     audios: string[];
     etappe: string;
     liedtext: string;
+    liturgisch: string;
+    thematisch: string;
   };
   getIdKommentar: (e: React.MouseEvent<HTMLButtonElement>) => void
 
@@ -46,6 +50,8 @@ interface editierenView {
       audios: string[];
       etappe: string;
       liedtext: string;
+      liturgisch: string;
+      thematisch: string;
     }>
   >;
 }
@@ -71,7 +77,9 @@ const EditierenView: React.FC<editierenView> = ({
   deleteSpecificAudio,
   createSpecificAudio,
   getAudio,
-  getIdKommentar
+  getIdKommentar,
+  liturgischverzeichnis,
+  thematischverzeichnis
 }) => {
   return (
     <div>
@@ -147,6 +155,52 @@ const EditierenView: React.FC<editierenView> = ({
                       spellCheck="false"
                     ></textarea>
                     <label htmlFor="floatingTextarea2">Text</label>
+                  </div>
+                  <div>
+                    <label className="form-label mt-3 subtitle">
+                      Liturgisches Verzeichnis
+                    </label>
+                    <select
+                      className="form-select"
+                      onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                        setUpdateData((data) => ({
+                          ...data,
+                          liturgisch: e.target.value
+                        }));
+                      }}
+                    >
+                      <option className="form-option" value="">
+                        {" "}
+                        Wählen Sie eine Option{" "}
+                      </option>
+
+                      {liturgischverzeichnis.map((data) => (
+                        <option selected={updateData.liturgisch === data} value={data}>{data}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="form-label subtitle mt-3">
+                      Thematisches Verzeichnis
+                    </label>
+                    <select
+                      className="form-select"
+                      onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                        setUpdateData((data) => ({
+                          ...data,
+                          thematisch: e.target.value,
+                        }));
+                      }}
+                    >
+                      <option className="form-option" value="">
+                        {" "}
+                        Wählen Sie eine Option{" "}
+                      </option>
+                      {thematischverzeichnis.map((data) => (
+                        <option selected={updateData.thematisch === data} className="form-option"> {data} </option>
+                      ))}
+                    </select>
                   </div>
 
                   <div>

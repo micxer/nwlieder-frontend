@@ -11,8 +11,7 @@ const Intro:React.FC = () => {
     
    
      const location = useLocation();
-     const normal = location.state?.normal;
-     const admin = location.state?.admin
+     const admin = location.state?.admin;
 
     
 

@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ErschaffenVIew from "./erschaffenVIew";
-import { Hola } from "../interfaces";
-import Kommentare from "../Kommentare/kommentare";
-import { create } from "domain";
+
 
 interface erschaffen {
   openModal: boolean;
@@ -16,10 +14,29 @@ const Erschaffen: React.FC<erschaffen> = ({ openModal, setOpenModal }) => {
     audios: [""],
     etappe: "",
     liedtext: "",
+    liturgisch: "",
+    thematisch: "",
   });
 
   const [image, setImage] = useState<File | null>(null);
   const [audio, setAudio] = useState<FileList | null>(null);
+
+  const liturgisch: string[] = [
+    "Advent-Weinachten",
+    "Fastenzeit",
+    "Ostern-Pfingsten",
+    "Jahrenkreis",
+  ];
+
+  const thematisch: string[] = [
+    "Marienlieder",
+    "Lieder für die Kinder",
+    "Einzugslieder",
+    "Frieden-Gabenbereitung",
+    "Brotbrechen",
+    "Kelchkommunion",
+    "Auszugslieder",
+  ];
 
   const [specificAudio, setEspecificAudio] = useState("");
   const [openModalKommentare, setOpenModalKommentare] = useState(false);
@@ -45,13 +62,13 @@ const Erschaffen: React.FC<erschaffen> = ({ openModal, setOpenModal }) => {
 
   const url = `${process.env.REACT_APP_API_URL}/lied/`;
 
+  
   const disableFunction = async () => {
     if (
       createData.name === "" ||
       createData.liedtext === "" ||
       createData.etappe === "" ||
       createData.liedtext === "" ||
-      audio === null ||
       image === null
     ) {
       await setDisable(true);
@@ -60,7 +77,6 @@ const Erschaffen: React.FC<erschaffen> = ({ openModal, setOpenModal }) => {
     }
   };
 
-  console.log(createData.etappe)
 
   const updateLied = async () => {
     if (!image) {
@@ -68,18 +84,19 @@ const Erschaffen: React.FC<erschaffen> = ({ openModal, setOpenModal }) => {
       return;
     }
 
-    if (!audio) {
-      alert("Please upload an audio");
-      return;
-    }
+  
 
     const newLied = new FormData();
     newLied.append("image", image);
+    if(!audio) {
+      newLied.append("audios", "");
+    } else {
     for (let i = 0; i < audio.length; i++) {
       newLied.append("audios", audio[i]);
-    }
+      newLied.append('audios', createData.audios.join(","))
 
-    newLied.append('audios', createData.audios.join(","))
+    }}
+
     Object.entries(createData).forEach(([key, value]) => {
       newLied.append(key, value.toString());
     });
@@ -148,6 +165,8 @@ const Erschaffen: React.FC<erschaffen> = ({ openModal, setOpenModal }) => {
         getSpecificAudio={getSpecificAudio}
         disable={disable}
         modalAlert={modalAlert}
+        liturgischverzeichnis={liturgisch}
+        thematischverzeichnis={thematisch}
       />
     </div>
   );
