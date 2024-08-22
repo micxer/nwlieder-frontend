@@ -11,7 +11,6 @@ const Erschaffen: React.FC<erschaffen> = ({ openModal, setOpenModal }) => {
   const [createData, setCreateData] = useState({
     name: "",
     description: "",
-    audios: [""],
     etappe: "",
     liedtext: "",
     liturgisch: "",
@@ -19,7 +18,7 @@ const Erschaffen: React.FC<erschaffen> = ({ openModal, setOpenModal }) => {
   });
 
   const [image, setImage] = useState<File | null>(null);
-  const [audio, setAudio] = useState<FileList | null>(null);
+  const [audio, setAudio] = useState<File | null>(null);
 
   const liturgisch: string[] = [
     "Advent-Weinachten",
@@ -49,7 +48,7 @@ const Erschaffen: React.FC<erschaffen> = ({ openModal, setOpenModal }) => {
       if (e.target.name === "image") {
         setImage(e.target.files[0]);
       } else if (e.target.name === "audio") {
-        setAudio(e.target.files);
+        setAudio(e.target.files[0]);
       }
     }
   };
@@ -89,13 +88,13 @@ const Erschaffen: React.FC<erschaffen> = ({ openModal, setOpenModal }) => {
     const newLied = new FormData();
     newLied.append("image", image);
     if(!audio) {
-      newLied.append("audios", "");
+      newLied.append("audio", "");
     } else {
-    for (let i = 0; i < audio.length; i++) {
-      newLied.append("audios", audio[i]);
-      newLied.append('audios', createData.audios.join(","))
+    
+      newLied.append("audio", audio);
+    
 
-    }}
+    }
 
     Object.entries(createData).forEach(([key, value]) => {
       newLied.append(key, value.toString());

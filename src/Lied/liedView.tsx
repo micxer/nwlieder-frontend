@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { LiedViewInterface } from "../interfaces";
 import "./lied.css";
-import { FaSpinner } from "react-icons/fa";
 import { FaCirclePause, FaCirclePlay } from "react-icons/fa6";
 import AudioProgressBar from "./progressBar";
 import { MdEdit } from "react-icons/md";
@@ -14,6 +13,7 @@ import {
 import Marquee from "react-fast-marquee";
 import { MdForward10, MdReplay10 } from "react-icons/md";
 import { TbReload } from "react-icons/tb";
+import { HashLoader } from "react-spinners";
 
 const LiedView: React.FC<LiedViewInterface> = ({
   data,
@@ -42,7 +42,6 @@ const LiedView: React.FC<LiedViewInterface> = ({
   onPrev,
   functionTenMinus,
   functionTenMore,
-  vorgehen,
 }) => {
   const datei = data[0];
   const hola = datei?.audios?.length === undefined ? 0 : datei.audios.length;
@@ -116,7 +115,7 @@ const LiedView: React.FC<LiedViewInterface> = ({
                
                 <div className="col-auto text-center">
                   {datei?.audios === undefined || null ? (
-                    <div> no hay cantos </div>
+                    <HashLoader color="red" size={40}/>
                   ) : datei?.audios?.length > 1 ? (
                     datei?.audios?.map((data, index) => (
                       <button
@@ -158,7 +157,7 @@ const LiedView: React.FC<LiedViewInterface> = ({
                     onClick={togglePlayPause}
                   >
                     {!isReady && data ? (
-                      <FaSpinner size={40} />
+                      <HashLoader color="red" size={35} className="ms-3 me-3 " />
                     ) : isPlaying === false ? (
                       <FaCirclePlay color="#ed1e24" size={40} />
                     ) : (

@@ -17,7 +17,6 @@ interface editierenView {
   createData: {
     name: string | undefined;
     description: string;
-    audios: string[];
     etappe: string;
     liedtext: string;
   };
@@ -26,7 +25,6 @@ interface editierenView {
     React.SetStateAction<{
       name: string;
       description: string;
-      audios: string[];
       etappe: string;
       liedtext: string;
       liturgisch: string;

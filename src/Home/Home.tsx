@@ -233,6 +233,19 @@ const Home: React.FC<Hola> = () => {
     setGespeicherteFavoriten(favoriten);
   }, [favoriten]);
 
+  useEffect(()  => {
+
+    setReload(true)
+    try {
+    fetchData();
+    }
+    catch(error) {
+      console.log("fetch data updatet nicht")
+    }
+
+    setReload(false)
+  }, [data !== data])
+
   return (
     <div className="container">
       {level === "" ? (
@@ -283,6 +296,7 @@ const Home: React.FC<Hola> = () => {
               ersteKategorie={ersteKategorie}
               liturgisch={liturgisch}
               thematisch={thematisch}
+              deleteLiedFunction={deleteLiedFunction}
             />
           </MediaQuery>
           </div> }
