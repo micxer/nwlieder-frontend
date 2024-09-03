@@ -5,9 +5,10 @@ import Erschaffen from "../erschaffen/erschaffen";
 import HomeMobileView from "./HomeMobileVIew";
 import "./Home.css";
 import { Hola } from "../interfaces";
-import { useLocalStorage, useScratch } from "react-use";
+import { useLocalStorage } from "react-use";
 import MediaQuery from "react-responsive";
 import Spinner from "../spinner/reload";
+import Modal from "../modal/modal";
 
 const Home: React.FC<Hola> = () => {
   const location = useLocation();
@@ -21,6 +22,8 @@ const Home: React.FC<Hola> = () => {
   const [data, setData] = useState<Hola[]>([]);
   const [specificLied, setSpecificLied] = useState("");
   const [openModal, setOpenModal] = useState(false);
+  const [MullModal, setMullModal] = useState(false);
+  const [erschaffenModal, setErschaffenModal] = useState(false)
   const [reload, setReload] = useState(false);
   const [gespeicherteFavoriten, setGespeicherteFavoriten] = useLocalStorage<
     number[]
@@ -79,6 +82,8 @@ const Home: React.FC<Hola> = () => {
   const level = level2 === undefined ? `${gespeicherteLevel}` : level2;
 
   const fetchData = async () => {
+
+   setReload(true)
     try {
       const url = `${process.env.REACT_APP_API_URL}/lied/`;
       const response = await fetch(url);
@@ -88,6 +93,8 @@ const Home: React.FC<Hola> = () => {
     } catch (error) {
       console.error(error);
     }
+setReload(false)
+
   };
 
   const deleteLiedFunction = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -104,7 +111,7 @@ const Home: React.FC<Hola> = () => {
 
     try {
       await fetch(urlDeleteKommentareByLied, fetchOptionsKommentare).then((response) => response.json()).then((data) => {
-        return (console.log("die kommentaren sing geloescht worden"))
+        return (console.log("die kommentaren sind geloescht worden"))
       })
     } 
     catch(error) {
@@ -114,12 +121,14 @@ const Home: React.FC<Hola> = () => {
       await fetch(urlDelete, fetchOptions)
         .then((response) => response.json())
         .then((data) => {
-          return alert("dieses Lied wurde erfolgreich entfernt");
+          return setMullModal(true);
         });
     } catch (error) {
       console.log({ message: "delete Lied error", error });
     }
+    fetchData();
     setReload(false);
+    
   };
 
   const getVerzeichnis = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -192,6 +201,8 @@ const Home: React.FC<Hola> = () => {
     }
   };
 
+  
+
   useEffect(() => {
     setGespeicherteSucht(sucht);
     if (location.search) {
@@ -234,17 +245,19 @@ const Home: React.FC<Hola> = () => {
   }, [favoriten]);
 
   useEffect(()  => {
-
     setReload(true)
     try {
-    fetchData();
-    }
-    catch(error) {
-      console.log("fetch data updatet nicht")
-    }
+      fetchData();
+      }
+      catch(error) {
+        console.log("fetch data updated nicht")
+      }
+ setReload(false)
+    
 
-    setReload(false)
-  }, [data !== data])
+  }, [data])
+
+
 
   return (
     <div className="container">
@@ -300,7 +313,9 @@ const Home: React.FC<Hola> = () => {
             />
           </MediaQuery>
           </div> }
-          <Erschaffen openModal={openModal} setOpenModal={setOpenModal} />
+          <Modal show={MullModal} text={"Das Licht ist Erfolgreich entfernt worden"} heading={"Lied entfernt"}/>
+          <Modal show={erschaffenModal} text={"Das Lied wurde erflogreich erschaffen"} heading={"erschaffen"}/>
+          <Erschaffen openModal={openModal} setOpenModal={setOpenModal} erschaffenModal={setErschaffenModal} fetchData={fetchData} setReload={setReload} />
         </div>
 
    

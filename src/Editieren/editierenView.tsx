@@ -252,12 +252,14 @@ const EditierenView: React.FC<editierenView> = ({
                     className="form-control"
                     onChange={getAudio}
                       />
-                      <button onClick={createSpecificAudio} className="btn mt-2 mb-3"> Agregar </button>
+                      <button onClick={createSpecificAudio} className="btn mt-2 mb-3"> hinzufügen </button>
                       
                 </div>
                     {updateData.audios?.map((data) => (
                       <div>
+                        
                         <ul className="list-group">
+                          { data === "" ? <div/> : 
                           <li
                             style={{ all: "unset" }}
                             className="list-group-item shadow-sm p-1 mt-2"
@@ -289,7 +291,7 @@ const EditierenView: React.FC<editierenView> = ({
                                 </button>
                               </div>
                             </div>
-                          </li>
+                          </li> }
                           {kommentare?.map((kdata) => {
                             return (
                               <div>

@@ -2,12 +2,6 @@ import React, { useEffect } from "react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { Hola } from "../interfaces";
 import "./lied.css";
-import {
-  AiFillStepForward,
-  AiFillStepBackward,
-  AiOutlineExpand,
-  AiOutlineInfoCircle,
-} from "react-icons/ai";
 import { FaSpinner } from "react-icons/fa";
 import { FaCirclePause, FaCirclePlay } from "react-icons/fa6";
 import AudioProgressBar from "./progressBar";
@@ -120,6 +114,13 @@ const LiedMobileView: React.FC<liedView> = ({
         </div>
       </div>
 
+      <div className="fuerte2Mobile ms-2">
+      <p style={{fontWeight: "bold", fontSize: "100%"}} >
+    {datei?.liturgisch} {`- ${datei?.thematisch}`}
+    
+    </p>
+      </div>
+
       <div className="  fuerte p-3">
         <div className=" ">
           <div className="row titles">
@@ -133,7 +134,7 @@ const LiedMobileView: React.FC<liedView> = ({
                           className="portMobile  "
                           style={{ alignItems: "center" }}
                         >
-                          {datei?.name?.length && datei?.name?.length > 30 ? (
+                          {datei?.name?.length && datei?.name?.length > 23 ? (
                             <Marquee speed={30}>
                               {datei?.name}&nbsp;&nbsp;&nbsp;
                             </Marquee>

@@ -5,9 +5,12 @@ import ErschaffenVIew from "./erschaffenVIew";
 interface erschaffen {
   openModal: boolean;
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
+  erschaffenModal: React.Dispatch<React.SetStateAction<boolean>>;
+  fetchData: () => Promise<void>;
+  setReload: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const Erschaffen: React.FC<erschaffen> = ({ openModal, setOpenModal }) => {
+const Erschaffen: React.FC<erschaffen> = ({ openModal, setOpenModal, erschaffenModal, fetchData, setReload }) => {
   const [createData, setCreateData] = useState({
     name: "",
     description: "",
@@ -82,8 +85,9 @@ const Erschaffen: React.FC<erschaffen> = ({ openModal, setOpenModal }) => {
       alert("Please upload an image");
       return;
     }
-
+setReload(true)
   
+    try {
 
     const newLied = new FormData();
     newLied.append("image", image);
@@ -118,7 +122,14 @@ const Erschaffen: React.FC<erschaffen> = ({ openModal, setOpenModal }) => {
       })
       .catch(() => {
         console.error("update dont had worked");
-      });
+      }); }
+
+      catch (error) {
+        console.log({message: "error", error})
+      }
+      fetchData();
+      erschaffenModal(true);
+      setReload(false);
   };
 
   const sendInfo = (e: React.FormEvent<HTMLFormElement>) => {
@@ -131,7 +142,9 @@ const Erschaffen: React.FC<erschaffen> = ({ openModal, setOpenModal }) => {
 
   useEffect(() => {
     if (sended === "User erfolgreich erschafft") {
-      setModalAlert(true);
+     
+     
+      
     }
 
     setTimeout(() => {

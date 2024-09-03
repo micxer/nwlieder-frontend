@@ -81,7 +81,17 @@ const LiedView: React.FC<LiedViewInterface> = ({
       </div>
       <div className="container"></div>
 
+<div className="fuerte2 ms-2">
+  <p style={{fontWeight: "bold", fontSize: "120%"}} >
+    {datei?.liturgisch} {`- ${datei?.thematisch}`}
+    
+    </p>
+
+</div>
       <div className="border rounded fuerte p-2 pt-3 pb-3">
+        <div>
+         
+        </div>
         <div className="col row d-flex justify-content-between">
           <div className="row titles col-3 ms-1">
             <div className=" d-flex align-items-center ">
@@ -97,7 +107,7 @@ const LiedView: React.FC<LiedViewInterface> = ({
                 </p>
 
                 <p className="mb-0" style={{ color: "gray" }}>
-                  {datei?.description}
+                  {datei?.etappe}
                 </p>
               </p>
             </div>
@@ -118,6 +128,8 @@ const LiedView: React.FC<LiedViewInterface> = ({
                     <HashLoader color="red" size={40}/>
                   ) : datei?.audios?.length > 1 ? (
                     datei?.audios?.map((data, index) => (
+                      <div>
+                        {data === "" ? <div/> : 
                       <button
                         className="ms-3 selection"
                         onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
@@ -126,6 +138,8 @@ const LiedView: React.FC<LiedViewInterface> = ({
                       >
                         V{index + 1}
                       </button>
+}
+                      </div>
                     ))
                   ) : (
                     <div />
