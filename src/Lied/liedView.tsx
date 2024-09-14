@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { LiedViewInterface } from "../interfaces";
 import "./lied.css";
@@ -45,6 +46,7 @@ const LiedView: React.FC<LiedViewInterface> = ({
 }) => {
   const datei = data[0];
   const hola = datei?.audios?.length === undefined ? 0 : datei.audios.length;
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (datei?.audios?.length === 1) {
@@ -83,8 +85,21 @@ const LiedView: React.FC<LiedViewInterface> = ({
 
 <div className="fuerte2 ms-2">
   <p style={{fontWeight: "bold", fontSize: "120%"}} >
-    {datei?.liturgisch} {`- ${datei?.thematisch}`}
-    
+    { datei?.liturgisch === null ? <div/> :
+  <button style={{all: "unset"}} onClick={() => navigate(`/home`, {
+    state: {
+      filterLiturgisch: datei?.liturgisch
+    }
+  })}> {datei?.liturgisch}  </button>
+}
+
+{
+  datei?.thematisch === null ? <div/> :
+  <button style={{all: "unset"}} onClick={() => navigate(`/home`, {
+    state: {
+      filterThematisch: datei?.liturgisch
+  }})} >{`- ${datei?.thematisch}`}</button> 
+}
     </p>
 
 </div>
@@ -106,9 +121,11 @@ const LiedView: React.FC<LiedViewInterface> = ({
                   )}
                 </p>
 
-                <p className="mb-0" style={{ color: "gray" }}>
+                <button onClick={() => {navigate(`/home`, {
+                  state: { filterEtappe: datei?.etappe }
+                })}} className="mb-0" color="gray" style={{ all: "unset" }}>
                   {datei?.etappe}
-                </p>
+                </button>
               </p>
             </div>
             {/* <div className="col-auto">
@@ -123,12 +140,12 @@ const LiedView: React.FC<LiedViewInterface> = ({
             {audio === "" ? (
               <div className="row justify-content-center mt-3">
                
-                <div className="col-auto text-center">
+                <div className="d-flex justify-content-center col-auto text-center">
                   {datei?.audios === undefined || null ? (
                     <HashLoader color="red" size={40}/>
                   ) : datei?.audios?.length > 1 ? (
                     datei?.audios?.map((data, index) => (
-                      <div>
+                      <div className="">
                         {data === "" ? <div/> : 
                       <button
                         className="ms-3 selection"

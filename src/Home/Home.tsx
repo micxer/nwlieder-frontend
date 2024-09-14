@@ -18,6 +18,11 @@ const Home: React.FC<Hola> = () => {
   const param1 = searchParams.get("param1");
   const param2 = searchParams.get("param2");
   const level2 = location.state?.level;
+  const filterEtappe = location.state?.filterEtappe;
+  const filterLiturgisch = location.state?.filterLiturgisch;
+  const filterThematisch = location.state?.filterThematisch;
+  
+
 
   const [data, setData] = useState<Hola[]>([]);
   const [specificLied, setSpecificLied] = useState("");
@@ -64,11 +69,12 @@ const Home: React.FC<Hola> = () => {
   );
 
   const [ersteKategorie, setErsteKategorie] = useState<string>(
-    param2 === "" ? "Alle" : param2 === null ? "Alle" : "Etappen"
+    param2 === "" ? "Alle"  : param2 === null ? "Alle" : param2
   );
   const [zweiteKategorie, setZweiteKategorie] = useState(
     param2 === null ? gespeicherteFilterLied : param2
   );
+
 
   const [gespeicherteSucht, setGespeicherteSucht] = useLocalStorage(
     "sucht",
@@ -255,7 +261,30 @@ setReload(false)
  setReload(false)
     
 
-  }, [data])
+  }, [setTimeout(() => {
+    return data
+  }, 500) ])
+
+  useEffect(() => {
+    setReload(true)
+    
+     if(filterEtappe && filterEtappe !== null) {
+      setErsteKategorie("Etappen");
+    
+    setZweiteKategorie(filterEtappe) }
+    else if(filterLiturgisch && filterLiturgisch !== null) {
+      setErsteKategorie("Liturgisch");
+    
+      setZweiteKategorie(filterLiturgisch)
+    }
+    else if(filterThematisch && filterThematisch !== null) {
+      setErsteKategorie("Thematisch");
+    
+      setZweiteKategorie(filterThematisch)
+    }
+    setReload(false)
+  },[filterEtappe !== null])
+
 
 
 
