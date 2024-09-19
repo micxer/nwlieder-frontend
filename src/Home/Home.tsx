@@ -10,6 +10,7 @@ import MediaQuery from "react-responsive";
 import Spinner from "../spinner/reload";
 import Modal from "../modal/modal";
 
+
 const Home: React.FC<Hola> = () => {
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -250,20 +251,26 @@ setReload(false)
     setGespeicherteFavoriten(favoriten);
   }, [favoriten]);
 
-  useEffect(()  => {
-    setReload(true)
-    try {
-      fetchData();
-      }
-      catch(error) {
-        console.log("fetch data updated nicht")
-      }
- setReload(false)
-    
+  
+//   useEffect(()  => {
+//     setReload(true)
+//     try {
+//       fetchData();
+//       }
+//       catch(error) {
+//         console.log("fetch data updated nicht")
+//       }
+//  setReload(false)
 
-  }, [setTimeout(() => {
-    return data
-  }, 500) ])
+
+//   }, [ () => {
+//     for(var i = 0; i < data.length; i++);
+//     console.log(data[i])
+//    return data[i]
+   
+//   }
+    
+//     ])
 
   useEffect(() => {
     setReload(true)

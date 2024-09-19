@@ -239,7 +239,7 @@ const EditierenView: React.FC<editierenView> = ({
                     <button
                       type="submit"
                       className="btn btn-primary btn-lg btn-danger"
-                      disabled={disable}
+                    
                     >
                       {" "}
                       Erschaffen

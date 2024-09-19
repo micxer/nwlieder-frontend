@@ -40,6 +40,7 @@ const Erschaffen: React.FC<erschaffen> = ({ openModal, setOpenModal, erschaffenM
     "Auszugslieder",
   ];
 
+
   const [specificAudio, setEspecificAudio] = useState("");
   const [openModalKommentare, setOpenModalKommentare] = useState(false);
   const [disable, setDisable] = useState(false);
@@ -61,6 +62,7 @@ const Erschaffen: React.FC<erschaffen> = ({ openModal, setOpenModal, erschaffenM
     setOpenModalKommentare(true);
     setEspecificAudio(e.currentTarget.value);
   };
+
 
   const url = `${process.env.REACT_APP_API_URL}/lied/`;
 
@@ -143,29 +145,36 @@ setReload(true)
   useEffect(() => {
     if (sended === "User erfolgreich erschafft") {
      
-     
+     setModalAlert(true)
+     setCreateData(() => ({
+
+     ...createData,
+     name: "",
+    description: "",
+    etappe: "",
+    liedtext: "",
+    liturgisch: "",
+    thematisch: "",
+
+
+     }))
       
     }
 
     setTimeout(() => {
       setSended("");
+      setModalAlert(false)
+      
+      
     }, 10000);
-  }, [sended]);
+  }, [sended !== sended]);
 
   useEffect(() => {
     disableFunction();
   }, [createData]);
   return (
     <div>
-      {/* <Kommentare
-        openModal={openModalKommentare}
-        setOpenModal={setOpenModalKommentare}
-        data={data}
-        aktuelLied={aktuelLied}
-        level={level}
-        specificAudio={specificAudio}
-        
-      /> */}
+
       <ErschaffenVIew
         openModal={openModal}
         setOpenModal={setOpenModal}
