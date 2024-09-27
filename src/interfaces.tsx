@@ -10,8 +10,8 @@ export interface Hola {
   audios?: string[];
   etappe?: string;
   liedtext?: string;
-  liturgisch?: string;
-  thematisch?: string;
+  liturgisch?: string[];
+  thematisch?: string[];
 }
 
 export interface KommentareInfo {
@@ -121,4 +121,6 @@ export interface LiedViewInterface {
   level: string;
   onPrev: () => (() => void) | undefined;
   onNext: () => Promise<(() => void) | undefined>;
+  setInformationsModal: React.Dispatch<React.SetStateAction<boolean>>;
+  informationsModal: boolean;
 }

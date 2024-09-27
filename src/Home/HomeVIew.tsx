@@ -23,7 +23,10 @@ interface Info {
   getVerzeichnis: (e: React.MouseEvent<HTMLButtonElement>) => void;
   thematisch: string[];
   liturgisch: string[];
-  deleteLiedFunction: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
+  setMullModal: React.Dispatch<React.SetStateAction<{
+    mullModalKonditional: boolean;
+    id: string;
+}>>
 }
 
 const HomeView: React.FC<Info> = ({
@@ -43,7 +46,7 @@ const HomeView: React.FC<Info> = ({
   ersteKategorie,
   liturgisch,
   thematisch,
-  deleteLiedFunction
+  setMullModal
 }) => {
   return (
     <div className=" containter">
@@ -242,7 +245,10 @@ const HomeView: React.FC<Info> = ({
                       </button>
                       {level === "admin" ? (
                         <button className="ms-2" style={{ all: "unset" }} value={props?.id}
-                        onClick={(e) => deleteLiedFunction(e)}
+                        onClick={(e) => {setMullModal({
+                          mullModalKonditional: true,
+                          id: e.currentTarget.value
+                        })}}
                         >
                           <FaTrash color="#D94141" />
                         </button>

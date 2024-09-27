@@ -156,7 +156,7 @@ const EditierenView: React.FC<editierenView> = ({
                     ></textarea>
                     <label htmlFor="floatingTextarea2">Text</label>
                   </div>
-                  <div>
+                  {/* <div>
                     <label className="form-label mt-3 subtitle">
                       Liturgisches Verzeichnis
                     </label>
@@ -178,9 +178,9 @@ const EditierenView: React.FC<editierenView> = ({
                         <option selected={updateData.liturgisch === data} value={data}>{data}</option>
                       ))}
                     </select>
-                  </div>
+                  </div> */}
 
-                  <div>
+                  {/* <div>
                     <label className="form-label subtitle mt-3">
                       Thematisches Verzeichnis
                     </label>
@@ -201,7 +201,7 @@ const EditierenView: React.FC<editierenView> = ({
                         <option selected={updateData.thematisch === data} className="form-option"> {data} </option>
                       ))}
                     </select>
-                  </div>
+                  </div> */}
 
                   <div>
                     <label className="form-label mt-3 subtitle">Etappe</label>

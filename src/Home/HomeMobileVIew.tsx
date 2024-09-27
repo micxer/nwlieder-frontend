@@ -4,6 +4,7 @@ import { Hola } from "../interfaces";
 import { FaPlus } from "react-icons/fa6";
 import { MdOutlineStarOutline, MdOutlineStar } from "react-icons/md";
 import { FaTrash } from "react-icons/fa";
+import Marquee from "react-fast-marquee";
 
 interface Info {
   hola: (e: MouseEvent<HTMLButtonElement>) => Promise<void>;
@@ -22,7 +23,10 @@ interface Info {
   liturgisch: string[];
   ersteKategorie: string | undefined;
   verzeichnise: string[];
-  deleteLiedFunction: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
+  setMullModal: React.Dispatch<React.SetStateAction<{
+    mullModalKonditional: boolean;
+    id: string;}>>
+
 }
 
 const HomeMobileView: React.FC<Info> = ({
@@ -42,7 +46,8 @@ const HomeMobileView: React.FC<Info> = ({
   ersteKategorie,
   verzeichnise,
   getVerzeichnis,
-  deleteLiedFunction,
+  setMullModal
+
 }) => {
   return (
     <div className=" containter">
@@ -220,17 +225,25 @@ const HomeMobileView: React.FC<Info> = ({
                   className=" list-group-item mt-2 shadow-sm rounded-pill"
                 >
                   <div className="d-flex justify-content-between">
-                    <div>
+                    <div >
                       <button
                         value={props.id}
                         onClick={hola}
                         style={{ all: "unset" }}
                       >
-                        <div className="text">{props.name}</div>
+                        <div className="text">{
+                        props?.name?.length && props?.name?.length > 30 ? 
+                        <div>
+                        <Marquee speed={30} >
+                          {props.name}&nbsp;&nbsp;&nbsp;
+                        </Marquee> </div> :
+                <div>    <p style={{marginBottom: "0"}}> {props.name} </p>  </div>
+                        
+                        }</div>
                       </button>
                     </div>
 
-                    <div>
+                    <div className="d-flex justify-conter-end" >
                       <button
                         value={props.id}
                         style={{ all: "unset" }}
@@ -245,7 +258,10 @@ const HomeMobileView: React.FC<Info> = ({
                       </button>
                       {level === "admin" ? (
                         <button className="ms-2" style={{ all: "unset" }} value={props?.id}
-                        onClick={(e) => deleteLiedFunction(e)}
+                        onClick={(e) => {setMullModal({
+                          mullModalKonditional: true,
+                          id: e.currentTarget.value
+                        })}}
                         >
                           <FaTrash color="#D94141" />
                         </button>

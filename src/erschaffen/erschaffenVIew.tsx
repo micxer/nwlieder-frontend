@@ -2,12 +2,35 @@ import React from "react";
 import Modal from "react-bootstrap/Modal";
 import "./erschaffen.css";
 import ModalAlert from "../modal/modal";
+import Select, { MultiValue } from 'react-select';
 
 interface editierenView {
   openModal: boolean;
   modalAlert: boolean;
-  liturgischverzeichnis: string[];
-  thematischverzeichnis: string[];
+  liturgischverzeichnis: {
+    value: string;
+    label: string;
+}[];
+  thematischverzeichnis: {
+    value: string;
+    label: string;
+}[];
+  setSelectedLiturgisch: React.Dispatch<React.SetStateAction<MultiValue<{
+    value: string;
+    label: string;
+}> | null>>
+  selectedLiturgisch: MultiValue<{
+    value: string;
+    label: string;
+}> | null;
+selectedThematisch: MultiValue<{
+  value: string;
+  label: string;
+}> | null;
+setSelectedThematisch: React.Dispatch<React.SetStateAction<MultiValue<{
+  value: string;
+  label: string;
+}> | null>>;
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
   getSpecificAudio: (e: React.MouseEvent<HTMLButtonElement>) => void;
   sendInfo: (e: React.FormEvent<HTMLFormElement>) => void;
@@ -19,6 +42,8 @@ interface editierenView {
     description: string;
     etappe: string;
     liedtext: string;
+    liturgisch: string[];
+    thematisch: string[];
   };
 
   setCreateData: React.Dispatch<
@@ -27,8 +52,8 @@ interface editierenView {
       description: string;
       etappe: string;
       liedtext: string;
-      liturgisch: string;
-      thematisch: string;
+      liturgisch: string[];
+      thematisch: string[];
     }>
   >;
 }
@@ -46,7 +71,18 @@ const EditierenView: React.FC<editierenView> = ({
   modalAlert,
   liturgischverzeichnis,
   thematischverzeichnis,
+  setSelectedLiturgisch,
+  selectedLiturgisch, 
+  selectedThematisch,
+  setSelectedThematisch
+
 }) => {
+
+
+  function value(prevState: null): null {
+    throw new Error("Function not implemented.");
+  }
+
   return (
     <div>
       <Modal show={openModal} onHide={() => setOpenModal(!openModal)} size="lg">
@@ -70,6 +106,7 @@ const EditierenView: React.FC<editierenView> = ({
                   <label className="form-label mt-3 subtitle">Name</label>
                   <input
                     className="col-2 form-control"
+                    value={createData.name}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       setCreateData((hola) => ({
                         ...hola,
@@ -81,6 +118,7 @@ const EditierenView: React.FC<editierenView> = ({
                     Beschreibung
                   </label>
                   <input
+                  value={createData.description}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       setCreateData((hola) => ({
                         ...hola,
@@ -95,6 +133,7 @@ const EditierenView: React.FC<editierenView> = ({
                   </label>
                   <div className="form-floating">
                     <textarea
+                    value={createData.liedtext}
                       onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
                         setCreateData((hola) => ({
                           ...hola,
@@ -114,52 +153,39 @@ const EditierenView: React.FC<editierenView> = ({
                     <label className="form-label mt-3 subtitle">
                       Liturgisches Verzeichnis
                     </label>
-                    <select
-                      className="form-select"
-                      onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                        setCreateData((data) => ({
-                          ...data,
-                          liturgisch: e.target.value ? e.target.value : ""
-                        }));
-                      }}
-                    >
-                      <option className="form-option" value="">
-                        {" "}
-                        Wählen Sie eine Option{" "}
-                      </option>
-
-                      {liturgischverzeichnis.map((data) => (
-                        <option value={data}>{data}</option>
-                      ))}
-                    </select>
+             
+                  </div>
+                  <div>
+                  <div>
+                  <Select
+      isMulti
+      options={liturgischverzeichnis}
+      value={selectedLiturgisch}
+      onChange={(e: MultiValue<{ value: string; label: string; }> | null ) => {
+        setSelectedLiturgisch(e);
+      }}
+    />
+                  </div>
+                
+                  
                   </div>
 
                   <div>
                     <label className="form-label subtitle mt-3">
                       Thematisches Verzeichnis
                     </label>
-                    <select
-                      className="form-select"
-                      onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                        setCreateData((data) => ({
-                          ...data,
-                          thematisch: e.target.value ? e.target.value : ""
-                        }));
-                      }}
-                    >
-                      <option className="form-option" value="">
-                        {" "}
-                        Wählen Sie eine Option{" "}
-                      </option>
-                      {thematischverzeichnis.map((data) => (
-                        <option className="form-option"> {data} </option>
-                      ))}
-                    </select>
+                    <div>
+                    <Select isMulti options={thematischverzeichnis} value={selectedThematisch} 
+                    onChange={(e: MultiValue<{value: string; label: string}> | null) => {
+                      setSelectedThematisch(e);
+                    }}></Select>
+                  </div>
                   </div>
                   <div>
                     <label className="form-label mt-3 subtitle">Etappe</label>
                     <select
                       className="form-select"
+                      value={createData.etappe}
                       onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
                         setCreateData((hola) => ({
                           ...hola,
@@ -167,7 +193,7 @@ const EditierenView: React.FC<editierenView> = ({
                         }))
                       }
                     >
-                      <option value="">Wählen Sie eine Option aus</option>
+                      <option defaultValue="" value="">Wählen Sie eine Option aus</option>
                       <option
                         selected={createData.etappe === "Vorkatechumenat"}
                         value="Vorkatechumenat"
@@ -239,7 +265,7 @@ const EditierenView: React.FC<editierenView> = ({
                     <button
                       type="submit"
                       className="btn btn-primary btn-lg btn-danger"
-                    
+                      disabled={disable}
                     >
                       {" "}
                       Erschaffen

@@ -6,6 +6,7 @@ import Editieren from "../Editieren/editieren";
 import Kommentare from "../Kommentare/kommentare";
 import MediaQuery from "react-responsive";
 import LiedMobileView from "./liedMobileView";
+import Informationsmodal from "../modal/Informationsmodal";
 
 const Lied: React.FC = ({}, props: audioPlayerProps) => {
   const { id } = useParams();
@@ -38,6 +39,7 @@ const Lied: React.FC = ({}, props: audioPlayerProps) => {
   const [aktuelLied, setAktuelLied] = useState<number>(take);
   const [level, setLevel] = useState<string>(status);
   const [levelKommentare, setLevelKommentare] = useState("normal");
+  const [informationsModal, setInformationsModal] = useState(false);
 
   const [vorgehen, setVorgehen] = useState(0);
 
@@ -193,6 +195,8 @@ const Lied: React.FC = ({}, props: audioPlayerProps) => {
     }
   }, [vorgehen]);
 
+  console.log(informationsModal)
+
   return (
     <div>
       {
@@ -227,36 +231,43 @@ const Lied: React.FC = ({}, props: audioPlayerProps) => {
           functionTenMore={UsehandleButtonClick}
           onNext={onNext}
           vorgehen={vorgehen}
+          setInformationsModal={setInformationsModal}
+          informationsModal={informationsModal}
+          
+          
         />
       </MediaQuery>
       <MediaQuery maxWidth={1224}>
         <LiedMobileView
-          data={data}
-          setDuration={setDuration}
-          audioRef={audioRef}
-          setIsReady={setIsReady}
-          setIsPlaying={setIsPlaying}
-          isReady={isReady}
-          togglePlayPause={togglePlayPause}
-          isPlaying={isPlaying}
-          setCurrrentProgress={setCurrrentProgress}
-          handleBufferProgress={handleBufferProgress}
-          duration={duration}
-          currrentProgress={currrentProgress}
-          buffered={buffered}
-          songIndex={songIndex}
-          songCount={songCount}
-          durationDisplay={durationDisplay}
-          elapsedDisplay={elapsedDisplay}
-          audio={audio}
-          setAudio={setAudio}
-          setOpenModal={setOpenModalEdit}
-          setOpenModalKommentare={setOpenModalKommentare}
-          onPrev={onPrev}
-          functionTenMinus={functionTenMinus}
-          functionTenMore={UsehandleButtonClick}
-          onNext={onNext}
-          vorgehen={vorgehen}
+             level={level}
+             data={data}
+             setDuration={setDuration}
+             audioRef={audioRef}
+             setIsReady={setIsReady}
+             setIsPlaying={setIsPlaying}
+             isReady={isReady}
+             togglePlayPause={togglePlayPause}
+             isPlaying={isPlaying}
+             setCurrrentProgress={setCurrrentProgress}
+             handleBufferProgress={handleBufferProgress}
+             duration={duration}
+             currrentProgress={currrentProgress}
+             buffered={buffered}
+             songIndex={songIndex}
+             songCount={songCount}
+             durationDisplay={durationDisplay}
+             elapsedDisplay={elapsedDisplay}
+             audio={audio}
+             setAudio={setAudio}
+             setOpenModal={setOpenModalEdit}
+             setOpenModalKommentare={setOpenModalKommentare}
+             onPrev={onPrev}
+             functionTenMinus={functionTenMinus}
+             functionTenMore={UsehandleButtonClick}
+             onNext={onNext}
+             vorgehen={vorgehen}
+             setInformationsModal={setInformationsModal}
+             informationsModal={informationsModal}
         />
       </MediaQuery>
 
@@ -277,6 +288,12 @@ const Lied: React.FC = ({}, props: audioPlayerProps) => {
         level={levelKommentare}
         specificAudio={audio}
         kommentarrolle={kommentarrolle}
+      />
+
+      <Informationsmodal informationsModal={informationsModal}
+      setInformationsModal={setInformationsModal}
+      data={data}
+      
       />
       </div>
       }

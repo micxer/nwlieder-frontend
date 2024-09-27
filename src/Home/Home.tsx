@@ -8,7 +8,8 @@ import { Hola } from "../interfaces";
 import { useLocalStorage } from "react-use";
 import MediaQuery from "react-responsive";
 import Spinner from "../spinner/reload";
-import Modal from "../modal/modal";
+import KonditionalModal from "../modal/KonditionalModal";
+
 
 
 const Home: React.FC<Hola> = () => {
@@ -26,10 +27,13 @@ const Home: React.FC<Hola> = () => {
 
 
   const [data, setData] = useState<Hola[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [specificLied, setSpecificLied] = useState("");
   const [openModal, setOpenModal] = useState(false);
-  const [MullModal, setMullModal] = useState(false);
-  const [erschaffenModal, setErschaffenModal] = useState(false)
+  const [MullModal, setMullModal] = useState({
+    mullModalKonditional: false,
+    id: ""
+  });
   const [reload, setReload] = useState(false);
   const [gespeicherteFavoriten, setGespeicherteFavoriten] = useLocalStorage<
     number[]
@@ -37,11 +41,12 @@ const Home: React.FC<Hola> = () => {
   const [favoriten, setFavoriten] = useState<number[]>(
     gespeicherteFavoriten === undefined ? [] : gespeicherteFavoriten
   );
-  const [verzeichnise, setVerzeichnise] = useState<string[]>([
+  const [entfernungskonditional, setEntfernungskonditional] = useState(false);
+  const verzeichnise:string[] = [
     "Etappen",
     "Thematisch",
     "Liturgisch",
-  ]);
+  ];
   const liturgisch: string[] = [
     "Advent-Weinachten",
     "Fastenzeit",
@@ -51,7 +56,7 @@ const Home: React.FC<Hola> = () => {
 
   const thematisch: string[] = [
     "Marienlieder",
-    "Lieder für die Kinder",
+    "Lieder-für-die-Kinder",
     "Einzugslieder",
     "Frieden-Gabenbereitung",
     "Brotbrechen",
@@ -90,7 +95,7 @@ const Home: React.FC<Hola> = () => {
 
   const fetchData = async () => {
 
-   setReload(true)
+  
     try {
       const url = `${process.env.REACT_APP_API_URL}/lied/`;
       const response = await fetch(url);
@@ -100,20 +105,20 @@ const Home: React.FC<Hola> = () => {
     } catch (error) {
       console.error(error);
     }
-setReload(false)
+
 
   };
 
-  const deleteLiedFunction = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+  const deleteLiedFunction = async (e: string) => {
+    
     const fetchOptions = {
       method: "DELETE",
     };
     const fetchOptionsKommentare = {
       method: "DELETE",
     };
-    const urlDeleteKommentareByLied = `${process.env.REACT_APP_API_URL}/kommentarebylied/${e.currentTarget.value}`
-    const urlDelete = `${process.env.REACT_APP_API_URL}/lied/${e.currentTarget.value}`;
+    const urlDeleteKommentareByLied = `${process.env.REACT_APP_API_URL}/kommentarebylied/${e}`
+    const urlDelete = `${process.env.REACT_APP_API_URL}/lied/${e}`;
     setReload(true);
 
     try {
@@ -128,11 +133,16 @@ setReload(false)
       await fetch(urlDelete, fetchOptions)
         .then((response) => response.json())
         .then((data) => {
-          return setMullModal(true);
+          
         });
     } catch (error) {
       console.log({ message: "delete Lied error", error });
     }
+    setMullModal(() => ({
+      ...MullModal,
+      mullModalKonditional: false,
+      id: ""
+    }))
     fetchData();
     setReload(false);
     
@@ -168,12 +178,17 @@ setReload(false)
   );
 
   const startFilter = async (e: MouseEvent<HTMLButtonElement>) => {
+    setReload(true)
     e.preventDefault();
     setZweiteKategorie(e?.currentTarget?.value);
     if (zweiteKategorie === "" && sucht !== "") {
       setSucht("");
     }
+    setReload(false)
   };
+
+  
+
 
   const filter =
     ersteKategorie === "Alle"
@@ -183,16 +198,24 @@ setReload(false)
           favoriten.includes(data?.id === undefined ? 0 : data.id)
         )
       : gefilterteElemente.filter(
-          (data) =>
-            data?.etappe === zweiteKategorie ||
-            data?.thematisch === zweiteKategorie ||
-            data?.liturgisch === zweiteKategorie
-        );
+        
+          (data) =>  
+           
+            data.etappe === zweiteKategorie ||
+            data.thematisch?.some(hola2 => hola2 === zweiteKategorie) || 
+            data.liturgisch?.some(hola3 => hola3 === zweiteKategorie)
+
+            
+          
+ );
 
   const infoToLied = {
     level: level,
     ids: filter,
   };
+
+  console.log(filter)
+
 
   const bringSpecificLied = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -207,8 +230,6 @@ setReload(false)
       console.log(`problem bringSpecificLied ${error}`);
     }
   };
-
-  
 
   useEffect(() => {
     setGespeicherteSucht(sucht);
@@ -251,27 +272,6 @@ setReload(false)
     setGespeicherteFavoriten(favoriten);
   }, [favoriten]);
 
-  
-//   useEffect(()  => {
-//     setReload(true)
-//     try {
-//       fetchData();
-//       }
-//       catch(error) {
-//         console.log("fetch data updated nicht")
-//       }
-//  setReload(false)
-
-
-//   }, [ () => {
-//     for(var i = 0; i < data.length; i++);
-//     console.log(data[i])
-//    return data[i]
-   
-//   }
-    
-//     ])
-
   useEffect(() => {
     setReload(true)
     
@@ -293,6 +293,12 @@ setReload(false)
   },[filterEtappe !== null])
 
 
+  useEffect(() => {
+    if(entfernungskonditional === true) {
+
+    deleteLiedFunction(MullModal.id);
+    }
+  })
 
 
   return (
@@ -324,7 +330,7 @@ setReload(false)
               ersteKategorie={ersteKategorie}
               liturgisch={liturgisch}
               thematisch={thematisch}
-              deleteLiedFunction={deleteLiedFunction}
+              setMullModal={setMullModal}
             />{" "}
           </MediaQuery>
           <MediaQuery maxWidth={1224}>
@@ -345,13 +351,14 @@ setReload(false)
               ersteKategorie={ersteKategorie}
               liturgisch={liturgisch}
               thematisch={thematisch}
-              deleteLiedFunction={deleteLiedFunction}
+              setMullModal={setMullModal}
+              
             />
           </MediaQuery>
           </div> }
-          <Modal show={MullModal} text={"Das Licht ist Erfolgreich entfernt worden"} heading={"Lied entfernt"}/>
-          <Modal show={erschaffenModal} text={"Das Lied wurde erflogreich erschaffen"} heading={"erschaffen"}/>
-          <Erschaffen openModal={openModal} setOpenModal={setOpenModal} erschaffenModal={setErschaffenModal} fetchData={fetchData} setReload={setReload} />
+          {/* <Modal show={MullModal} text={"Das Licht ist Erfolgreich entfernt worden"} heading={"Lied entfernt"}/> */}
+          <KonditionalModal show={MullModal} setShow={setMullModal} konditional={setEntfernungskonditional}/>
+          <Erschaffen openModal={openModal} setOpenModal={setOpenModal}  fetchData={fetchData} setReload={setReload} />
         </div>
 
    

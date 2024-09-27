@@ -1,47 +1,52 @@
 import React, { useEffect, useState } from "react";
 import ErschaffenVIew from "./erschaffenVIew";
+import  { MultiValue }  from "react-select";
 
 
 interface erschaffen {
   openModal: boolean;
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
-  erschaffenModal: React.Dispatch<React.SetStateAction<boolean>>;
   fetchData: () => Promise<void>;
   setReload: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const Erschaffen: React.FC<erschaffen> = ({ openModal, setOpenModal, erschaffenModal, fetchData, setReload }) => {
+const Erschaffen: React.FC<erschaffen> = ({ openModal, setOpenModal, fetchData, setReload }) => {
   const [createData, setCreateData] = useState({
     name: "",
     description: "",
     etappe: "",
     liedtext: "",
-    liturgisch: "",
-    thematisch: "",
+    liturgisch: [""],
+    thematisch: [""],
   });
 
   const [image, setImage] = useState<File | null>(null);
   const [audio, setAudio] = useState<File | null>(null);
 
-  const liturgisch: string[] = [
-    "Advent-Weinachten",
-    "Fastenzeit",
-    "Ostern-Pfingsten",
-    "Jahrenkreis",
+  const [selectedLiturgisch, setSelectedLiturgisch] = useState<MultiValue<{ value: string, label: string }> | null>(null);
+  const [selectedThematisch, setSelectedThematisch] = useState<MultiValue<{ value: string, label: string }> | null>(null);
+  const liturgisch = [
+   {value: "Advent-Weinachten", label: "Advent-Weinachten"},
+   {value: "Fastenzeit", label: "Fastenzeit"},
+   { value: "Ostern-Pfingsten", label: "Ostern-Pfingsten"},
+   {value: "Jahrenkreis", label: "Jahrenkreis"},
+];
+
+  const thematisch = [
+   { value: "Marienlieder", label: "Marienlieder"},
+    {value: "Lieder-für-die-Kinder", label: "Lieder für die Kinder"},
+    {value: "Einzugslieder", label: "Einzugslieder"},
+    {value: "Frieden-Gabenbereitung", label: "Frieden-Gabenbereitung"},
+    {value: "Brotbrechen", label: "Brotbrechen"},
+    {value: "Kelchkommunion", label: "Kelchkommunion"},
+    {value: "Auszugslieder", label: "Auszugslieder"}
   ];
 
-  const thematisch: string[] = [
-    "Marienlieder",
-    "Lieder für die Kinder",
-    "Einzugslieder",
-    "Frieden-Gabenbereitung",
-    "Brotbrechen",
-    "Kelchkommunion",
-    "Auszugslieder",
-  ];
 
-
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [specificAudio, setEspecificAudio] = useState("");
+  
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [openModalKommentare, setOpenModalKommentare] = useState(false);
   const [disable, setDisable] = useState(false);
   const [sended, setSended] = useState("");
@@ -67,12 +72,11 @@ const Erschaffen: React.FC<erschaffen> = ({ openModal, setOpenModal, erschaffenM
   const url = `${process.env.REACT_APP_API_URL}/lied/`;
 
   
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const disableFunction = async () => {
     if (
       createData.name === "" ||
-      createData.liedtext === "" ||
       createData.etappe === "" ||
-      createData.liedtext === "" ||
       image === null
     ) {
       await setDisable(true);
@@ -102,6 +106,7 @@ setReload(true)
 
     }
 
+
     Object.entries(createData).forEach(([key, value]) => {
       newLied.append(key, value.toString());
     });
@@ -130,7 +135,7 @@ setReload(true)
         console.log({message: "error", error})
       }
       fetchData();
-      erschaffenModal(true);
+    
       setReload(false);
   };
 
@@ -140,21 +145,47 @@ setReload(true)
     setOpenModal(false);
   };
 
-  const level = "admin";
+  let dataLiturgisch: any[] = [];
+
+   selectedLiturgisch?.map((data) => { return dataLiturgisch.push(data.value) });
+
+  useEffect(() => {
+    
+
+    setCreateData(() => ({
+      ...createData,
+     liturgisch: dataLiturgisch
+    }))
+
+  }, [selectedLiturgisch]);
+
+  let dataThematisch: any[] = [];
+
+  selectedThematisch?.map((data) => { return dataThematisch.push(data.value) })
+
+  useEffect(() => {
+    
+    setCreateData(() => ({
+      ...createData,
+     thematisch: dataThematisch
+    }))
+
+  }, [selectedThematisch]);
+
 
   useEffect(() => {
     if (sended === "User erfolgreich erschafft") {
      
      setModalAlert(true)
+     setSelectedLiturgisch(null);
+     setSelectedThematisch(null)
      setCreateData(() => ({
-
-     ...createData,
      name: "",
     description: "",
     etappe: "",
     liedtext: "",
-    liturgisch: "",
-    thematisch: "",
+    liturgisch: [""],
+    thematisch: [""],
 
 
      }))
@@ -167,11 +198,11 @@ setReload(true)
       
       
     }, 10000);
-  }, [sended !== sended]);
+  }, [sended, setCreateData, setModalAlert]);
 
   useEffect(() => {
     disableFunction();
-  }, [createData]);
+  }, [createData, disableFunction]);
   return (
     <div>
 
@@ -188,6 +219,10 @@ setReload(true)
         modalAlert={modalAlert}
         liturgischverzeichnis={liturgisch}
         thematischverzeichnis={thematisch}
+        setSelectedLiturgisch={setSelectedLiturgisch}
+        selectedLiturgisch={selectedLiturgisch}
+        selectedThematisch={selectedThematisch}
+        setSelectedThematisch={setSelectedThematisch}
       />
     </div>
   );

@@ -1,8 +1,8 @@
+/* eslint-disable jsx-a11y/alt-text */
 import React, { useEffect } from "react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { Hola } from "../interfaces";
 import "./lied.css";
-import { FaSpinner } from "react-icons/fa";
 import { FaCirclePause, FaCirclePlay } from "react-icons/fa6";
 import AudioProgressBar from "./progressBar";
 import { MdEdit } from "react-icons/md";
@@ -11,37 +11,12 @@ import { BiSolidCommentDetail } from "react-icons/bi";
 import Marquee from "react-fast-marquee";
 import { MdForward10, MdReplay10  } from "react-icons/md";
 import { TbPlayerTrackNextFilled, TbPlayerTrackPrevFilled } from "react-icons/tb";
+import { HashLoader } from "react-spinners";
+import { IoIosInformationCircle } from "react-icons/io";
+import { LiedViewInterface } from "../interfaces";
 
-interface liedView {
-  data: Hola[];
-  setDuration: React.Dispatch<React.SetStateAction<number>>;
-  audioRef: React.RefObject<HTMLAudioElement>;
-  setIsReady: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
-  isReady: boolean;
-  togglePlayPause: () => void;
-  isPlaying: boolean;
-  setCurrrentProgress: React.Dispatch<React.SetStateAction<number>>;
-  handleBufferProgress: React.ReactEventHandler<HTMLAudioElement>;
-  duration: number;
-  currrentProgress: number;
-  buffered: number;
-  songIndex: number;
-  songCount: number;
-  durationDisplay: string;
-  elapsedDisplay: string;
-  vorgehen: number;
-  functionTenMinus: () => void;
-  functionTenMore: () => void;
-  onPrev: () => (() => void) | undefined;
-  onNext: () => Promise<(() => void) | undefined>;
-  audio: string;
-  setAudio: React.Dispatch<React.SetStateAction<string>>;
-  setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
-  setOpenModalKommentare: React.Dispatch<React.SetStateAction<boolean>>;
-}
 
-const LiedMobileView: React.FC<liedView> = ({
+const LiedMobileView: React.FC<LiedViewInterface> = ({
   data,
   setDuration,
   audioRef,
@@ -67,7 +42,9 @@ const LiedMobileView: React.FC<liedView> = ({
   functionTenMore,
   onPrev,
   onNext,
-  vorgehen
+  vorgehen,
+  informationsModal,
+  setInformationsModal
 }) => {
   const datei = data[0];
 
@@ -77,7 +54,6 @@ const LiedMobileView: React.FC<liedView> = ({
   };
 
   const hola = datei?.audios?.length === undefined ? 0 : datei.audios.length;
-
 
 
   useEffect(() => {
@@ -90,7 +66,7 @@ const LiedMobileView: React.FC<liedView> = ({
       setAudio("");
       
     }
-  }, [datei?.id]);
+  }, [datei?.id, audioRef, datei?.audios, hola, setAudio ]);
 
   return (
     <div>
@@ -115,14 +91,20 @@ const LiedMobileView: React.FC<liedView> = ({
       </div>
 
       <div className="fuerte2Mobile ms-2">
-      <p style={{fontWeight: "bold", fontSize: "100%"}} >
+      {/* <p style={{fontWeight: "bold", fontSize: "100%"}} >
     {datei?.liturgisch} {`- ${datei?.thematisch}`}
     
-    </p>
+    </p> */}
       </div>
 
       <div className="  fuerte p-3">
         <div className=" ">
+         
+        
+        
+          <IoIosInformationCircle className="information"   onClick={() => setInformationsModal(true)} size={30} />
+          
+
           <div className="row titles">
             <div className=" mt-1 ">
               <div className="row d-flex justify-content-around">
@@ -135,13 +117,17 @@ const LiedMobileView: React.FC<liedView> = ({
                           style={{ alignItems: "center" }}
                         >
                           {datei?.name?.length && datei?.name?.length > 23 ? (
+                            <div>
                             <Marquee speed={30}>
                               {datei?.name}&nbsp;&nbsp;&nbsp;
                             </Marquee>
+                           
+                            </div>
                           ) : (
                             datei?.name
                           )}
                         </p>
+                        <p style={{color: "gray"}}>{datei?.etappe}</p>
                       </div>
                       {datei?.audios?.length === 1 ||
                       datei?.audios?.length === undefined ? (
@@ -186,20 +172,26 @@ const LiedMobileView: React.FC<liedView> = ({
                 <div className="d-flex justify-content-center mt-3">
                  
                   <div className="col-auto text-center">
-                    {datei?.audios === null ? (
-                      <div>no hay cantos </div>
-                    ) : (
-                      datei?.audios?.map((data, index) => (
-                        <button
-                          className="ms-3 selection"
-                          onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
-                            setAudio(data)
-                          }
-                        >
-                          V{index + 1}
-                        </button>
-                      ))
-                    )}{" "}
+                  {datei?.audios === undefined || null ? (
+                    <HashLoader color="red" size={40}/>
+                  ) : datei?.audios?.length > 1 ? (
+                    datei?.audios?.map((data, index) => (
+                      <div className="">
+                        {data === "" ? <div/> : 
+                      <button
+                        className="ms-3 selection"
+                        onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
+                          setAudio(data)
+                        }
+                      >
+                        V{index + 1}
+                      </button>
+}
+                      </div>
+                    ))
+                  ) : (
+                    <div />
+                  )}{" "}
                   </div>{" "}
                 </div>
               ) : (
@@ -243,7 +235,7 @@ const LiedMobileView: React.FC<liedView> = ({
                       onClick={togglePlayPause}
                     >
                       {!isReady && data ? (
-                        <FaSpinner size={40} />
+                        <HashLoader color="red" size={35} className="ms-3 me-3 " />
                       ) : !isPlaying ? (
                         <FaCirclePlay color="#ed1e24" size={50} />
                       ) : (

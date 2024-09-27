@@ -202,9 +202,7 @@ interface editieren {
     if (
       updateData.name === "" ||
       updateData.img === "" ||
-      updateData.liedtext === null ||
-      updateData.etappe === "" ||
-      updateData.liedtext === ""
+      updateData.etappe === "" 
     ) {
       await setDisable(true);
     } else {
@@ -221,6 +219,8 @@ interface editieren {
     setExtractIdDeleteKommentar(e.currentTarget.value);
     openModalDelete(e);
   };
+
+
 
   const deleteKommentar = async (e: React.MouseEvent<HTMLButtonElement>) => {
     const urlKommentareDelete = `${process.env.REACT_APP_API_URL}/kommentare/${extractIdDeleteKommentar}`;

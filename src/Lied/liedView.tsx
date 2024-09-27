@@ -15,6 +15,7 @@ import Marquee from "react-fast-marquee";
 import { MdForward10, MdReplay10 } from "react-icons/md";
 import { TbReload } from "react-icons/tb";
 import { HashLoader } from "react-spinners";
+import { IoIosInformationCircle } from "react-icons/io";
 
 const LiedView: React.FC<LiedViewInterface> = ({
   data,
@@ -43,6 +44,8 @@ const LiedView: React.FC<LiedViewInterface> = ({
   onPrev,
   functionTenMinus,
   functionTenMore,
+  informationsModal,
+  setInformationsModal
 }) => {
   const datei = data[0];
   const hola = datei?.audios?.length === undefined ? 0 : datei.audios.length;
@@ -64,6 +67,9 @@ const LiedView: React.FC<LiedViewInterface> = ({
 
   return (
     <div>
+          <IoIosInformationCircle className="information"   
+          onClick={() => setInformationsModal(!informationsModal)} size={45} />
+          
       <div className="d-flex justify-content-center align-items-center">
         <TransformWrapper>
           <TransformComponent>
@@ -83,7 +89,7 @@ const LiedView: React.FC<LiedViewInterface> = ({
       </div>
       <div className="container"></div>
 
-<div className="fuerte2 ms-2">
+{/* <div className="fuerte2 ms-2">
   <p style={{fontWeight: "bold", fontSize: "120%"}} >
     { datei?.liturgisch === null ? <div/> :
   <button style={{all: "unset"}} onClick={() => navigate(`/home`, {
@@ -102,7 +108,7 @@ const LiedView: React.FC<LiedViewInterface> = ({
 }
     </p>
 
-</div>
+</div> */}
       <div className="border rounded fuerte p-2 pt-3 pb-3">
         <div>
          
