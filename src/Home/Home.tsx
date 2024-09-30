@@ -214,8 +214,6 @@ const Home: React.FC<Hola> = () => {
     ids: filter,
   };
 
-  console.log(filter)
-
 
   const bringSpecificLied = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();

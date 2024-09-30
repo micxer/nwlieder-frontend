@@ -165,7 +165,12 @@ const Lied: React.FC = ({}, props: audioPlayerProps) => {
 
     const timeout = setTimeout(() => {
       if (audioRef && isPlaying) {
-        audioRef.current?.play();
+
+        if (audioRef.current?.readyState === 4) {
+        audioRef.current?.play(); }
+        else {
+          console.log("Audio not ready yet, waiting .... ")
+        }
       }
     }, 500);
 
@@ -195,7 +200,6 @@ const Lied: React.FC = ({}, props: audioPlayerProps) => {
     }
   }, [vorgehen]);
 
-  console.log(informationsModal)
 
   return (
     <div>
