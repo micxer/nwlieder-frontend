@@ -37,7 +37,9 @@ const Lied: React.FC = ({}, props: audioPlayerProps) => {
   const [openModalEdit, setOpenModalEdit] = useState(false);
   const [openModalKommentare, setOpenModalKommentare] = useState(false);
   const [aktuelLied, setAktuelLied] = useState<number>(take);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [level, setLevel] = useState<string>(status);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [levelKommentare, setLevelKommentare] = useState("normal");
   const [informationsModal, setInformationsModal] = useState(false);
 
@@ -172,7 +174,7 @@ const Lied: React.FC = ({}, props: audioPlayerProps) => {
           console.log("Audio not ready yet, waiting .... ")
         }
       }
-    }, 500);
+    }, 100000);
 
     return () => {
       clearTimeout(timeout);

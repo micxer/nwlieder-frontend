@@ -234,7 +234,7 @@ const LiedMobileView: React.FC<LiedViewInterface> = ({
                       disabled={!isReady}
                       onClick={togglePlayPause}
                     >
-                      {!isReady && data ? (
+                      {!isReady  ? (
                         <HashLoader color="red" size={35} className="ms-3 me-3 " />
                       ) : !isPlaying ? (
                         <FaCirclePlay color="#ed1e24" size={50} />
@@ -269,6 +269,7 @@ const LiedMobileView: React.FC<LiedViewInterface> = ({
             onPlaying={() => setIsPlaying(true)}
             onPause={() => setIsPlaying(false)}
             src={audio}
+            autoPlay
 
           ></audio>
         </div>
