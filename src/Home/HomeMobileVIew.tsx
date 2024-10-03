@@ -279,11 +279,12 @@ const HomeMobileView: React.FC<Info> = ({
       </div>
       {level === "admin" ? (
         <div className="position">
-          <button className="create" onClick={() => setOpenModal(true)}>
-            <div className="d-flex align-items-center justify-content-center">
-              <FaPlus />
-            </div>
-          </button>
+         
+           <button className="create-mobile d-flex justify-content-center" >
+              <FaPlus size={30}  color="white" onClick={() => setOpenModal(true)} />
+              </button>
+         
+        
         </div>
       ) : (
         <div />

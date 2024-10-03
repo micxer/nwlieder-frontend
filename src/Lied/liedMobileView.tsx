@@ -144,23 +144,25 @@ const LiedMobileView: React.FC<LiedViewInterface> = ({
                   </div>
                 </div>
                 <div className="bearbeitung col-auto ">
+                <div className="d-flex justify-content-center align-items-center">
                   <button
-                    className="positionb selectionMobile"
+                    className="positionb selectionMobile  "
                     onClick={() => setOpenModal(true)}
                   >
-                    <div className="d-flex justify-content-center align-items-center">
+                   
                       <MdEdit size={23} />
-                    </div>
+                   
                   </button>
 
                   <button
                     className=" selectionMobile ms-3"
                     onClick={() => setOpenModalKommentare(true)}
                   >
-                    <div className="d-flex justify-content-center align-items-center">
+                  
                       <BiSolidCommentDetail size={20} />
-                    </div>
+                    
                   </button>
+                  </div>
                 </div>
               </div>
             </div>
