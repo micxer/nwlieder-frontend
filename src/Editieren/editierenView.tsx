@@ -7,6 +7,7 @@ import { MdDelete } from "react-icons/md";
 import Marquee from "react-fast-marquee";
 import { BiSolidCommentDetail } from "react-icons/bi";
 import { MdEdit } from "react-icons/md";
+import Select, { MultiValue } from 'react-select';
 
 
 interface editierenView {
@@ -16,8 +17,22 @@ interface editierenView {
   aktuelLied: number;
   id?: string;
   modalAlert: boolean;
-  liturgischverzeichnis: string[];
-  thematischverzeichnis: string[];
+  liturgischverzeichnis: {
+    value: string;
+    label: string;
+}[];
+  thematischverzeichnis: {
+    value: string;
+    label: string;
+}[];
+ selectedLiturgisch: MultiValue<{
+  value: string;
+  label: string;
+}> | null;
+ setSelectedLiturgisch: React.Dispatch<React.SetStateAction<MultiValue<{
+  value: string;
+  label: string;
+}> | null>>;
   openModalDelete: (e: React.MouseEvent<HTMLButtonElement>) => void;
   kommentare: KommentareInfo | undefined;
   getSpecificAudio: (e: React.MouseEvent<HTMLButtonElement>) => void;
@@ -25,6 +40,14 @@ interface editierenView {
   setOpenModalKommentare: React.Dispatch<React.SetStateAction<boolean>>;
   modalDelete: boolean;
   disable: boolean;
+  selectedThematisch: MultiValue<{
+    value: string;
+    label: string;
+}> | null;
+setSelectedThematisch: React.Dispatch<React.SetStateAction<MultiValue<{
+  value: string;
+  label: string;
+}> | null>>;
   updateImage: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onClickFunction: (e: React.MouseEvent<HTMLButtonElement>) => void;
   deleteSpecificAudio: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
@@ -37,8 +60,8 @@ interface editierenView {
     audios: string[];
     etappe: string;
     liedtext: string;
-    liturgisch: string;
-    thematisch: string;
+    liturgisch: string[];
+    thematisch: string[];
   };
   getIdKommentar: (e: React.MouseEvent<HTMLButtonElement>) => void
 
@@ -50,8 +73,8 @@ interface editierenView {
       audios: string[];
       etappe: string;
       liedtext: string;
-      liturgisch: string;
-      thematisch: string;
+      liturgisch: string[];
+      thematisch: string[];
     }>
   >;
 }
@@ -79,7 +102,11 @@ const EditierenView: React.FC<editierenView> = ({
   getAudio,
   getIdKommentar,
   liturgischverzeichnis,
-  thematischverzeichnis
+  thematischverzeichnis,
+  selectedLiturgisch,
+  setSelectedLiturgisch,
+  selectedThematisch, 
+  setSelectedThematisch
 }) => {
   return (
     <div>
@@ -156,52 +183,45 @@ const EditierenView: React.FC<editierenView> = ({
                     ></textarea>
                     <label htmlFor="floatingTextarea2">Text</label>
                   </div>
-                  {/* <div>
+
+                  <div>
                     <label className="form-label mt-3 subtitle">
                       Liturgisches Verzeichnis
                     </label>
-                    <select
-                      className="form-select"
-                      onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                        setUpdateData((data) => ({
-                          ...data,
-                          liturgisch: e.target.value
-                        }));
-                      }}
-                    >
-                      <option className="form-option" value="">
-                        {" "}
-                        Wählen Sie eine Option{" "}
-                      </option>
+             
+                  </div>
+                  <div>
+                  <div>
+                  <Select
+      isMulti
+      defaultValue={liturgischverzeichnis.filter((hola) => updateData.liturgisch.includes(hola.value))}
+      options={liturgischverzeichnis}
+      onChange={setSelectedLiturgisch}
+      
+    />
+                  </div>
+                
+                  
+                  </div>
 
-                      {liturgischverzeichnis.map((data) => (
-                        <option selected={updateData.liturgisch === data} value={data}>{data}</option>
-                      ))}
-                    </select>
-                  </div> */}
 
-                  {/* <div>
-                    <label className="form-label subtitle mt-3">
+                  <div>
+                    <label className="form-label mt-3 subtitle">
                       Thematisches Verzeichnis
                     </label>
-                    <select
-                      className="form-select"
-                      onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                        setUpdateData((data) => ({
-                          ...data,
-                          thematisch: e.target.value,
-                        }));
-                      }}
-                    >
-                      <option className="form-option" value="">
-                        {" "}
-                        Wählen Sie eine Option{" "}
-                      </option>
-                      {thematischverzeichnis.map((data) => (
-                        <option selected={updateData.thematisch === data} className="form-option"> {data} </option>
-                      ))}
-                    </select>
-                  </div> */}
+             
+                  </div>
+                  <div>
+                  <div>
+                  <Select
+      isMulti
+      defaultValue={thematischverzeichnis.filter((hola) => updateData.thematisch.includes(hola.value))}
+      options={thematischverzeichnis}
+      onChange={setSelectedThematisch}
+    
+    />
+                  </div>
+                  </div>
 
                   <div>
                     <label className="form-label mt-3 subtitle">Etappe</label>

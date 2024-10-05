@@ -3,6 +3,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button'
 import { Hola } from '../interfaces';
 import '../Lied/lied.css';
+import { useNavigate } from 'react-router-dom';
 
 interface information {
 
@@ -16,6 +17,8 @@ interface information {
 const informationsmodal: React.FC<information> = ({informationsModal, setInformationsModal, data}) => {
 
     const inhalt = data[0];
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const navigate = useNavigate();
 
     return (
 
@@ -26,7 +29,14 @@ const informationsmodal: React.FC<information> = ({informationsModal, setInforma
                 <Modal.Body>
                   <div>
                     <p className='subtitle'>Etappe</p>
+                    <button className='mt-2' style={{all: "unset", color: 'gray'}} onClick={() => {
+                        navigate('/home', {state: {
+                            filterEtappe: inhalt.etappe
+                        }})
+                    }}>
                     {inhalt?.etappe}
+                    </button>
+                   
                     
                   </div>
                   <div className='mt-4'>
@@ -34,7 +44,13 @@ const informationsmodal: React.FC<information> = ({informationsModal, setInforma
                     {
                         inhalt?.liturgisch?.map((litu) => (
                             <div>
-                                <p style={{color: "#000000"}}>{litu}</p>
+                                <button className='mt-2' style={{all: "unset", color: "gray"}} onClick={() => {
+                                    navigate('/home', {
+                                        state: {
+                                            filterLiturgisch: litu
+                                        }
+                                    })
+                                }}>{litu}</button>
                                  </div>
                         ) )
                     }
@@ -45,7 +61,13 @@ const informationsmodal: React.FC<information> = ({informationsModal, setInforma
                     {
                         inhalt?.thematisch?.map((litu) => (
                             <div>
-                                <p style={{color: "#000000"}}>{litu}</p>
+                                <button className="mt-2" style={{all: "unset", color: "gray"}} onClick={() => {
+                                    navigate('/home', {
+                                        state: {
+                                            filterThematisch: litu
+                                        }
+                                    })
+                                }}>{litu}</button>
                                  </div>
                         ) )
                     }

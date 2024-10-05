@@ -44,7 +44,8 @@ const LiedMobileView: React.FC<LiedViewInterface> = ({
   onNext,
   vorgehen,
   informationsModal,
-  setInformationsModal
+  setInformationsModal,
+  level
 }) => {
   const datei = data[0];
 
@@ -145,14 +146,17 @@ const LiedMobileView: React.FC<LiedViewInterface> = ({
                 </div>
                 <div className="bearbeitung col-auto ">
                 <div className="d-flex justify-content-center align-items-center">
-                  <button
-                    className="positionb selectionMobile  "
+                  {
+                    level === "admin" ?   <button
+                    className="positionb selectionMobile "
                     onClick={() => setOpenModal(true)}
                   >
                    
                       <MdEdit size={23} />
                    
-                  </button>
+                  </button> : <div/>
+                  }
+                
 
                   <button
                     className=" selectionMobile ms-3"
@@ -171,28 +175,43 @@ const LiedMobileView: React.FC<LiedViewInterface> = ({
           <div className="container">
             <div className="col-auto">
               {audio === "" ? (
-                <div className="d-flex justify-content-center mt-3">
+                <div className="row justify-content-center mt-3">
                  
-                  <div className="col-auto text-center">
+                  <div className="d-flex justify-content-center col-auto text-center">
                   {datei?.audios === undefined || null ? (
                     <HashLoader color="red" size={40}/>
                   ) : datei?.audios?.length > 1 ? (
                     datei?.audios?.map((data, index) => (
                       <div className="">
                         {data === "" ? <div/> : 
+                        
                       <button
-                        className="ms-3 selection"
+                      
+                        className="ms-3 selectionMobile  "
                         onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
                           setAudio(data)
                         }
                       >
                         V{index + 1}
                       </button>
+                     
 }
                       </div>
                     ))
                   ) : (
-                    <div />
+                    <div className="d-flex justify-content-center text-center">
+                       <button style={{ all: "unset" }}>
+                     <TbPlayerTrackPrevFilled onClick={onPrev} className="icon me-3"  color="#ed1e24" size={30} />
+                   </button>
+                   <p className="pt-3">Kein Audio</p>
+                   <button
+                    style={{ all: "unset" }}
+                    disabled={songIndex === songCount - 1}
+                  >
+                    <TbPlayerTrackNextFilled onClick={onNext} className="icon ms-3"  color="#ed1e24" size={30} />
+                  </button>
+                   
+                      </div>
                   )}{" "}
                   </div>{" "}
                 </div>
@@ -223,10 +242,12 @@ const LiedMobileView: React.FC<LiedViewInterface> = ({
                       <span>{durationDisplay}</span>
                     </div>
                   </div>
-                  <div className="text-center ">
-                  <button style={{ all: "unset" }}>
-                    <TbPlayerTrackPrevFilled onClick={onPrev} className="icon me-3"  color="#ed1e24" size={30} />
-                  </button>
+                  <div className="text-center "> 
+                     <button style={{ all: "unset" }}>
+                     <TbPlayerTrackPrevFilled onClick={onPrev} className="icon me-3"  color="#ed1e24" size={30} />
+                   </button>
+                  
+                 
                   <button style={{all: "unset"}}>
                     <MdReplay10 onClick={functionTenMinus} className="icon me-3"  color="#ed1e24" size={30}/>
                   </button>

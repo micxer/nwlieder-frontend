@@ -29,7 +29,7 @@ const Erschaffen: React.FC<erschaffen> = ({ openModal, setOpenModal, fetchData, 
    {value: "Advent-Weinachten", label: "Advent-Weinachten"},
    {value: "Fastenzeit", label: "Fastenzeit"},
    { value: "Ostern-Pfingsten", label: "Ostern-Pfingsten"},
-   {value: "Jahrenkreis", label: "Jahrenkreis"},
+   {value: "Jahreskreis", label: "Jahreskreis"},
 ];
 
   const thematisch = [

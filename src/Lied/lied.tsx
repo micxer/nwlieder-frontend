@@ -114,7 +114,7 @@ const Lied: React.FC = ({}, props: audioPlayerProps) => {
       audioRef.current?.pause();
       const timeout = setTimeout(() => {
         if (audioRef) {
-          audioRef.current?.play();
+          // audioRef.current?.play();
         }
       }, 500);
       return () => {

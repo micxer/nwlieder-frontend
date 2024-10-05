@@ -51,7 +51,7 @@ const Home: React.FC<Hola> = () => {
     "Advent-Weinachten",
     "Fastenzeit",
     "Ostern-Pfingsten",
-    "Jahrenkreis",
+    "Jahreskreis",
   ];
 
   const thematisch: string[] = [

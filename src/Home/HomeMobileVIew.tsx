@@ -68,7 +68,7 @@ const HomeMobileView: React.FC<Info> = ({
           </div>
         </div>
         <div className="scrollable-buttons">
-          <div className="d-flex justify-content-center mb-3">
+          <div className="d-flex justify-content-center mb-3 ms-5">
             <button
               className="btn  col-auto me-2 ms-5 rounded-pill"
               value={"Alle"}
@@ -169,7 +169,7 @@ const HomeMobileView: React.FC<Info> = ({
               </button>
             </div>
           ) : ersteKategorie === "Liturgisch" ? (
-            <div className="d-flex justify-content-center">
+            <div className="d-flex justify-content-start">
               {liturgisch.map((data) => (
                 <button
                   value={data}
@@ -185,9 +185,11 @@ const HomeMobileView: React.FC<Info> = ({
               ))}
             </div>
           ) : ersteKategorie === "Thematisch" ? (
-            <div className="d-flex justify-content-center">
+            <div className=" d-flex justify-content-start">
               {thematisch.map((data) => (
+                <div >
                 <button
+                
                   value={data}
                   onClick={(e) => startFilter(e)}
                   style={{
@@ -198,6 +200,7 @@ const HomeMobileView: React.FC<Info> = ({
                 >
                   {data}
                 </button>
+                </div>
               ))}
             </div>
           ) : zweiteKategorie === "" || zweiteKategorie === "Favoriten" ? (
@@ -220,6 +223,8 @@ const HomeMobileView: React.FC<Info> = ({
                         ? "#fefff2"
                         : props.etappe === "Katechumenat"
                         ? "#f8f7ff"
+                        : props.etappe === "Auserwählung"
+                        ? "#E3F4DB"
                         : "white",
                   }}
                   className=" list-group-item mt-2 shadow-sm rounded-pill"

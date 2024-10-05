@@ -5,6 +5,8 @@ import Kommentare from "../Kommentare/kommentare";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Spinner from "../spinner/reload";
+import { MultiValue } from "react-select";
+
 
 interface editieren {
   openModal: boolean;
@@ -30,8 +32,8 @@ interface editieren {
     audios: [""],
     etappe: "",
     liedtext: "",
-    liturgisch: "",
-    thematisch: "",
+    liturgisch: [""],
+    thematisch: [""],
   });
 
   const [specificAudio, setEspecificAudio] = useState("");
@@ -47,22 +49,28 @@ interface editieren {
   const [kommentarrolle, setKommentarrolle] = useState("");
   const [kommentarId, setKommentarId] = useState("");
 
-  const liturgisch: string[] = [
-    "Advent-Weinachten",
-    "Fastenzeit",
-    "Ostern-Pfingsten",
-    "Jahrenkreis",
-  ];
+  const liturgisch = [
+    {value: "Advent-Weinachten", label: "Advent-Weinachten"},
+    {value: "Fastenzeit", label: "Fastenzeit"},
+    { value: "Ostern-Pfingsten", label: "Ostern-Pfingsten"},
+    {value: "Jahreskreis", label: "Jahreskreis"},
+ ];
 
-  const thematisch: string[] = [
-    "Marienlieder",
-    "Lieder für die Kinder",
-    "Einzugslieder",
-    "Frieden-Gabenbereitung",
-    "Brotbrechen",
-    "Kelchkommunion",
-    "Auszugslieder",
-  ];
+ const thematisch = [
+  { value: "Marienlieder", label: "Marienlieder"},
+   {value: "Lieder-für-die-Kinder", label: "Lieder für die Kinder"},
+   {value: "Einzugslieder", label: "Einzugslieder"},
+   {value: "Frieden-Gabenbereitung", label: "Frieden-Gabenbereitung"},
+   {value: "Brotbrechen", label: "Brotbrechen"},
+   {value: "Kelchkommunion", label: "Kelchkommunion"},
+   {value: "Auszugslieder", label: "Auszugslieder"}
+ ];
+
+ const [selectedLiturgisch, setSelectedLiturgisch] = useState<MultiValue<{ value: string, label: string }> | null>(null);
+ const [firstLiturgisch, setFirstLiturgisch] = useState([""])
+
+ const [selectedThematisch, setSelectedThematisch] = useState<MultiValue<{ value: string, label: string }> | null>(null);
+ const [firstThematisch, setFirstThematisch] = useState([""])
 
   const getSpecificAudio = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -111,8 +119,6 @@ interface editieren {
       )
         .then((response) => response.json())
         .then((data) => {
-          {
-          }
         });
     } catch (error) {
       console.log("cual es el error", error);
@@ -144,8 +150,6 @@ interface editieren {
       await fetch(`${process.env.REACT_APP_API_URL}/audio/${id}`, fetchOptions)
         .then((response) => response.json())
         .then((data) => {
-          {
-          }
         });
     } catch (error) {
       console.log("cual es el error", error);
@@ -192,11 +196,15 @@ interface editieren {
         liturgisch: dataResponse[0].liturgisch || "",
         thematisch: dataResponse[0].thematisch || ""
       }));
+
+      setFirstLiturgisch(dataResponse[0].liturgisch);
+
       return dataResponse;
     } catch (error) {
       console.log(error);
     }
   };
+
 
   const disableFunction = async () => {
     if (
@@ -209,6 +217,8 @@ interface editieren {
       await setDisable(false);
     }
   };
+
+
 
   const [extractIdDeleteKommentar, setExtractIdDeleteKommentar] = useState<
     string
@@ -293,6 +303,34 @@ interface editieren {
 
   const level = "admin";
 
+  let liturgischData: any[] = [];
+
+  selectedLiturgisch?.map((data) => liturgischData.push(data.value))
+
+  useEffect(() => {
+
+    setUpdateData(() => ({
+      ...updateData, 
+      liturgisch: liturgischData
+    }))
+  }, [selectedLiturgisch]);
+
+  useEffect(() => {
+    disableFunction();
+  }, [updateData]);
+
+  let thematischData: any[] = [];
+
+  selectedThematisch?.map((data) => thematischData.push(data.value))
+
+  useEffect(() => {
+
+    setUpdateData(() => ({
+      ...updateData, 
+      thematisch: thematischData
+    }))
+  }, [selectedThematisch]);
+
   useEffect(() => {
     disableFunction();
   }, [updateData]);
@@ -363,6 +401,11 @@ interface editieren {
             getIdKommentar={getIdKommentar}
             liturgischverzeichnis={liturgisch}
             thematischverzeichnis={thematisch}
+            selectedLiturgisch={selectedLiturgisch}
+            setSelectedLiturgisch={setSelectedLiturgisch}
+            selectedThematisch={selectedThematisch}
+            setSelectedThematisch={setSelectedThematisch}
+      
           />
           <Modal
             show={modalDelete}

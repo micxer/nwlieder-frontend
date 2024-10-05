@@ -165,7 +165,28 @@ const LiedView: React.FC<LiedViewInterface> = ({
                       </div>
                     ))
                   ) : (
-                    <div />
+                    <div className="d-flex justify-content-center">
+                        <button style={{ all: "unset" }}>
+                    <TbPlayerTrackPrevFilled
+                      onClick={onPrev}
+                      className="icon me-3"
+                      color="#ed1e24"
+                      size={30}
+                    />
+                  </button>
+                      <p className="mt-3">Kein Audio</p>
+                      <button
+                    style={{ all: "unset" }}
+                    disabled={songIndex === songCount - 1}
+                  >
+                    <TbPlayerTrackNextFilled
+                      onClick={onNext}
+                      className="icon ms-3"
+                      color="#ed1e24"
+                      size={30}
+                    />
+                  </button>
+                       </div>
                   )}{" "}
                 </div>{" "}
               </div>
@@ -293,6 +314,7 @@ const LiedView: React.FC<LiedViewInterface> = ({
             onPlaying={() => setIsPlaying(true)}
             onPause={() => setIsPlaying(false)}
             src={audio}
+            autoPlay
           ></audio>
         </div>
       </div>
