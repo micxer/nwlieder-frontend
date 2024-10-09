@@ -15,7 +15,7 @@ const EinloggenView: React.FC<einloggen> = ({einmelden, verify}) => {
         <div className='container col d-flex justify-content-center align-items-center'>
         <div className='col-auto'>
             <div className='border p-5 rounded'>
-            <form onSubmit={verify}  >
+            <form onSubmit={verify}>
 
                 <label  className="form-label">Passwort</label>
 

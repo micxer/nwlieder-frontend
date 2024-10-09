@@ -55,18 +55,19 @@ const HomeMobileView: React.FC<Info> = ({
       <div className="text-center">
         <div className="row">
           <div className="col d-flex justify-content-center align-items-center">
-            <div className="input-group col-9 mb-4 rounded-pill">
-            <span className="input-group-text rounded-start-pill" id="basic-addon1"><IoSearchSharp size={20} color="#F16262"/></span>
+          <div className="d-flex justify-content-center align-items-center col-9 mb-4">
+              <IoSearchSharp size={30} color="#F16262"/>
               <input
-              placeholder="Suche..."
                 type="text"
+                placeholder="Suche..."
+                aria-placeholder=""
                 value={sucht}
-                style={{ backgroundColor: "#F1F2F3" }}
+                style={{ backgroundColor: "#ffffff"}}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setsucht(e.target.value)
                 }
-                className="form-control rounded-end-pill"
-              /> 
+                className="form-control form-control mb rounded-4 ms-2"
+              />
             </div>
           </div>
         </div>
@@ -222,9 +223,9 @@ const HomeMobileView: React.FC<Info> = ({
                   style={{
                     backgroundColor:
                       props.etappe === "liturgisch"
-                        ? "#f4f1db"
+                        ? "#FFF9D9"
                         : props.etappe === "Katechumenat"
-                        ? "#dbdcf4"
+                        ? "#E7FEFF"
                         : props.etappe === "Auserwählung"
                         ? "#E3F4DB"
                         : "white",

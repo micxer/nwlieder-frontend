@@ -119,19 +119,14 @@ const LiedView: React.FC<LiedViewInterface> = ({
               <p>
                 <p className="port mb-0">
                   {datei?.name?.length && datei?.name?.length > 30 ? (
-                    <Marquee speed={30}>
-                      {datei?.name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    </Marquee>
+                    
+               <p style={{marginBottom: "0"}}>       {datei?.name} </p>
+       
                   ) : (
                     datei?.name
                   )}
                 </p>
 
-                <button onClick={() => {navigate(`/home`, {
-                  state: { filterEtappe: datei?.etappe }
-                })}} className="mb-0" color="gray" style={{ all: "unset" }}>
-                  {datei?.etappe}
-                </button>
               </p>
             </div>
             {/* <div className="col-auto">

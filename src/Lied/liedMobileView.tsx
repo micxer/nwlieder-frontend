@@ -120,7 +120,7 @@ const LiedMobileView: React.FC<LiedViewInterface> = ({
                           {datei?.name?.length && datei?.name?.length > 23 ? (
                             <div>
                           
-                           <p style={{fontSize: "17px"}}> {datei?.name}</p>  
+                           <p style={{fontSize: "17px", marginBottom: "0"}}> {datei?.name}</p>  
                       
                            
                             </div>
@@ -219,7 +219,7 @@ const LiedMobileView: React.FC<LiedViewInterface> = ({
                 <div className="col">
                   <div className="d-flex justify-content-center">
               
-                    <div className="col-auto">
+                    <div className="col-auto mt-2">
                       <AudioProgressBar
                         className="input-range-mobile"
                         duration={duration}

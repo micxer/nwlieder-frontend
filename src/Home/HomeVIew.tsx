@@ -56,17 +56,18 @@ const HomeView: React.FC<Info> = ({
       <div className="text-center">
         <div className="row">
           <div className=" d-flex justify-content-center align-items-center">
-            <div className="input-group col-2">
-              <span className="input-group-text rounded-start-pill"><IoSearchSharp size={20} color="#F16262"/></span>
+            <div className="d-flex justify-content-center align-items-center col-8">
+              <IoSearchSharp size={35} color="#F16262"/>
               <input
                 type="text"
                 placeholder="Suche..."
+                aria-placeholder=""
                 value={sucht}
-                style={{ backgroundColor: "#F1F2F3" }}
+                style={{ backgroundColor: "#ffffff"}}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setsucht(e.target.value)
                 }
-                className="form-control form-control-lg mb   rounded-end-pill"
+                className="form-control form-control-lg mb rounded-4 ms-2"
               />
             </div>
           </div>
@@ -218,9 +219,9 @@ const HomeView: React.FC<Info> = ({
                   style={{
                     backgroundColor:
                       props.etappe === "liturgisch"
-                        ? "#f4f1db"
+                        ? "#FFF9D9"
                         : props.etappe === "Katechumenat"
-                        ? "#dbdcf4"
+                        ? "#E7FEFF"
                         : props.etappe === "Auserwählung"
                         ? "#E3F4DB"
                         : "white",
