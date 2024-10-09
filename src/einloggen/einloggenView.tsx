@@ -16,14 +16,12 @@ const EinloggenView: React.FC<einloggen> = ({einmelden, verify}) => {
         <div className='col-auto'>
             <div className='border p-5 rounded'>
             <form onSubmit={verify}  >
-            <label  className="form-label">Nutzer</label>
 
-                <input onChange={einmelden} name='nutzer'  className='form-control mb-3'/>
                 <label  className="form-label">Passwort</label>
 
                 <input onChange={einmelden} name='password'  type='password' className='form-control' />
                 <div className='text-center mt-4'>
-                <button type='submit' className='btn btn-primary'>einloggen</button>
+                <button type='submit' className='btn btn-danger rounded-4'>einloggen</button>
                 </div>
             </form>
             </div>

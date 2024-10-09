@@ -7,8 +7,7 @@ import { MdDelete } from "react-icons/md";
 import Marquee from "react-fast-marquee";
 import { BiSolidCommentDetail } from "react-icons/bi";
 import { MdEdit } from "react-icons/md";
-import Select, { MultiValue } from 'react-select';
-
+import Select, { MultiValue } from "react-select";
 
 interface editierenView {
   openModal: boolean;
@@ -20,19 +19,21 @@ interface editierenView {
   liturgischverzeichnis: {
     value: string;
     label: string;
-}[];
+  }[];
   thematischverzeichnis: {
     value: string;
     label: string;
-}[];
- selectedLiturgisch: MultiValue<{
-  value: string;
-  label: string;
-}> | null;
- setSelectedLiturgisch: React.Dispatch<React.SetStateAction<MultiValue<{
-  value: string;
-  label: string;
-}> | null>>;
+  }[];
+  selectedLiturgisch: MultiValue<{
+    value: string;
+    label: string;
+  }> | null;
+  setSelectedLiturgisch: React.Dispatch<
+    React.SetStateAction<MultiValue<{
+      value: string;
+      label: string;
+    }> | null>
+  >;
   openModalDelete: (e: React.MouseEvent<HTMLButtonElement>) => void;
   kommentare: KommentareInfo | undefined;
   getSpecificAudio: (e: React.MouseEvent<HTMLButtonElement>) => void;
@@ -43,16 +44,22 @@ interface editierenView {
   selectedThematisch: MultiValue<{
     value: string;
     label: string;
-}> | null;
-setSelectedThematisch: React.Dispatch<React.SetStateAction<MultiValue<{
-  value: string;
-  label: string;
-}> | null>>;
+  }> | null;
+  setSelectedThematisch: React.Dispatch<
+    React.SetStateAction<MultiValue<{
+      value: string;
+      label: string;
+    }> | null>
+  >;
   updateImage: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onClickFunction: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  deleteSpecificAudio: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
-  createSpecificAudio: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void>
-  getAudio: (e: React.ChangeEvent<HTMLInputElement>) => Promise<void>
+  deleteSpecificAudio: (
+    e: React.MouseEvent<HTMLButtonElement>
+  ) => Promise<void>;
+  createSpecificAudio: (
+    e: React.MouseEvent<HTMLButtonElement>
+  ) => Promise<void>;
+  getAudio: (e: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
   updateData: {
     name: string | undefined;
     description: string;
@@ -63,7 +70,7 @@ setSelectedThematisch: React.Dispatch<React.SetStateAction<MultiValue<{
     liturgisch: string[];
     thematisch: string[];
   };
-  getIdKommentar: (e: React.MouseEvent<HTMLButtonElement>) => void
+  getIdKommentar: (e: React.MouseEvent<HTMLButtonElement>) => void;
 
   setUpdateData: React.Dispatch<
     React.SetStateAction<{
@@ -105,8 +112,8 @@ const EditierenView: React.FC<editierenView> = ({
   thematischverzeichnis,
   selectedLiturgisch,
   setSelectedLiturgisch,
-  selectedThematisch, 
-  setSelectedThematisch
+  selectedThematisch,
+  setSelectedThematisch,
 }) => {
   return (
     <div>
@@ -129,12 +136,11 @@ const EditierenView: React.FC<editierenView> = ({
                     }}
                   />
                   <input
-                   onChange={updateImage}
-                   name="image"
+                    onChange={updateImage}
+                    name="image"
                     type="file"
                     accept="image/*"
                     className="form-control mt-2"
-                    
                   />
                 </div>
                 <div>
@@ -188,39 +194,36 @@ const EditierenView: React.FC<editierenView> = ({
                     <label className="form-label mt-3 subtitle">
                       Liturgisches Verzeichnis
                     </label>
-             
                   </div>
                   <div>
-                  <div>
-                  <Select
-      isMulti
-      defaultValue={liturgischverzeichnis.filter((hola) => updateData.liturgisch.includes(hola.value))}
-      options={liturgischverzeichnis}
-      onChange={setSelectedLiturgisch}
-      
-    />
+                    <div>
+                      <Select
+                        isMulti
+                        defaultValue={liturgischverzeichnis.filter((hola) =>
+                          updateData.liturgisch.includes(hola.value)
+                        )}
+                        options={liturgischverzeichnis}
+                        onChange={setSelectedLiturgisch}
+                      />
+                    </div>
                   </div>
-                
-                  
-                  </div>
-
 
                   <div>
                     <label className="form-label mt-3 subtitle">
                       Thematisches Verzeichnis
                     </label>
-             
                   </div>
                   <div>
-                  <div>
-                  <Select
-      isMulti
-      defaultValue={thematischverzeichnis.filter((hola) => updateData.thematisch.includes(hola.value))}
-      options={thematischverzeichnis}
-      onChange={setSelectedThematisch}
-    
-    />
-                  </div>
+                    <div>
+                      <Select
+                        isMulti
+                        defaultValue={thematischverzeichnis.filter((hola) =>
+                          updateData.thematisch.includes(hola.value)
+                        )}
+                        options={thematischverzeichnis}
+                        onChange={setSelectedThematisch}
+                      />
+                    </div>
                   </div>
 
                   <div>
@@ -264,54 +267,62 @@ const EditierenView: React.FC<editierenView> = ({
                   <div className="mb-5 ">
                     <label className="form-label mt-3 subtitle">mp3 file</label>
                     <div className="text-center">
-                     
-                  <input
-                    type="file"
-                    accept="audio/*"
-                    name="audio"
-                    className="form-control"
-                    onChange={getAudio}
+                      <input
+                        type="file"
+                        accept="audio/*"
+                        name="audio"
+                        className="form-control"
+                        onChange={getAudio}
                       />
-                      <button onClick={createSpecificAudio} className="btn mt-2 mb-3"> hinzufügen </button>
-                      
-                </div>
+                      <button
+                        onClick={createSpecificAudio}
+                        className="btn mt-2 mb-3"
+                      >
+                        {" "}
+                        hinzufügen{" "}
+                      </button>
+                    </div>
                     {updateData.audios?.map((data) => (
                       <div>
-                        
                         <ul className="list-group">
-                          { data === "" ? <div/> : 
-                          <li
-                            style={{ all: "unset" }}
-                            className="list-group-item shadow-sm p-1 mt-2"
-                          >
-                            <div className="col row d-flex justify-content-around">
-                              <div className="col-9 ">
-                                <Marquee speed={30}>{data}&nbsp;&nbsp;</Marquee>
+                          {data === "" ? (
+                            <div />
+                          ) : (
+                            <li
+                              style={{ all: "unset" }}
+                              className="list-group-item shadow-sm p-1 mt-2"
+                            >
+                              <div className="col row d-flex justify-content-around">
+                                <div className="col-9 ">
+                                  <Marquee speed={30}>
+                                    {data}&nbsp;&nbsp;
+                                  </Marquee>
+                                </div>
+                                <div className="col-auto">
+                                  <button
+                                    className="ms-4"
+                                    style={{ all: "unset" }}
+                                    value={data}
+                                    name="erschaffen"
+                                    onClick={getSpecificAudio}
+                                  >
+                                    <BiSolidCommentDetail
+                                      size={25}
+                                      color="#ed1e24"
+                                    />
+                                  </button>
+                                  <button
+                                    className="ms-4"
+                                    style={{ all: "unset" }}
+                                    value={data}
+                                    onClick={deleteSpecificAudio}
+                                  >
+                                    X
+                                  </button>
+                                </div>
                               </div>
-                              <div className="col-auto">
-                                <button
-                                  className="ms-4"
-                                  style={{ all: "unset" }}
-                                  value={data}
-                                  name="erschaffen"
-                                  onClick={getSpecificAudio}
-                                >
-                                  <BiSolidCommentDetail
-                                    size={25}
-                                    color="#ed1e24"
-                                  />
-                                </button>
-                                <button
-                                  className="ms-4"
-                                  style={{ all: "unset" }}
-                                  value={data}
-                                  onClick={deleteSpecificAudio}
-                                >
-                                 X
-                                </button>
-                              </div>
-                            </div>
-                          </li> }
+                            </li>
+                          )}
                           {kommentare?.map((kdata) => {
                             return (
                               <div>
@@ -340,15 +351,14 @@ const EditierenView: React.FC<editierenView> = ({
                                               ).toLocaleDateString()}
                                             </p> */}
                                             <div className="d-flex ms-1">
-                                            <button
-                                            value={kdata.id}
-                                            name="bearbeiten"
-                                            onClick={getIdKommentar}
-                                            className="me-2" style={{all: "unset"}}>
-                                                <MdEdit
-                                                size={25}
-                                                color="red"
-                                                />
+                                              <button
+                                                value={kdata.id}
+                                                name="bearbeiten"
+                                                onClick={getIdKommentar}
+                                                className="me-2"
+                                                style={{ all: "unset" }}
+                                              >
+                                                <MdEdit size={25} color="red" />
                                               </button>
                                               <button
                                                 value={kdata.id}
@@ -362,7 +372,6 @@ const EditierenView: React.FC<editierenView> = ({
                                                   color="red"
                                                 />
                                               </button>
-                                            
                                             </div>
                                           </div>
                                         </div>

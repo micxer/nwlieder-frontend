@@ -4,6 +4,7 @@ import { Hola } from "../interfaces";
 import { FaPlus } from "react-icons/fa6";
 import { FaTrash } from "react-icons/fa";
 import { MdOutlineStarOutline, MdOutlineStar } from "react-icons/md";
+import { IoSearchSharp } from "react-icons/io5";
 
 interface Info {
   hola: (e: MouseEvent<HTMLButtonElement>) => Promise<void>;
@@ -23,10 +24,12 @@ interface Info {
   getVerzeichnis: (e: React.MouseEvent<HTMLButtonElement>) => void;
   thematisch: string[];
   liturgisch: string[];
-  setMullModal: React.Dispatch<React.SetStateAction<{
-    mullModalKonditional: boolean;
-    id: string;
-}>>
+  setMullModal: React.Dispatch<
+    React.SetStateAction<{
+      mullModalKonditional: boolean;
+      id: string;
+    }>
+  >;
 }
 
 const HomeView: React.FC<Info> = ({
@@ -46,22 +49,24 @@ const HomeView: React.FC<Info> = ({
   ersteKategorie,
   liturgisch,
   thematisch,
-  setMullModal
+  setMullModal,
 }) => {
   return (
     <div className=" containter">
       <div className="text-center">
         <div className="row">
           <div className=" d-flex justify-content-center align-items-center">
-            <div className="col-5">
+            <div className="input-group col-2">
+              <span className="input-group-text rounded-start-pill"><IoSearchSharp size={20} color="#F16262"/></span>
               <input
                 type="text"
+                placeholder="Suche..."
                 value={sucht}
                 style={{ backgroundColor: "#F1F2F3" }}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setsucht(e.target.value)
                 }
-                className="form-control form-control-lg mb   rounded-pill"
+                className="form-control form-control-lg mb   rounded-end-pill"
               />
             </div>
           </div>
@@ -213,9 +218,9 @@ const HomeView: React.FC<Info> = ({
                   style={{
                     backgroundColor:
                       props.etappe === "liturgisch"
-                        ? "#fefff2"
+                        ? "#f4f1db"
                         : props.etappe === "Katechumenat"
-                        ? "#f8f7ff"
+                        ? "#dbdcf4"
                         : props.etappe === "Auserwählung"
                         ? "#E3F4DB"
                         : "white",
@@ -244,11 +249,16 @@ const HomeView: React.FC<Info> = ({
                         )}
                       </button>
                       {level === "admin" ? (
-                        <button className="ms-2" style={{ all: "unset" }} value={props?.id}
-                        onClick={(e) => {setMullModal({
-                          mullModalKonditional: true,
-                          id: e.currentTarget.value
-                        })}}
+                        <button
+                          className="ms-2"
+                          style={{ all: "unset" }}
+                          value={props?.id}
+                          onClick={(e) => {
+                            setMullModal({
+                              mullModalKonditional: true,
+                              id: e.currentTarget.value,
+                            });
+                          }}
                         >
                           <FaTrash color="#D94141" />
                         </button>

@@ -11,7 +11,6 @@ const Einloggen: React.FC = () => {
 
     const [nutzer, setNutzer] = useState({
 
-        nutzer: '',
         password: ''
     })
 
@@ -36,15 +35,15 @@ const Einloggen: React.FC = () => {
   
         const normal = "normal";
         const admin = "admin";
-        setLocalStorageItem(nutzer.nutzer, nutzer.password);
-        if(nutzer.nutzer === 'usuario' && nutzer.password === 'Maranatha') {
+        setLocalStorageItem("nutzer", nutzer.password);
+        if( nutzer.password === 'Maranatha') {
 
 
           await navigate("/start", { state: { normal }  });
            
         }
 
-        else if (nutzer.nutzer === 'admin' && nutzer.password === 'admin') {
+        else if (nutzer.password === 'admin') {
 
             await navigate("/start", {state: { admin }});
         }

@@ -6,9 +6,7 @@ interface modalinterface {
   show: boolean;
   text: string;
   heading: string;
-  
 }
-
 
 const ModalAlert: React.FC<modalinterface> = ({ text, show, heading }) => {
   const [show1, setShow1] = useState(false);

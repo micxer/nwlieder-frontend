@@ -4,7 +4,7 @@ import { Hola } from "../interfaces";
 import { FaPlus } from "react-icons/fa6";
 import { MdOutlineStarOutline, MdOutlineStar } from "react-icons/md";
 import { FaTrash } from "react-icons/fa";
-import Marquee from "react-fast-marquee";
+import { IoSearchSharp } from "react-icons/io5";
 
 interface Info {
   hola: (e: MouseEvent<HTMLButtonElement>) => Promise<void>;
@@ -23,10 +23,12 @@ interface Info {
   liturgisch: string[];
   ersteKategorie: string | undefined;
   verzeichnise: string[];
-  setMullModal: React.Dispatch<React.SetStateAction<{
-    mullModalKonditional: boolean;
-    id: string;}>>
-
+  setMullModal: React.Dispatch<
+    React.SetStateAction<{
+      mullModalKonditional: boolean;
+      id: string;
+    }>
+  >;
 }
 
 const HomeMobileView: React.FC<Info> = ({
@@ -46,24 +48,25 @@ const HomeMobileView: React.FC<Info> = ({
   ersteKategorie,
   verzeichnise,
   getVerzeichnis,
-  setMullModal
-
+  setMullModal,
 }) => {
   return (
     <div className=" containter">
       <div className="text-center">
         <div className="row">
           <div className="col d-flex justify-content-center align-items-center">
-            <div className="col-9">
+            <div className="input-group col-9 mb-4 rounded-pill">
+            <span className="input-group-text rounded-start-pill" id="basic-addon1"><IoSearchSharp size={20} color="#F16262"/></span>
               <input
+              placeholder="Suche..."
                 type="text"
                 value={sucht}
                 style={{ backgroundColor: "#F1F2F3" }}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setsucht(e.target.value)
                 }
-                className="form-control form-control-lg mb-5 mt-3 rounded-pill"
-              />
+                className="form-control rounded-end-pill"
+              /> 
             </div>
           </div>
         </div>
@@ -187,19 +190,18 @@ const HomeMobileView: React.FC<Info> = ({
           ) : ersteKategorie === "Thematisch" ? (
             <div className=" d-flex justify-content-start">
               {thematisch.map((data) => (
-                <div >
-                <button
-                
-                  value={data}
-                  onClick={(e) => startFilter(e)}
-                  style={{
-                    backgroundColor: "#F16262",
-                    color: "white",
-                  }}
-                  className="btn ms-3 rounded-pill"
-                >
-                  {data}
-                </button>
+                <div>
+                  <button
+                    value={data}
+                    onClick={(e) => startFilter(e)}
+                    style={{
+                      backgroundColor: "#F16262",
+                      color: "white",
+                    }}
+                    className="btn ms-3 rounded-pill"
+                  >
+                    {data}
+                  </button>
                 </div>
               ))}
             </div>
@@ -220,35 +222,43 @@ const HomeMobileView: React.FC<Info> = ({
                   style={{
                     backgroundColor:
                       props.etappe === "liturgisch"
-                        ? "#fefff2"
+                        ? "#f4f1db"
                         : props.etappe === "Katechumenat"
-                        ? "#f8f7ff"
+                        ? "#dbdcf4"
                         : props.etappe === "Auserwählung"
                         ? "#E3F4DB"
                         : "white",
                   }}
-                  className=" list-group-item mt-2 shadow-sm rounded-pill"
+                  className=" list-group-item mt-2 shadow-sm rounded-4"
                 >
                   <div className="d-flex justify-content-between">
-                    <div >
+                    <div>
                       <button
                         value={props.id}
                         onClick={hola}
                         style={{ all: "unset" }}
                       >
-                        <div className="text">{
-                        props?.name?.length && props?.name?.length > 30 ? 
-                        <div>
-                        <Marquee speed={30} >
-                          {props.name}&nbsp;&nbsp;&nbsp;
-                        </Marquee> </div> :
-                <div>    <p style={{marginBottom: "0"}}> {props.name} </p>  </div>
-                        
-                        }</div>
+                        <div className="text">
+                          {props?.name?.length && props?.name?.length > 30 ? (
+                            <div>
+                          
+                               {props.name} 
+                          
+                            </div>
+                          ) : (
+                            <div>
+                              {" "}
+                              <p style={{ marginBottom: "0" }}>
+                                {" "}
+                                {props.name}{" "}
+                              </p>{" "}
+                            </div>
+                          )}
+                        </div>
                       </button>
                     </div>
 
-                    <div className="d-flex justify-conter-end" >
+                    <div className="d-flex justify-conter-end">
                       <button
                         value={props.id}
                         style={{ all: "unset" }}
@@ -262,11 +272,16 @@ const HomeMobileView: React.FC<Info> = ({
                         )}
                       </button>
                       {level === "admin" ? (
-                        <button className="ms-2" style={{ all: "unset" }} value={props?.id}
-                        onClick={(e) => {setMullModal({
-                          mullModalKonditional: true,
-                          id: e.currentTarget.value
-                        })}}
+                        <button
+                          className="ms-2"
+                          style={{ all: "unset" }}
+                          value={props?.id}
+                          onClick={(e) => {
+                            setMullModal({
+                              mullModalKonditional: true,
+                              id: e.currentTarget.value,
+                            });
+                          }}
                         >
                           <FaTrash color="#D94141" />
                         </button>
@@ -284,12 +299,13 @@ const HomeMobileView: React.FC<Info> = ({
       </div>
       {level === "admin" ? (
         <div className="position">
-         
-           <button className="create-mobile d-flex justify-content-center" >
-              <FaPlus size={30}  color="white" onClick={() => setOpenModal(true)} />
-              </button>
-         
-        
+          <button className="create-mobile d-flex justify-content-center">
+            <FaPlus
+              size={30}
+              color="white"
+              onClick={() => setOpenModal(true)}
+            />
+          </button>
         </div>
       ) : (
         <div />

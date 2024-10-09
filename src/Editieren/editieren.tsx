@@ -7,7 +7,6 @@ import Button from "react-bootstrap/Button";
 import Spinner from "../spinner/reload";
 import { MultiValue } from "react-select";
 
-
 interface editieren {
   openModal: boolean;
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -17,7 +16,7 @@ interface editieren {
   setAktuelLied: React.Dispatch<React.SetStateAction<number>>;
 }
 
- const Editieren: React.FC<editieren> = ({
+const Editieren: React.FC<editieren> = ({
   openModal,
   setOpenModal,
   data,
@@ -50,27 +49,31 @@ interface editieren {
   const [kommentarId, setKommentarId] = useState("");
 
   const liturgisch = [
-    {value: "Advent-Weinachten", label: "Advent-Weinachten"},
-    {value: "Fastenzeit", label: "Fastenzeit"},
-    { value: "Ostern-Pfingsten", label: "Ostern-Pfingsten"},
-    {value: "Jahreskreis", label: "Jahreskreis"},
- ];
+    { value: "Advent-Weinachten", label: "Advent-Weinachten" },
+    { value: "Fastenzeit", label: "Fastenzeit" },
+    { value: "Ostern-Pfingsten", label: "Ostern-Pfingsten" },
+    { value: "Jahreskreis", label: "Jahreskreis" },
+  ];
 
- const thematisch = [
-  { value: "Marienlieder", label: "Marienlieder"},
-   {value: "Lieder-für-die-Kinder", label: "Lieder für die Kinder"},
-   {value: "Einzugslieder", label: "Einzugslieder"},
-   {value: "Frieden-Gabenbereitung", label: "Frieden-Gabenbereitung"},
-   {value: "Brotbrechen", label: "Brotbrechen"},
-   {value: "Kelchkommunion", label: "Kelchkommunion"},
-   {value: "Auszugslieder", label: "Auszugslieder"}
- ];
+  const thematisch = [
+    { value: "Marienlieder", label: "Marienlieder" },
+    { value: "Lieder-für-die-Kinder", label: "Lieder für die Kinder" },
+    { value: "Einzugslieder", label: "Einzugslieder" },
+    { value: "Frieden-Gabenbereitung", label: "Frieden-Gabenbereitung" },
+    { value: "Brotbrechen", label: "Brotbrechen" },
+    { value: "Kelchkommunion", label: "Kelchkommunion" },
+    { value: "Auszugslieder", label: "Auszugslieder" },
+  ];
 
- const [selectedLiturgisch, setSelectedLiturgisch] = useState<MultiValue<{ value: string, label: string }> | null>(null);
- const [firstLiturgisch, setFirstLiturgisch] = useState([""])
+  const [selectedLiturgisch, setSelectedLiturgisch] = useState<MultiValue<{
+    value: string;
+    label: string;
+  }> | null>(null);
 
- const [selectedThematisch, setSelectedThematisch] = useState<MultiValue<{ value: string, label: string }> | null>(null);
- const [firstThematisch, setFirstThematisch] = useState([""])
+  const [selectedThematisch, setSelectedThematisch] = useState<MultiValue<{
+    value: string;
+    label: string;
+  }> | null>(null);
 
   const getSpecificAudio = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -118,8 +121,7 @@ interface editieren {
         fetchOptions
       )
         .then((response) => response.json())
-        .then((data) => {
-        });
+        .then((data) => {});
     } catch (error) {
       console.log("cual es el error", error);
     }
@@ -149,8 +151,7 @@ interface editieren {
     try {
       await fetch(`${process.env.REACT_APP_API_URL}/audio/${id}`, fetchOptions)
         .then((response) => response.json())
-        .then((data) => {
-        });
+        .then((data) => {});
     } catch (error) {
       console.log("cual es el error", error);
     }
@@ -194,31 +195,25 @@ interface editieren {
         etappe: dataResponse[0].etappe,
         liedtext: dataResponse[0].liedtext,
         liturgisch: dataResponse[0].liturgisch || "",
-        thematisch: dataResponse[0].thematisch || ""
+        thematisch: dataResponse[0].thematisch || "",
       }));
-
-      setFirstLiturgisch(dataResponse[0].liturgisch);
-
       return dataResponse;
     } catch (error) {
       console.log(error);
     }
   };
 
-
   const disableFunction = async () => {
     if (
       updateData.name === "" ||
       updateData.img === "" ||
-      updateData.etappe === "" 
+      updateData.etappe === ""
     ) {
       await setDisable(true);
     } else {
       await setDisable(false);
     }
   };
-
-
 
   const [extractIdDeleteKommentar, setExtractIdDeleteKommentar] = useState<
     string
@@ -229,8 +224,6 @@ interface editieren {
     setExtractIdDeleteKommentar(e.currentTarget.value);
     openModalDelete(e);
   };
-
-
 
   const deleteKommentar = async (e: React.MouseEvent<HTMLButtonElement>) => {
     const urlKommentareDelete = `${process.env.REACT_APP_API_URL}/kommentare/${extractIdDeleteKommentar}`;
@@ -244,7 +237,7 @@ interface editieren {
     try {
       await fetch(urlKommentareDelete, fetchOptionsKommentare)
         .then((response) => response.json())
-        .then((data) => console.log(data));
+        .then((data) => data);
 
       setModalAlert(true);
       openModalDelete(e);
@@ -263,7 +256,7 @@ interface editieren {
       updateLied.append("image", image);
     }
 
-    console.log(updateData)
+    console.log(updateData);
     Object.entries(updateData).forEach(([key, value]) => {
       updateLied.append(key, value.toString());
     });
@@ -305,14 +298,13 @@ interface editieren {
 
   let liturgischData: any[] = [];
 
-  selectedLiturgisch?.map((data) => liturgischData.push(data.value))
+  selectedLiturgisch?.map((data) => liturgischData.push(data.value));
 
   useEffect(() => {
-
     setUpdateData(() => ({
-      ...updateData, 
-      liturgisch: liturgischData
-    }))
+      ...updateData,
+      liturgisch: liturgischData,
+    }));
   }, [selectedLiturgisch]);
 
   useEffect(() => {
@@ -321,14 +313,13 @@ interface editieren {
 
   let thematischData: any[] = [];
 
-  selectedThematisch?.map((data) => thematischData.push(data.value))
+  selectedThematisch?.map((data) => thematischData.push(data.value));
 
   useEffect(() => {
-
     setUpdateData(() => ({
-      ...updateData, 
-      thematisch: thematischData
-    }))
+      ...updateData,
+      thematisch: thematischData,
+    }));
   }, [selectedThematisch]);
 
   useEffect(() => {
@@ -405,7 +396,6 @@ interface editieren {
             setSelectedLiturgisch={setSelectedLiturgisch}
             selectedThematisch={selectedThematisch}
             setSelectedThematisch={setSelectedThematisch}
-      
           />
           <Modal
             show={modalDelete}

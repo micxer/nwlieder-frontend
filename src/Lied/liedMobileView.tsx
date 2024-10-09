@@ -119,16 +119,16 @@ const LiedMobileView: React.FC<LiedViewInterface> = ({
                         >
                           {datei?.name?.length && datei?.name?.length > 23 ? (
                             <div>
-                            <Marquee speed={30}>
-                              {datei?.name}&nbsp;&nbsp;&nbsp;
-                            </Marquee>
+                          
+                           <p style={{fontSize: "17px"}}> {datei?.name}</p>  
+                      
                            
                             </div>
                           ) : (
                             datei?.name
                           )}
                         </p>
-                        <p style={{color: "gray"}}>{datei?.etappe}</p>
+                        {/* <p style={{color: "gray"}}>{datei?.etappe}</p> */}
                       </div>
                       {datei?.audios?.length === 1 ||
                       datei?.audios?.length === undefined ? (
