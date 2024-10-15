@@ -27,7 +27,6 @@ const Lied: React.FC = ({}, props: audioPlayerProps) => {
   const { songIndex, songCount } = props;
 
 
-
   const [duration, setDuration] = useState(0);
   const [isReady, setIsReady] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
