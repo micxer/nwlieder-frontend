@@ -8,7 +8,7 @@ import Marquee from "react-fast-marquee";
 import { BiSolidCommentDetail } from "react-icons/bi";
 import { MdEdit } from "react-icons/md";
 import Select, { MultiValue } from "react-select";
-
+import hey from "../Images/Abba-Vater.png";
 interface editierenView {
   openModal: boolean;
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -34,6 +34,8 @@ interface editierenView {
       label: string;
     }> | null>
   >;
+  createSpecificSecondImage: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
+  getSecondImage: (e: React.ChangeEvent<HTMLInputElement>) => Promise<void>
   openModalDelete: (e: React.MouseEvent<HTMLButtonElement>) => void;
   kommentare: KommentareInfo | undefined;
   getSpecificAudio: (e: React.MouseEvent<HTMLButtonElement>) => void;
@@ -69,6 +71,7 @@ interface editierenView {
     liedtext: string;
     liturgisch: string[];
     thematisch: string[];
+    secondary_images: string[];
   };
   getIdKommentar: (e: React.MouseEvent<HTMLButtonElement>) => void;
 
@@ -82,6 +85,7 @@ interface editierenView {
       liedtext: string;
       liturgisch: string[];
       thematisch: string[];
+      secondary_images: string[];
     }>
   >;
 }
@@ -114,6 +118,8 @@ const EditierenView: React.FC<editierenView> = ({
   setSelectedLiturgisch,
   selectedThematisch,
   setSelectedThematisch,
+  getSecondImage,
+  createSpecificSecondImage
 }) => {
   return (
     <div>
@@ -125,9 +131,11 @@ const EditierenView: React.FC<editierenView> = ({
           <div className="col container">
             <div>
               <form onSubmit={sendInfo}>
+              <label className="form-label mt-3 subtitle">Hauptbild</label>
                 <div className="text-center">
+                  
                   <img
-                    className="rounded ms-2 col "
+                    className="rounded ms-2 col shadow"
                     src={updateData?.img}
                     style={{
                       width: "40vw",
@@ -142,6 +150,31 @@ const EditierenView: React.FC<editierenView> = ({
                     accept="image/*"
                     className="form-control mt-2"
                   />
+                </div>
+                <div>
+                <label className="form-label mt-3 subtitle">Sekundaere Bilder</label>
+                  <input 
+                  className="form-control" 
+                  type="file"
+                  onChange={(e) => getSecondImage(e)}
+                  />
+                  <div className="text-center mt-3">
+                  <button className="btn btn-danger" onClick={createSpecificSecondImage} >Add</button>
+                  </div>
+                  <div className="d-flex justify-content-center mt-2">
+                    {/* {
+                      updateData.secondary_images.map()
+                    } */}
+                  <img
+                    className="rounded  col shadow"
+                    src={hey}
+                    style={{
+                      width: "20vw",
+                      maxWidth: "20vh",
+                      alignItems: "center",
+                    }}
+                  />
+                  </div>
                 </div>
                 <div>
                   <label className="form-label mt-3 subtitle">Name</label>

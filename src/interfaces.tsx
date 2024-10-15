@@ -12,6 +12,7 @@ export interface Hola {
   liedtext?: string;
   liturgisch?: string[];
   thematisch?: string[];
+  secondary_images?: string[];
 }
 
 export interface KommentareInfo {

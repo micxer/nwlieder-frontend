@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+/* eslint-disable jsx-a11y/alt-text */
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { LiedViewInterface } from "../interfaces";
@@ -16,6 +17,10 @@ import { MdForward10, MdReplay10 } from "react-icons/md";
 import { TbReload } from "react-icons/tb";
 import { HashLoader } from "react-spinners";
 import { IoIosInformationCircle } from "react-icons/io";
+import ReactCardFlip from 'react-card-flip';
+import logo from '../Images/Der-Weg-ist-hart.png';
+import imglied from '../Images/Abba-Vater.png'
+import other from '../Images/Du-wirst-mir-den-Weg-des-Lebens-weisen.png'
 
 const LiedView: React.FC<LiedViewInterface> = ({
   data,
@@ -65,29 +70,155 @@ const LiedView: React.FC<LiedViewInterface> = ({
     setIsPlaying(false);
   };
 
+  const [flipped1, setFlipped1] = useState<boolean | undefined>(undefined);
+  const [flipped2, setFlipped2] = useState<boolean | undefined>(undefined);
+  const [imageNumber, setImageNumber] = useState(4)
+
+
+  const changeFlipp  = async (e: number) => {
+    
+     setImageNumber(imageNumber - e)
+
+    
+
+  
+  
+  }
+
+  useEffect( ()  =>  {
+        
+
+    if (imageNumber === 4 ) {
+      setFlipped1(false)
+           setFlipped2(undefined)
+   }
+      else if(imageNumber === 3 ) {
+       setFlipped1(true)
+      setFlipped2(undefined)
+      
+      }
+      else if(imageNumber === 2 ) {
+        setFlipped1(undefined)
+       setFlipped2(false)
+       
+       }
+       else if(imageNumber === 1 ) {
+        setFlipped1(undefined)
+       setFlipped2(true)
+       
+       }
+      else if(imageNumber === 0) {
+
+        setImageNumber(4)
+        
+      }
+
+  }, [ imageNumber])
+
+
+
   return (
     <div>
           <IoIosInformationCircle className="information"   
           onClick={() => setInformationsModal(!informationsModal)} size={45} />
           
       <div className="d-flex justify-content-center align-items-center">
+        { 
+          imageNumber === 4 || imageNumber === 3?         
+          <ReactCardFlip isFlipped={flipped1} flipDirection="horizontal" >
+          <div>
+            
+          <TransformWrapper>
+            <TransformComponent>
+              <img
+                className="rounded "
+                src={datei?.img}
+                style={{
+                  maxWidth: "80vh",
+                  width: "100%",
+                  maxHeight: "100%",
+                  cursor: "zoom-in",
+                  transition: "transform 0.25s ease",
+                }}
+              />
+            </TransformComponent>
+          </TransformWrapper>
+        </div>
+        <div>
         <TransformWrapper>
-          <TransformComponent>
-            <img
-              className="text-align-center"
-              src={datei?.img}
-              style={{
-                maxWidth: "85vh",
-                width: "100%",
-                maxHeight: "100%",
-                cursor: "zoom-in",
-                transition: "transform 0.25s ease",
-              }}
-            />
-          </TransformComponent>
-        </TransformWrapper>
+            <TransformComponent>
+              <img
+                className="rounded "
+                src={other}
+                style={{
+                  maxWidth: "80vh",
+                  width: "100%",
+                  maxHeight: "100%",
+                  cursor: "zoom-in",
+                  transition: "transform 0.25s ease",
+                }}
+              />
+            </TransformComponent>
+          </TransformWrapper>
+        </div>
+      
+        </ReactCardFlip> :  imageNumber === 2 || imageNumber === 1 ? <div/>
+      //    <ReactCardFlip isFlipped={flipped2} flipDirection="horizontal" >
+      //    <div>
+           
+      
+      //    <TransformWrapper>
+      //       <TransformComponent>
+      //         <img
+      //           className="rounded "
+      //           src={logo}
+      //           style={{
+      //             maxWidth: "80vh",
+      //             width: "100%",
+      //             maxHeight: "100%",
+      //             cursor: "zoom-in",
+      //             transition: "transform 0.25s ease",
+      //           }}
+      //         />
+      //       </TransformComponent>
+      //     </TransformWrapper>
+          
+          
+         
+      //  </div>
+      //  <div>
+      //  <TransformWrapper>
+      //       <TransformComponent>
+      //         <img
+      //           className="rounded "
+      //           src={imglied}
+      //           style={{
+      //             maxWidth: "80vh",
+      //             width: "100%",
+      //             maxHeight: "100%",
+      //             cursor: "zoom-in",
+      //             transition: "transform 0.25s ease",
+      //           }}
+      //         />
+      //       </TransformComponent>
+      //     </TransformWrapper>
+      //  </div>
+     
+      //  </ReactCardFlip> 
+      : <div/>
+        }
+    
+
+       
+        <button className="btn btn-danger"  onClick={ () => changeFlipp(1)}>
+        Beta test
+      </button>
+      
       </div>
+    
       <div className="container"></div>
+
+    
 
 {/* <div className="fuerte2 ms-2">
   <p style={{fontWeight: "bold", fontSize: "120%"}} >
