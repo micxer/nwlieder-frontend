@@ -6,6 +6,7 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Spinner from "../spinner/reload";
 import { MultiValue } from "react-select";
+import { create } from "domain";
 
 interface editieren {
   openModal: boolean;
@@ -33,7 +34,9 @@ const Editieren: React.FC<editieren> = ({
     liedtext: "",
     liturgisch: [""],
     thematisch: [""],
+    secondary_images: [""]
   });
+
 
   const [specificAudio, setEspecificAudio] = useState("");
   const [openModalKommentare, setOpenModalKommentare] = useState(false);
@@ -47,6 +50,7 @@ const Editieren: React.FC<editieren> = ({
   const [audio, setAudio] = useState<File | null>();
   const [kommentarrolle, setKommentarrolle] = useState("");
   const [kommentarId, setKommentarId] = useState("");
+  const [createSecondImage, setCreateSecondImage] = useState<File | null>();
 
   const liturgisch = [
     { value: "Advent-Weinachten", label: "Advent-Weinachten" },
@@ -75,6 +79,7 @@ const Editieren: React.FC<editieren> = ({
     label: string;
   }> | null>(null);
 
+
   const getSpecificAudio = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setOpenModalKommentare(true);
@@ -95,6 +100,82 @@ const Editieren: React.FC<editieren> = ({
       await setAudio(e.target.files[0]);
     }
   };
+
+ const getSecondImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+
+    e.preventDefault();
+    if (e.target.files && e.target.files.length > 0) {
+      await setCreateSecondImage(e.target.files[0]);
+    }
+
+  }
+
+  const createSpecificSecondImage = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    setReload(true)
+
+    const createNewimage = new FormData();
+
+    if(!createSecondImage) {
+
+      alert("Please, upload an Image");
+      return;
+    }
+
+    await createNewimage.append('image', createSecondImage)
+
+    const fetchOptions = {
+      method: "PUT",
+      body: createNewimage
+    }
+
+    try {
+   await fetch(`${process.env.REACT_APP_API_URL}/imageCreate/${id}`, fetchOptions).then(res => res.json()).then(
+      data => console.log(`secondImage ${data}`)
+    )
+  }
+  catch (error) {
+    console.log({Message: "error by createSecondImage", error})
+  }
+
+  setReload(false)
+  }
+
+  const deleteSpecificSecondImage = async (e: React.MouseEvent<HTMLButtonElement>) => {
+
+    setReload(true)
+    e.preventDefault();
+
+    console.log(e.currentTarget.value.toString())
+   
+
+   
+
+   try {
+
+    const newImage = await {
+      image: e.currentTarget.value.toString()
+    }
+
+    const fetchOptions = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json", // Especifica el tipo de contenido esperado
+      },
+      body: JSON.stringify(newImage)
+    }
+
+    await fetch(`${process.env.REACT_APP_API_URL}/imageDelete/${id}`, fetchOptions).then((res) => res.json()).then((data) => console.log("sucessfully deleted"))
+
+  }
+  catch(error)  {
+    console.log({message: "das Bild ist nicht entfernt worden"})
+  }
+  setReload(false)
+
+  }
+  
 
   const createSpecificAudio = async (
     e: React.MouseEvent<HTMLButtonElement>
@@ -196,6 +277,7 @@ const Editieren: React.FC<editieren> = ({
         liedtext: dataResponse[0].liedtext,
         liturgisch: dataResponse[0].liturgisch || "",
         thematisch: dataResponse[0].thematisch || "",
+        secondary_images: dataResponse[0].secondary_images || "",
       }));
       return dataResponse;
     } catch (error) {
@@ -256,7 +338,6 @@ const Editieren: React.FC<editieren> = ({
       updateLied.append("image", image);
     }
 
-    console.log(updateData);
     Object.entries(updateData).forEach(([key, value]) => {
       updateLied.append(key, value.toString());
     });
@@ -396,6 +477,9 @@ const Editieren: React.FC<editieren> = ({
             setSelectedLiturgisch={setSelectedLiturgisch}
             selectedThematisch={selectedThematisch}
             setSelectedThematisch={setSelectedThematisch}
+            createSpecificSecondImage={createSpecificSecondImage}
+            getSecondImage={getSecondImage}
+            deleteSpecificSecondImage={deleteSpecificSecondImage}
           />
           <Modal
             show={modalDelete}

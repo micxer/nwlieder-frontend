@@ -81,7 +81,7 @@ const Erschaffen: React.FC<erschaffen> = ({
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const disableFunction = async () => {
-    if (createData.name === "" || createData.etappe === "" || image === null) {
+    if (createData.name === "" || createData.etappe === "") {
       await setDisable(true);
     } else {
       await setDisable(false);

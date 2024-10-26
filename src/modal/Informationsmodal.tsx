@@ -24,7 +24,7 @@ const informationsmodal: React.FC<information> = ({
     <Modal show={informationsModal}>
       <Modal.Header>
         <Modal.Title>
-          <p>Liedsinformation</p>
+          <p>Informationen zum Lied</p>
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>

@@ -1,12 +1,11 @@
 /* eslint-disable jsx-a11y/alt-text */
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
-import { Hola } from "../interfaces";
 import "./lied.css";
 import { FaCirclePause, FaCirclePlay } from "react-icons/fa6";
 import AudioProgressBar from "./progressBar";
 import { MdEdit } from "react-icons/md";
-import { TbReload } from "react-icons/tb";
+import { TbReload, TbRotate360 } from "react-icons/tb";
 import { BiSolidCommentDetail } from "react-icons/bi";
 import Marquee from "react-fast-marquee";
 import { MdForward10, MdReplay10  } from "react-icons/md";
@@ -14,6 +13,7 @@ import { TbPlayerTrackNextFilled, TbPlayerTrackPrevFilled } from "react-icons/tb
 import { HashLoader } from "react-spinners";
 import { IoIosInformationCircle } from "react-icons/io";
 import { LiedViewInterface } from "../interfaces";
+import ReactCardFlip from "react-card-flip";
 
 
 const LiedMobileView: React.FC<LiedViewInterface> = ({
@@ -45,7 +45,8 @@ const LiedMobileView: React.FC<LiedViewInterface> = ({
   vorgehen,
   informationsModal,
   setInformationsModal,
-  level
+  level,
+  all_images
 }) => {
   const datei = data[0];
 
@@ -69,15 +70,64 @@ const LiedMobileView: React.FC<LiedViewInterface> = ({
     }
   }, [datei?.id, audioRef, datei?.audios, hola, setAudio ]);
 
+  const [flipped1, setFlipped1] = useState<boolean | undefined>(undefined);
+  const [flipped2, setFlipped2] = useState<boolean | undefined>(undefined);
+  const [imageNumber, setImageNumber] = useState(all_images.length )
+
+
+  const changeFlipp  = async (e: number) => {
+    
+     setImageNumber(imageNumber - e)
+  
+  }
+
+  let more_than_number = all_images.length > 1;
+
+
+  useEffect( ()  =>  {
+        
+
+    if (imageNumber === 4 ) {
+      setFlipped1(undefined)
+           setFlipped2(true)
+   }
+      else if(imageNumber === 3 ) {
+       setFlipped1(undefined)
+      setFlipped2(false)
+      
+      }
+      else if(imageNumber === 2 ) {
+        setFlipped1(false)
+       setFlipped2(undefined)
+       
+       }
+       else if(imageNumber === 1 ) {
+        setFlipped1(true)
+       setFlipped2(undefined)
+       
+       }
+      else if(imageNumber === 0) {
+
+        setImageNumber(all_images.length)
+        
+      }
+
+  }, [ imageNumber])
+
   return (
     <div>
       <div className="container">
         <div className="d-flex justify-content-center align-items-center">
+        { 
+          imageNumber === 1 || imageNumber === 2?         
+          <ReactCardFlip isFlipped={flipped1} flipDirection="horizontal" >
+          <div>
+            
           <TransformWrapper>
             <TransformComponent>
               <img
                 className="rounded "
-                src={datei?.img}
+                src={all_images[0]}
                 style={{
                   maxWidth: "80vh",
                   width: "100%",
@@ -89,21 +139,93 @@ const LiedMobileView: React.FC<LiedViewInterface> = ({
             </TransformComponent>
           </TransformWrapper>
         </div>
-      </div>
-
-      <div className="fuerte2Mobile ms-2">
-      {/* <p style={{fontWeight: "bold", fontSize: "100%"}} >
-    {datei?.liturgisch} {`- ${datei?.thematisch}`}
+        <div>
+        <TransformWrapper>
+            <TransformComponent>
+              <img
+                className="rounded "
+                src={all_images[1]}
+                style={{
+                  maxWidth: "80vh",
+                  width: "100%",
+                  maxHeight: "100%",
+                  cursor: "zoom-in",
+                  transition: "transform 0.25s ease",
+                }}
+              />
+            </TransformComponent>
+          </TransformWrapper>
+        </div>
+      
+        </ReactCardFlip> :  imageNumber === 3 || imageNumber === 4 ? 
+         <ReactCardFlip isFlipped={flipped2} flipDirection="horizontal" >
+         <div>
+           
+      
+         <TransformWrapper>
+            <TransformComponent>
+              <img
+                className="rounded "
+                src={all_images[2]}
+                style={{
+                  maxWidth: "80vh",
+                  width: "100%",
+                  maxHeight: "100%",
+                  cursor: "zoom-in",
+                  transition: "transform 0.25s ease",
+                }}
+              />
+            </TransformComponent>
+          </TransformWrapper>
+          
+          
+         
+       </div>
+       <div>
+       <TransformWrapper>
+            <TransformComponent>
+              <img
+                className="rounded "
+                src={all_images[3]}
+                style={{
+                  maxWidth: "80vh",
+                  width: "100%",
+                  maxHeight: "100%",
+                  cursor: "zoom-in",
+                  transition: "transform 0.25s ease",
+                }}
+              />
+            </TransformComponent>
+          </TransformWrapper>
+       </div>
+     
+       </ReactCardFlip> 
+      : <div/>
+        }
     
-    </p> */}
-      </div>
+        </div>
+      </div> 
 
-      <div className="  fuerte p-3">
+<div className="bar">
+  <div className="mb-2 d-flex justify-content-start">
+  <IoIosInformationCircle  className="selection-anders ms-3"
+          onClick={() => setInformationsModal(!informationsModal)} size={35} />
+                 {
+        !more_than_number || all_images[1] === "" ? <div/> :
+        <button  className="rotate shadow-sm ms-3">
+        <TbRotate360 className=""  size={30}  onClick={ () => changeFlipp(1)} />
+        </button>
+   
+}
+  </div>
+     
+
+      <div className=" fuerte p-3">
         <div className=" ">
          
         
         
-          <IoIosInformationCircle className="information"   onClick={() => setInformationsModal(true)} size={30} />
+         
           
 
           <div className="row titles">
@@ -297,6 +419,7 @@ const LiedMobileView: React.FC<LiedViewInterface> = ({
           ></audio>
         </div>
       </div>
+    </div>
     </div>
   );
 };

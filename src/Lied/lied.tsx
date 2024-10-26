@@ -27,6 +27,9 @@ const Lied: React.FC = ({}, props: audioPlayerProps) => {
   const { songIndex, songCount } = props;
 
 
+ let primary_image = data[0]?.img ? data[0].img : "";
+ let all_images = [primary_image].concat(data[0]?.secondary_images || '');
+
   const [duration, setDuration] = useState(0);
   const [isReady, setIsReady] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -123,7 +126,6 @@ const Lied: React.FC = ({}, props: audioPlayerProps) => {
       console.log(`onPrev ${error}`);
     }
   };
-
 
   const onNext = async () => {
     try {
@@ -238,6 +240,7 @@ const Lied: React.FC = ({}, props: audioPlayerProps) => {
           vorgehen={vorgehen}
           setInformationsModal={setInformationsModal}
           informationsModal={informationsModal}
+          all_images={all_images}
           
           
         />
@@ -273,6 +276,7 @@ const Lied: React.FC = ({}, props: audioPlayerProps) => {
              vorgehen={vorgehen}
              setInformationsModal={setInformationsModal}
              informationsModal={informationsModal}
+             all_images={all_images}
         />
       </MediaQuery>
 

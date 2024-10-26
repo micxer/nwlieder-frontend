@@ -5,15 +5,20 @@ html {
 
 
 .fuerte {
+   
+    background-color: white;
+    box-shadow: 0px 20px 20px 20px rgba(0, 0, 0, 0.3);
+    
+    
+
+}
+
+.bar {
     position: fixed;
     width: 100%;
     bottom: 0%;
-    background-color: white;
     justify-content: center;
-    box-shadow: 0px 20px 20px 20px rgba(0, 0, 0, 0.3);
     z-index: 2;
-    
-
 }
 
 .fuerte2 {
@@ -38,13 +43,23 @@ html {
 
  
     border-radius: 50%;
-    width: 7vh;
-    height: 7vh;
+    width: 6vh;
+    height: 6vh;
     background-color: #F1F1F1;
     color: #ed1e24;
     border: none;
     font-weight: bold;
-    font-size: 25px;
+    font-size: 20px;
+}
+
+.selection-anders {
+
+ 
+
+    background-color:  #ed1e24;
+    color: #F1F1F1;
+    border-radius: 50%;
+
 }
 
 
@@ -115,4 +130,22 @@ html {
 
     font-weight: bold;
     color: "#ed1e24"
+}
+
+.buttons {
+
+    opacity: 100%;
+    
+}
+
+.rotate {
+    border-radius: 50%;
+    width: 6vh;
+    height: 6vh;
+    background-color: #F1F1F1;
+    color: #ed1e24;
+    border: none;
+    font-weight: bold;
+    font-size: 20px;
+
 }

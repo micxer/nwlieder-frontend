@@ -8,10 +8,11 @@ import Marquee from "react-fast-marquee";
 import { BiSolidCommentDetail } from "react-icons/bi";
 import { MdEdit } from "react-icons/md";
 import Select, { MultiValue } from "react-select";
-
+import hey from "../Images/Abba-Vater.png";
 interface editierenView {
   openModal: boolean;
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
+  deleteSpecificSecondImage: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
   data: Hola[];
   aktuelLied: number;
   id?: string;
@@ -34,6 +35,8 @@ interface editierenView {
       label: string;
     }> | null>
   >;
+  createSpecificSecondImage: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
+  getSecondImage: (e: React.ChangeEvent<HTMLInputElement>) => Promise<void>
   openModalDelete: (e: React.MouseEvent<HTMLButtonElement>) => void;
   kommentare: KommentareInfo | undefined;
   getSpecificAudio: (e: React.MouseEvent<HTMLButtonElement>) => void;
@@ -69,6 +72,7 @@ interface editierenView {
     liedtext: string;
     liturgisch: string[];
     thematisch: string[];
+    secondary_images: string[];
   };
   getIdKommentar: (e: React.MouseEvent<HTMLButtonElement>) => void;
 
@@ -82,6 +86,7 @@ interface editierenView {
       liedtext: string;
       liturgisch: string[];
       thematisch: string[];
+      secondary_images: string[];
     }>
   >;
 }
@@ -114,6 +119,9 @@ const EditierenView: React.FC<editierenView> = ({
   setSelectedLiturgisch,
   selectedThematisch,
   setSelectedThematisch,
+  getSecondImage,
+  createSpecificSecondImage,
+  deleteSpecificSecondImage
 }) => {
   return (
     <div>
@@ -125,9 +133,11 @@ const EditierenView: React.FC<editierenView> = ({
           <div className="col container">
             <div>
               <form onSubmit={sendInfo}>
+              <label className="form-label mt-3 subtitle">Hauptbild</label>
                 <div className="text-center">
+                  
                   <img
-                    className="rounded ms-2 col "
+                    className="rounded ms-2 col shadow"
                     src={updateData?.img}
                     style={{
                       width: "40vw",
@@ -142,6 +152,44 @@ const EditierenView: React.FC<editierenView> = ({
                     accept="image/*"
                     className="form-control mt-2"
                   />
+                </div>
+                <div>
+                <label className="form-label mt-3 subtitle">Sekundaere Bilder</label>
+                  <input 
+                  className="form-control" 
+                  type="file"
+                  onChange={(e) => getSecondImage(e)}
+                  />
+                  <div className="text-center mt-3">
+                  <button className="btn btn-danger" onClick={createSpecificSecondImage} 
+                  disabled={updateData.secondary_images.length > 2}
+                  >Add</button>
+                  </div>
+                  <div className="d-flex justify-content-center mt-2">
+                    {
+                 updateData?.secondary_images ?   updateData?.secondary_images?.map((data) => 
+                  <div>
+                    <div>
+                        <img
+                        className="rounded  col shadow ms-4"
+                        src={data}
+                        style={{
+                          width: "20vw",
+                          maxWidth: "20vh",
+                          alignItems: "center",
+                        }}
+                      /> 
+                      </div>
+                      <div className="text-center ms-4">
+                      <button style={{all: "unset", color: 'red', fontWeight: "bold", fontSize: 20}} value={data} onClick={(e) => deleteSpecificSecondImage(e)}>
+                        X
+                      </button>
+                      </div>
+                      </div>
+                       ) : <div/>
+                    }
+               
+                  </div>
                 </div>
                 <div>
                   <label className="form-label mt-3 subtitle">Name</label>

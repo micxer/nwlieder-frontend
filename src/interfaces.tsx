@@ -12,6 +12,7 @@ export interface Hola {
   liedtext?: string;
   liturgisch?: string[];
   thematisch?: string[];
+  secondary_images?: string[];
 }
 
 export interface KommentareInfo {
@@ -123,4 +124,5 @@ export interface LiedViewInterface {
   onNext: () => Promise<(() => void) | undefined>;
   setInformationsModal: React.Dispatch<React.SetStateAction<boolean>>;
   informationsModal: boolean;
+  all_images: string[];
 }
