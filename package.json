@@ -21,7 +21,7 @@
     "@types/react-dom": "^18.2.18",
     "@types/react-router-dom": "^5.3.3",
     "@wavesurfer/react": "^1.0.4",
-    "aws-amplify": "^6.3.6",
+    "aws-amplify": "^6.8.0",
     "babel-jest": "^27.4.2",
     "babel-loader": "^8.2.3",
     "babel-plugin-named-asset-import": "^0.3.8",
